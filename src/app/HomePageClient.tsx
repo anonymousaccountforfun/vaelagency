@@ -263,16 +263,18 @@ export default function HomePageClient({ content }: HomePageClientProps) {
       </section>
 
       {/* Another Full-bleed Media */}
-      <section className="relative h-[50vh] md:h-[60vh]">
-        <MediaRenderer
-          media={content.secondMedia}
-          fallbackUrl="https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-          alt="Brand products"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
-      </section>
+      {content.secondMedia && (
+        <section className="relative h-[50vh] md:h-[60vh]">
+          <MediaRenderer
+            media={content.secondMedia}
+            fallbackUrl=""
+            alt="Brand products"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
+        </section>
+      )}
 
       {/* Final CTA Section */}
       <section className="py-32 md:py-40 bg-background">

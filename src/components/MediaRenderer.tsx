@@ -68,9 +68,10 @@ export default function MediaRenderer({
   // Video type
   if (media.type === 'video') {
     const videoUrl = media.videoUrl
+    // Only use poster if explicitly set in Sanity, never fall back to legacy images
     const posterUrl = media.videoPoster
       ? urlFor(media.videoPoster).width(width || 2070).quality(80).url()
-      : fallbackUrl
+      : undefined
 
     // Check if it's a YouTube URL
     if (videoUrl && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be'))) {
@@ -114,6 +115,7 @@ export default function MediaRenderer({
         loop={media.loop ?? true}
         playsInline
         className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className}`}
+        style={{ backgroundColor: '#1a1a1a' }}
       />
     )
   }
