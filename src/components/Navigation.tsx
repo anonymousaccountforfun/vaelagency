@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navigation() {
@@ -36,14 +37,20 @@ export default function Navigation() {
       <nav className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="group flex items-center gap-2">
+          <Link href="/" className="group flex items-center">
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl font-semibold tracking-tight"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative"
             >
-              <span className="text-stone-900">Vael</span>
-              <span className="text-stone-400">Agency</span>
+              <Image
+                src="/images/vael-creative-logo.png"
+                alt="Vael Creative"
+                width={180}
+                height={23}
+                className="h-5 md:h-6 w-auto"
+                priority
+              />
             </motion.div>
           </Link>
 

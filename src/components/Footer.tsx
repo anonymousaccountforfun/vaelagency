@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 export default function Footer() {
@@ -33,7 +34,7 @@ export default function Footer() {
             Ready to elevate your brand?
           </h2>
           <p className="text-stone-600 text-lg max-w-2xl mx-auto mb-8">
-            Let&apos;s discuss how Vael can transform your creative workflow with AI-accelerated, human-curated content.
+            Let&apos;s discuss how Vael Creative can transform your creative workflow with AI-accelerated, human-curated content.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <motion.a
@@ -100,12 +101,17 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo & Copyright */}
             <div className="flex flex-col md:flex-row items-center gap-4">
-              <Link href="/" className="text-xl font-semibold">
-                <span className="text-stone-900">Vael</span>
-                <span className="text-stone-400">Agency</span>
+              <Link href="/">
+                <Image
+                  src="/images/vael-creative-logo.png"
+                  alt="Vael Creative"
+                  width={140}
+                  height={18}
+                  className="h-4 w-auto"
+                />
               </Link>
               <span className="text-stone-500 text-sm">
-                © {new Date().getFullYear()} Vael Agency. All rights reserved.
+                © {new Date().getFullYear()} Vael Creative. All rights reserved.
               </span>
             </div>
 
