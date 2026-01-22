@@ -22,9 +22,9 @@ export default function Navigation() {
       className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-stone-200"
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link href="/" className="group flex items-center">
+        <div className="grid grid-cols-3 items-center h-20">
+          {/* Logo - Left */}
+          <Link href="/" className="group flex items-center justify-start">
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -41,8 +41,8 @@ export default function Navigation() {
             </motion.div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation - Center */}
+          <div className="hidden md:flex items-center justify-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -55,45 +55,46 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Right Column - CTA Button (desktop) / Mobile Menu Button (mobile) */}
+          <div className="flex justify-end">
+            {/* CTA Button - Desktop only */}
             <motion.a
               href="#calendly"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-5 py-2.5 bg-stone-900 text-white text-sm font-medium rounded-full hover:bg-stone-800 transition-colors"
+              className="hidden md:inline-flex items-center px-5 py-2.5 bg-stone-900 text-white text-sm font-medium rounded-full hover:bg-stone-800 transition-colors"
             >
               Book Call
             </motion.a>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center"
-            aria-label="Toggle menu"
-          >
-            <div className="flex flex-col gap-1.5">
-              <motion.span
-                animate={{
-                  rotate: isMobileMenuOpen ? 45 : 0,
-                  y: isMobileMenuOpen ? 6 : 0,
-                }}
-                className="w-6 h-0.5 bg-stone-900 origin-center"
-              />
-              <motion.span
-                animate={{ opacity: isMobileMenuOpen ? 0 : 1 }}
-                className="w-6 h-0.5 bg-stone-900"
-              />
-              <motion.span
-                animate={{
-                  rotate: isMobileMenuOpen ? -45 : 0,
-                  y: isMobileMenuOpen ? -6 : 0,
-                }}
-                className="w-6 h-0.5 bg-stone-900 origin-center"
-              />
-            </div>
-          </button>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden relative w-10 h-10 flex items-center justify-center"
+              aria-label="Toggle menu"
+            >
+              <div className="flex flex-col gap-1.5">
+                <motion.span
+                  animate={{
+                    rotate: isMobileMenuOpen ? 45 : 0,
+                    y: isMobileMenuOpen ? 6 : 0,
+                  }}
+                  className="w-6 h-0.5 bg-stone-900 origin-center"
+                />
+                <motion.span
+                  animate={{ opacity: isMobileMenuOpen ? 0 : 1 }}
+                  className="w-6 h-0.5 bg-stone-900"
+                />
+                <motion.span
+                  animate={{
+                    rotate: isMobileMenuOpen ? -45 : 0,
+                    y: isMobileMenuOpen ? -6 : 0,
+                  }}
+                  className="w-6 h-0.5 bg-stone-900 origin-center"
+                />
+              </div>
+            </button>
+          </div>
         </div>
       </nav>
 
