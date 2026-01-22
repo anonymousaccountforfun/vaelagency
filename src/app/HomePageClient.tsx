@@ -172,6 +172,8 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 medium: 'h-8 md:h-9 max-w-[100px]',
                 large: 'h-10 md:h-11 max-w-[130px]',
                 xlarge: 'h-12 md:h-14 max-w-[160px]',
+                xxlarge: 'h-14 md:h-16 max-w-[200px]',
+                xxxlarge: 'h-16 md:h-20 max-w-[240px]',
               }
               const sizeClass = sizeClasses[company.size || 'medium']
 

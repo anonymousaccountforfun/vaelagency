@@ -45,7 +45,7 @@ export interface HomepageData {
     companies: {
       name: string
       logo?: SanityImage
-      size?: 'small' | 'medium' | 'large' | 'xlarge'
+      size?: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'xxxlarge'
     }[]
     additionalText: string
   }

@@ -169,6 +169,8 @@ export default defineType({
                       { title: 'Medium (default)', value: 'medium' },
                       { title: 'Large', value: 'large' },
                       { title: 'Extra Large', value: 'xlarge' },
+                      { title: 'Extra Extra Large', value: 'xxlarge' },
+                      { title: 'Extra Extra Extra Large', value: 'xxxlarge' },
                     ],
                     layout: 'radio',
                   },
