@@ -49,7 +49,7 @@ export default defineType({
       name: 'heroMedia',
       title: 'Hero Section Media (Full-bleed)',
       type: 'media',
-      description: 'Choose an image or video for the hero section',
+      description: '🖼️ Full-width hero: Upload at least 2400×1600px for crisp display. Landscape orientation. For video, use 1080p or higher.',
     }),
     defineField({
       name: 'services',
@@ -251,7 +251,7 @@ export default defineType({
       name: 'secondMedia',
       title: 'Second Full-bleed Media',
       type: 'media',
-      description: 'Choose an image or video for the second full-bleed section',
+      description: '🖼️ Full-width section: Upload at least 2400×1600px for crisp display. Landscape orientation works best.',
     }),
     defineField({
       name: 'cta',

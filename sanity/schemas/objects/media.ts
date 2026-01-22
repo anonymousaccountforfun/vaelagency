@@ -22,6 +22,7 @@ export default defineType({
       name: 'image',
       title: 'Image',
       type: 'image',
+      description: '⚠️ For best quality: Upload images at least 1600px wide (2400px for full-bleed sections). Portrait photos should be at least 800×1100px. Use high-quality JPG or PNG files.',
       options: { hotspot: true },
       hidden: ({ parent }) => parent?.type !== 'image',
       fields: [
@@ -29,6 +30,7 @@ export default defineType({
           name: 'alt',
           title: 'Alt Text',
           type: 'string',
+          description: 'Describe the image for accessibility',
         }),
       ],
     }),

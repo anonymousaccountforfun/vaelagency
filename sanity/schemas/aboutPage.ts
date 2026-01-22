@@ -62,7 +62,7 @@ export default defineType({
               name: 'media',
               title: 'Photo or Video',
               type: 'media',
-              description: 'Founder photo or video',
+              description: '📸 Founder headshot: Upload at least 800×1100px (portrait orientation). For retina displays, 1200×1600px is ideal. High-quality professional photos work best.',
             }),
           ],
           preview: {
@@ -108,7 +108,7 @@ export default defineType({
       name: 'teamMedia',
       title: 'Team Media (Full-bleed)',
       type: 'media',
-      description: 'Team image or video',
+      description: '🖼️ Full-width section: Upload at least 2400×1600px for crisp display on large screens. Landscape orientation works best.',
     }),
     defineField({
       name: 'cta',
