@@ -68,18 +68,22 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
               >
                 {/* Photo/Video */}
                 <div className="relative w-full bg-stone-100 flex items-center justify-center" style={{ aspectRatio: '154/215' }}>
-                  <MediaRenderer
-                    media={founder.media}
-                    fallbackUrl={
-                      founder.name === 'Brian Hughes'
-                        ? '/images/brian-hughes.png'
-                        : '/images/chris-mcdonald.png'
-                    }
-                    alt={founder.name}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  {(founder.media?.type === 'video' || founder.media?.image) ? (
+                    <MediaRenderer
+                      media={founder.media}
+                      fallbackUrl=""
+                      alt={founder.name}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-stone-100 to-stone-200">
+                      <span className="text-5xl font-semibold text-stone-300">
+                        {founder.name.split(' ').map(n => n[0]).join('')}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-8 lg:p-10">
@@ -136,16 +140,18 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
       </section>
 
       {/* Full-bleed Media */}
-      <section className="relative h-[50vh] md:h-[60vh]">
-        <MediaRenderer
-          media={content.teamMedia}
-          fallbackUrl="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-          alt="Team collaboration"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
-      </section>
+      {content.teamMedia && (
+        <section className="relative h-[50vh] md:h-[60vh]">
+          <MediaRenderer
+            media={content.teamMedia}
+            fallbackUrl=""
+            alt="Team collaboration"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-32 md:py-40 bg-warm-accent">
