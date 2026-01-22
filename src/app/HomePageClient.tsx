@@ -309,7 +309,7 @@ function CTASection({ content }: { content: HomepageData }) {
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
         <FadeInSection>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6">
-            {content.cta.headline}
+            {highlightWord(content.cta.headline, 'accelerate')}
           </h2>
           <p className="text-stone-600 text-lg mb-12 max-w-2xl mx-auto">
             {content.cta.description}
