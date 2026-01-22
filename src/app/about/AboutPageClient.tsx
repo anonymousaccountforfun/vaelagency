@@ -67,17 +67,17 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
                 className="bg-white rounded-3xl overflow-hidden border border-stone-200 shadow-sm"
               >
                 {/* Photo/Video */}
-                <div className="relative aspect-square w-full max-h-[400px] overflow-hidden">
+                <div className="relative w-full bg-stone-100 flex items-center justify-center" style={{ aspectRatio: '154/215' }}>
                   <MediaRenderer
                     media={founder.media}
                     fallbackUrl={
                       founder.name === 'Brian Hughes'
-                        ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                        : 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                        ? '/images/brian-hughes.png'
+                        : '/images/chris-mcdonald.png'
                     }
                     alt={founder.name}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
 
