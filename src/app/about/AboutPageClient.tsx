@@ -180,7 +180,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
               >
-                <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.cta.primaryButtonText}</span>
+                {content.cta.primaryButtonText}
               </motion.a>
               <motion.a
                 href={content.cta.secondaryButtonLink}

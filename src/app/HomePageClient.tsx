@@ -100,7 +100,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 whileTap={{ scale: 0.95 }}
                 className={`inline-flex items-center px-8 py-4 font-medium rounded-full transition-colors ${hasHeroMedia ? 'bg-white text-stone-900 hover:bg-white/90' : 'bg-stone-900 text-white hover:bg-stone-800'}`}
               >
-                <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.hero.primaryButtonText}</span>
+                {content.hero.primaryButtonText}
               </motion.a>
               <motion.a
                 href={content.hero.secondaryButtonLink}
@@ -149,7 +149,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
             >
-              <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.services.buttonText}</span>
+              {content.services.buttonText}
             </motion.a>
           </FadeInSection>
         </div>
@@ -321,7 +321,7 @@ function CTASection({ content }: { content: HomepageData }) {
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
             >
-              <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.cta.primaryButtonText}</span>
+              {content.cta.primaryButtonText}
             </motion.a>
             <motion.a
               href={content.cta.secondaryButtonLink}
