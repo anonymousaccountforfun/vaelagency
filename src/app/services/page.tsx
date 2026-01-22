@@ -1,7 +1,25 @@
+import type { Metadata } from 'next'
 import { clientNoCache } from '../../../sanity/lib/client'
 import { servicesPageQuery } from '../../../sanity/lib/queries'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 import ServicesPageClient from './ServicesPageClient'
+
+export const metadata: Metadata = {
+  title: 'Services & Pricing | Vael Creative - AI-Accelerated Brand Content',
+  description: 'Explore Vael Creative service packages: Brand Foundation, Growth Engine, and Scale Suite. AI-accelerated, human-curated content for consumer brands. Images, ads, video, and copy delivered fast.',
+  keywords: ['creative services', 'brand content packages', 'AI content creation', 'marketing creative', 'ad creative services', 'video production', 'brand photography'],
+  openGraph: {
+    title: 'Services & Pricing | Vael Creative',
+    description: 'AI-accelerated, human-curated creative packages for consumer brands. Choose from Brand Foundation, Growth Engine, or Scale Suite.',
+    type: 'website',
+    url: 'https://vaelagency.vercel.app/services',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Services & Pricing | Vael Creative',
+    description: 'AI-accelerated, human-curated creative packages for consumer brands.',
+  },
+}
 
 // Revalidate this page every 60 seconds
 export const revalidate = 60

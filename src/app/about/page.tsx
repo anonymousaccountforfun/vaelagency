@@ -1,7 +1,25 @@
+import type { Metadata } from 'next'
 import { clientNoCache } from '../../../sanity/lib/client'
 import { aboutPageQuery } from '../../../sanity/lib/queries'
 import type { AboutPageData } from '../../../sanity/lib/types'
 import AboutPageClient from './AboutPageClient'
+
+export const metadata: Metadata = {
+  title: 'About Us | Vael Creative - Meet the Team Behind Premium Brand Content',
+  description: 'Meet the founders of Vael Creative. Former leaders from Hims & Hers, Uber, Epidemic Sound, and more. We combine AI efficiency with human creativity to deliver premium content for consumer brands.',
+  keywords: ['creative agency team', 'brand content experts', 'AI creative directors', 'NYC creative agency', 'consumer brand specialists'],
+  openGraph: {
+    title: 'About Us | Vael Creative',
+    description: 'Meet the founders of Vael Creative - former leaders from Hims & Hers, Uber, and top music platforms.',
+    type: 'website',
+    url: 'https://vaelagency.vercel.app/about',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us | Vael Creative',
+    description: 'Meet the founders of Vael Creative - former leaders from Hims & Hers, Uber, and top music platforms.',
+  },
+}
 
 // Revalidate this page every 60 seconds
 export const revalidate = 60
