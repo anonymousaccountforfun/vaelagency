@@ -47,9 +47,9 @@ export default defineType({
     }),
     defineField({
       name: 'heroMedia',
-      title: 'Hero Section Media (Full-bleed)',
+      title: 'Hero Background (Full-screen)',
       type: 'media',
-      description: '🎬 VIDEO SUPPORTED • Full-width hero section. Images: 2400×1600px minimum, landscape. Videos: 1080p+, or paste YouTube/Vimeo URL.',
+      description: '🎬 VIDEO SUPPORTED • FULL-SCREEN BACKGROUND behind headline & buttons. Images: 2400×1600px minimum. Videos: 1080p+, or YouTube/Vimeo URL. Leave empty for animated gradient.',
     }),
     defineField({
       name: 'services',

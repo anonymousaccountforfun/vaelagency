@@ -14,23 +14,43 @@ export default function HomePageClient({ content }: HomePageClientProps) {
   // Parse headline to handle line breaks
   const headlineParts = content.hero.headline.split('\n')
 
+  // Check if hero has uploaded media
+  const hasHeroMedia = content.heroMedia?.type === 'video' || content.heroMedia?.image
+
   return (
     <>
-      {/* Hero Section with Cinematic Animated Gradient */}
+      {/* Hero Section with Full Background Media */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated gradient background */}
-        <div
-          className="absolute inset-0 bg-gradient-to-br from-stone-200 via-amber-50 to-stone-300 animate-gradient-bg"
-          style={{ backgroundSize: '200% 200%' }}
-        />
-
-        {/* Subtle overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/5 to-transparent" />
-
-        {/* Grain texture overlay */}
-        <div className="absolute inset-0 opacity-[0.015]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }} />
+        {/* Background: Either uploaded media or animated gradient fallback */}
+        {hasHeroMedia ? (
+          <>
+            {/* Uploaded image/video background */}
+            <div className="absolute inset-0">
+              <MediaRenderer
+                media={content.heroMedia}
+                fallbackUrl=""
+                alt="Hero background"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+            {/* Dark overlay for text readability */}
+            <div className="absolute inset-0 bg-black/40" />
+          </>
+        ) : (
+          <>
+            {/* Animated gradient background (fallback when no media uploaded) */}
+            <div
+              className="absolute inset-0 bg-gradient-to-br from-stone-200 via-amber-50 to-stone-300 animate-gradient-bg"
+              style={{ backgroundSize: '200% 200%' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-900/5 to-transparent" />
+            <div className="absolute inset-0 opacity-[0.015]" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            }} />
+          </>
+        )}
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-32 text-center">
           <motion.div
@@ -38,7 +58,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium text-stone-900 leading-[1.05] mb-8 max-w-5xl mx-auto tracking-tight">
+            <h1 className={`text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.05] mb-8 max-w-5xl mx-auto tracking-tight ${hasHeroMedia ? 'text-white' : 'text-stone-900'}`}>
               {headlineParts.map((part, i) => (
                 <span key={i}>
                   {part}
@@ -51,7 +71,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-lg md:text-xl text-stone-600 max-w-2xl mx-auto mb-12 leading-relaxed"
+              className={`text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed ${hasHeroMedia ? 'text-white/90' : 'text-stone-600'}`}
             >
               {content.hero.subheadline}
             </motion.p>
@@ -66,7 +86,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 href={content.hero.primaryButtonLink}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
+                className={`inline-flex items-center px-8 py-4 font-medium rounded-full transition-colors ${hasHeroMedia ? 'bg-white text-stone-900 hover:bg-white/90' : 'bg-stone-900 text-white hover:bg-stone-800'}`}
               >
                 {content.hero.primaryButtonText}
               </motion.a>
@@ -74,7 +94,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 href={content.hero.secondaryButtonLink}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center px-8 py-4 bg-transparent text-stone-900 font-medium rounded-full border border-stone-300 hover:border-stone-400 hover:bg-stone-100/50 transition-all"
+                className={`inline-flex items-center px-8 py-4 bg-transparent font-medium rounded-full border transition-all ${hasHeroMedia ? 'text-white border-white/60 hover:border-white hover:bg-white/10' : 'text-stone-900 border-stone-300 hover:border-stone-400 hover:bg-stone-100/50'}`}
               >
                 {content.hero.secondaryButtonText}
               </motion.a>
@@ -82,19 +102,6 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           </motion.div>
 
         </div>
-      </section>
-
-      {/* Full-bleed Media Divider */}
-      <section className="relative h-[50vh] md:h-[60vh]">
-        <MediaRenderer
-          media={content.heroMedia}
-          fallbackUrl="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-          alt="Creative workspace"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
       </section>
 
       {/* Services Section */}
