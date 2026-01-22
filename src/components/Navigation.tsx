@@ -34,9 +34,9 @@ export default function Navigation() {
               <Image
                 src="/images/vael-creative-logo.png"
                 alt="Vael Creative"
-                width={240}
-                height={31}
-                className="h-7 md:h-8 w-auto max-w-[160px] md:max-w-none object-contain"
+                width={384}
+                height={50}
+                className="h-6 md:h-7 w-auto max-w-[180px] md:max-w-[220px] object-contain"
                 priority
               />
             </motion.div>
