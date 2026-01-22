@@ -227,7 +227,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             <FadeInSection>
               <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.localExpertise.label}</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-stone-900 mb-6 leading-tight">
-                {content.localExpertise.headline}
+                {highlightWord(content.localExpertise.headline, 'boldest')}
               </h2>
               <p className="text-stone-600 text-lg mb-8 leading-relaxed">
                 {content.localExpertise.description}
