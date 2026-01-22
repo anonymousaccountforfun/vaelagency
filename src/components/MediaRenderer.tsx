@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import { urlFor } from '../../sanity/lib/client'
 import type { SanityMedia } from '../../sanity/lib/types'
@@ -105,17 +106,15 @@ export default function MediaRenderer({
       )
     }
 
-    // Direct video file
+    // Direct video file - render with VideoPlayer component for smooth loading
     return (
-      <video
-        src={videoUrl}
-        poster={posterUrl}
+      <VideoPlayer
+        videoUrl={videoUrl}
+        posterUrl={posterUrl}
         autoPlay={media.autoplay ?? true}
-        muted
         loop={media.loop ?? true}
-        playsInline
-        className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className}`}
-        style={{ backgroundColor: '#1a1a1a' }}
+        fill={fill}
+        className={className}
       />
     )
   }
@@ -157,4 +156,40 @@ function extractVimeoId(url: string): string {
   const regExp = /vimeo\.com\/(?:.*\/)?(\d+)/
   const match = url.match(regExp)
   return match ? match[1] : ''
+}
+
+// Video player component that hides until ready to play
+function VideoPlayer({
+  videoUrl,
+  posterUrl,
+  autoPlay,
+  loop,
+  fill,
+  className,
+}: {
+  videoUrl?: string
+  posterUrl?: string
+  autoPlay: boolean
+  loop: boolean
+  fill: boolean
+  className: string
+}) {
+  const [isReady, setIsReady] = useState(false)
+
+  return (
+    <video
+      src={videoUrl}
+      poster={posterUrl}
+      autoPlay={autoPlay}
+      muted
+      loop={loop}
+      playsInline
+      onCanPlay={() => setIsReady(true)}
+      className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className} transition-opacity duration-300`}
+      style={{
+        backgroundColor: '#FAF9F6',
+        opacity: isReady ? 1 : 0,
+      }}
+    />
+  )
 }
