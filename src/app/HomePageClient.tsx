@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import ServiceCard from '@/components/ServiceCard'
@@ -156,28 +155,39 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {content.socialProof.companies.map((company) => (
-              <StaggerItem key={company.name}>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center justify-center h-20 px-4"
-                >
-                  {company.logo?.asset ? (
-                    <Image
-                      src={urlFor(company.logo).height(48).url()}
-                      alt={company.logo.alt || company.name}
-                      width={120}
-                      height={48}
-                      className="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
-                    />
-                  ) : (
-                    <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
-                      {company.name.toUpperCase()}
-                    </span>
-                  )}
-                </motion.div>
-              </StaggerItem>
-            ))}
+            {content.socialProof.companies.map((company) => {
+              // Generate logo URL if logo exists
+              let logoUrl: string | null = null
+              try {
+                if (company.logo?.asset) {
+                  logoUrl = urlFor(company.logo).height(80).url()
+                }
+              } catch {
+                logoUrl = null
+              }
+
+              return (
+                <StaggerItem key={company.name}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="flex items-center justify-center h-20 px-4"
+                  >
+                    {logoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={logoUrl}
+                        alt={company.logo?.alt || company.name}
+                        className="h-8 md:h-10 w-auto max-w-[120px] object-contain opacity-60 hover:opacity-100 transition-opacity"
+                      />
+                    ) : (
+                      <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
+                        {company.name.toUpperCase()}
+                      </span>
+                    )}
+                  </motion.div>
+                </StaggerItem>
+              )
+            })}
           </StaggerContainer>
 
           <FadeInSection delay={0.3} className="text-center mt-8">
