@@ -22,9 +22,10 @@ export default function Navigation() {
       className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-stone-200"
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-3 items-center h-20">
+        {/* Mobile: flex with justify-between, Desktop: 3-column grid */}
+        <div className="flex md:grid md:grid-cols-3 items-center justify-between h-20">
           {/* Logo - Left */}
-          <Link href="/" className="group flex items-center justify-start">
+          <Link href="/" className="group flex items-center justify-start shrink-0">
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -35,7 +36,7 @@ export default function Navigation() {
                 alt="Vael Creative"
                 width={240}
                 height={31}
-                className="h-7 md:h-8 w-auto"
+                className="h-7 md:h-8 w-auto max-w-[160px] md:max-w-none object-contain"
                 priority
               />
             </motion.div>
@@ -56,7 +57,7 @@ export default function Navigation() {
           </div>
 
           {/* Right Column - CTA Button (desktop) / Mobile Menu Button (mobile) */}
-          <div className="flex justify-end">
+          <div className="flex justify-end shrink-0">
             {/* CTA Button - Desktop only */}
             <motion.a
               href="#calendly"
