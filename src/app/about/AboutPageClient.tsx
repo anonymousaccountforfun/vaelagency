@@ -94,7 +94,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
 
                   {/* Company badges */}
                   <div className="flex flex-wrap gap-2">
-                    {founder.companies.map((company) => (
+                    {founder.companies?.map((company) => (
                       <span
                         key={company}
                         className="inline-flex items-center px-3 py-1.5 rounded-full bg-stone-100 text-stone-600 text-xs font-medium"
@@ -122,7 +122,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
 
           <FadeInSection delay={0.2}>
             <div className="space-y-6">
-              {content.story.paragraphs.map((paragraph, index) => (
+              {content.story.paragraphs?.map((paragraph, index) => (
                 <p key={index} className="text-stone-600 text-lg leading-relaxed">
                   {paragraph}
                 </p>
