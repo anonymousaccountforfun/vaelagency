@@ -199,11 +199,6 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                   whileHover={{ y: -8 }}
                   className="relative bg-white rounded-2xl p-8 border border-stone-200 h-full group shadow-sm hover:shadow-md transition-all"
                 >
-                  {/* Connector line */}
-                  {index < content.process.steps.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-px bg-stone-200" />
-                  )}
-
                   <div className="text-4xl font-bold text-stone-200 mb-4 group-hover:text-stone-300 transition-colors">
                     {step.step}
                   </div>
