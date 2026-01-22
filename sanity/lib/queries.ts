@@ -39,7 +39,8 @@ export const homepageQuery = groq`*[_type == "homepage"][0]{
       logo {
         asset,
         alt
-      }
+      },
+      size
     },
     additionalText
   },

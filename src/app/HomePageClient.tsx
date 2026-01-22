@@ -160,11 +160,20 @@ export default function HomePageClient({ content }: HomePageClientProps) {
               let logoUrl: string | null = null
               try {
                 if (company.logo?.asset) {
-                  logoUrl = urlFor(company.logo).height(80).url()
+                  logoUrl = urlFor(company.logo).height(120).url()
                 }
               } catch {
                 logoUrl = null
               }
+
+              // Size classes based on Sanity field
+              const sizeClasses = {
+                small: 'h-6 md:h-7 max-w-[80px]',
+                medium: 'h-8 md:h-9 max-w-[100px]',
+                large: 'h-10 md:h-11 max-w-[130px]',
+                xlarge: 'h-12 md:h-14 max-w-[160px]',
+              }
+              const sizeClass = sizeClasses[company.size || 'medium']
 
               return (
                 <StaggerItem key={company.name}>
@@ -177,7 +186,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                       <img
                         src={logoUrl}
                         alt={company.logo?.alt || company.name}
-                        className="h-8 md:h-10 w-auto max-w-[120px] object-contain opacity-60 hover:opacity-100 transition-opacity"
+                        className={`${sizeClass} w-auto object-contain opacity-60 hover:opacity-100 transition-opacity`}
                       />
                     ) : (
                       <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">

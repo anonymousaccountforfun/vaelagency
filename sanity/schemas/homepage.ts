@@ -158,6 +158,22 @@ export default defineType({
                   title: 'Logo (optional)',
                   type: 'image',
                 }),
+                defineField({
+                  name: 'size',
+                  title: 'Logo Size',
+                  type: 'string',
+                  description: 'Adjust size so all logos appear visually equal-weighted',
+                  options: {
+                    list: [
+                      { title: 'Small', value: 'small' },
+                      { title: 'Medium (default)', value: 'medium' },
+                      { title: 'Large', value: 'large' },
+                      { title: 'Extra Large', value: 'xlarge' },
+                    ],
+                    layout: 'radio',
+                  },
+                  initialValue: 'medium',
+                }),
               ],
               preview: {
                 select: {
