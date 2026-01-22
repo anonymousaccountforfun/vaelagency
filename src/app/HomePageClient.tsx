@@ -125,6 +125,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 description={service.description}
                 deliverables={service.deliverables}
                 index={index}
+                media={service.media}
               />
             ))}
           </div>

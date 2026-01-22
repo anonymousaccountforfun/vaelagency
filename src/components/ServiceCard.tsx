@@ -1,17 +1,20 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import MediaRenderer from './MediaRenderer'
+import type { SanityMedia } from '../../sanity/lib/types'
 
 interface ServiceCardProps {
   title: string
   description: string
   deliverables: string[]
   index: number
-  imageUrl?: string
+  media?: SanityMedia
 }
 
-export default function ServiceCard({ title, description, deliverables, index, imageUrl }: ServiceCardProps) {
+export default function ServiceCard({ title, description, deliverables, index, media }: ServiceCardProps) {
+  const hasMedia = media?.type === 'video' || media?.image
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -21,11 +24,12 @@ export default function ServiceCard({ title, description, deliverables, index, i
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className="group relative bg-white rounded-2xl overflow-hidden border border-stone-200 hover:border-stone-300 transition-all duration-300 shadow-sm hover:shadow-md"
     >
-      {/* Image area */}
+      {/* Image/Video area */}
       <div className="relative h-48 bg-gradient-to-br from-stone-100 to-warm-accent overflow-hidden">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
+        {hasMedia ? (
+          <MediaRenderer
+            media={media}
+            fallbackUrl=""
             alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
