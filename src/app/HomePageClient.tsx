@@ -168,12 +168,12 @@ export default function HomePageClient({ content }: HomePageClientProps) {
 
               // Size classes based on Sanity field
               const sizeClasses = {
-                small: 'h-6 md:h-7 max-w-[80px]',
-                medium: 'h-8 md:h-9 max-w-[100px]',
-                large: 'h-10 md:h-11 max-w-[130px]',
-                xlarge: 'h-12 md:h-14 max-w-[160px]',
-                xxlarge: 'h-14 md:h-16 max-w-[200px]',
-                xxxlarge: 'h-16 md:h-20 max-w-[240px]',
+                small: 'h-6 md:h-7',
+                medium: 'h-8 md:h-9',
+                large: 'h-10 md:h-11',
+                xlarge: 'h-12 md:h-14',
+                xxlarge: 'h-16 md:h-20',
+                xxxlarge: 'h-20 md:h-24',
               }
               const sizeClass = sizeClasses[company.size || 'medium']
 
@@ -181,7 +181,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 <StaggerItem key={company.name}>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center justify-center h-20 px-4"
+                    className="flex items-center justify-center min-h-20 px-4"
                   >
                     {logoUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
