@@ -100,7 +100,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                 whileTap={{ scale: 0.95 }}
                 className={`inline-flex items-center px-8 py-4 font-medium rounded-full transition-colors ${hasHeroMedia ? 'bg-white text-stone-900 hover:bg-white/90' : 'bg-stone-900 text-white hover:bg-stone-800'}`}
               >
-                {content.hero.primaryButtonText}
+                <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.hero.primaryButtonText}</span>
               </motion.a>
               <motion.a
                 href={content.hero.secondaryButtonLink}
