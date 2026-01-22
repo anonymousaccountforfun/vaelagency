@@ -81,21 +81,6 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             </motion.div>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2"
-          >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-              className="w-6 h-10 rounded-full border border-stone-400 flex items-start justify-center p-2"
-            >
-              <motion.div className="w-1 h-2 bg-stone-400 rounded-full" />
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
