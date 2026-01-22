@@ -22,7 +22,7 @@ export default defineType({
       name: 'image',
       title: 'Image',
       type: 'image',
-      description: '⚠️ For best quality: Upload images at least 1600px wide (2400px for full-bleed sections). Portrait photos should be at least 800×1100px. Use high-quality JPG or PNG files.',
+      description: '📸 IMAGE SPECS: At least 1600px wide (2400px for full-bleed). Portrait photos: 800×1100px minimum. Use JPG or PNG.',
       options: { hotspot: true },
       hidden: ({ parent }) => parent?.type !== 'image',
       fields: [
@@ -36,8 +36,9 @@ export default defineType({
     }),
     defineField({
       name: 'video',
-      title: 'Video File',
+      title: 'Video File (Upload)',
       type: 'file',
+      description: '📤 Upload MP4, MOV, or WebM. Max ~100MB recommended. Use 1080p or higher.',
       options: {
         accept: 'video/*',
       },
@@ -45,9 +46,9 @@ export default defineType({
     }),
     defineField({
       name: 'videoUrl',
-      title: 'Video URL (YouTube, Vimeo, or direct link)',
+      title: 'Video URL (Alternative to upload)',
       type: 'url',
-      description: 'Paste a YouTube, Vimeo, or direct video URL',
+      description: '🔗 OR paste a YouTube, Vimeo, or direct video URL instead of uploading.',
       hidden: ({ parent }) => parent?.type !== 'video',
     }),
     defineField({

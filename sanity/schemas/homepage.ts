@@ -49,7 +49,7 @@ export default defineType({
       name: 'heroMedia',
       title: 'Hero Section Media (Full-bleed)',
       type: 'media',
-      description: '🖼️ Full-width hero: Upload at least 2400×1600px for crisp display. Landscape orientation. For video, use 1080p or higher.',
+      description: '🎬 VIDEO SUPPORTED • Full-width hero section. Images: 2400×1600px minimum, landscape. Videos: 1080p+, or paste YouTube/Vimeo URL.',
     }),
     defineField({
       name: 'services',
@@ -101,7 +101,7 @@ export default defineType({
                   name: 'media',
                   title: 'Service Media',
                   type: 'media',
-                  description: 'Image or video for this service',
+                  description: '🎬 VIDEO SUPPORTED • Images: 800×600px minimum. Videos: upload file or paste YouTube/Vimeo URL.',
                 }),
               ],
               preview: {
@@ -251,7 +251,7 @@ export default defineType({
       name: 'secondMedia',
       title: 'Second Full-bleed Media',
       type: 'media',
-      description: '🖼️ Full-width section: Upload at least 2400×1600px for crisp display. Landscape orientation works best.',
+      description: '🎬 VIDEO SUPPORTED • Full-width section. Images: 2400×1600px minimum, landscape. Videos: 1080p+, or paste YouTube/Vimeo URL.',
     }),
     defineField({
       name: 'cta',

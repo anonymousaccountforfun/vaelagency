@@ -32,7 +32,7 @@ export default defineType({
       name: 'heroMedia',
       title: 'Hero Media (Full-bleed)',
       type: 'media',
-      description: '🖼️ Full-width hero: Upload at least 2400×1600px for crisp display. Landscape orientation. For video, use 1080p or higher.',
+      description: '🎬 VIDEO SUPPORTED • Full-width hero section. Images: 2400×1600px minimum, landscape. Videos: 1080p+, or paste YouTube/Vimeo URL.',
     }),
     defineField({
       name: 'packages',
