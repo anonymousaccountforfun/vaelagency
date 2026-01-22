@@ -1,18 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import ServiceCard from '@/components/ServiceCard'
+import MediaRenderer from '@/components/MediaRenderer'
 import type { HomepageData } from '../../sanity/lib/types'
 
 interface HomePageClientProps {
   content: HomepageData
-  heroImageUrl: string
-  secondImageUrl: string
 }
 
-export default function HomePageClient({ content, heroImageUrl, secondImageUrl }: HomePageClientProps) {
+export default function HomePageClient({ content }: HomePageClientProps) {
   // Parse headline to handle line breaks
   const headlineParts = content.hero.headline.split('\n')
 
@@ -101,16 +99,17 @@ export default function HomePageClient({ content, heroImageUrl, secondImageUrl }
         </div>
       </section>
 
-      {/* Full-bleed Image Divider */}
+      {/* Full-bleed Media Divider */}
       <section className="relative h-[50vh] md:h-[60vh]">
-        <Image
-          src={heroImageUrl}
-          alt={content.heroImage?.alt || 'Creative workspace'}
+        <MediaRenderer
+          media={content.heroMedia}
+          fallbackUrl="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          alt="Creative workspace"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-stone-900/10" />
+        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
       </section>
 
       {/* Services Section */}
@@ -237,15 +236,16 @@ export default function HomePageClient({ content, heroImageUrl, secondImageUrl }
         </div>
       </section>
 
-      {/* Another Full-bleed Image */}
+      {/* Another Full-bleed Media */}
       <section className="relative h-[50vh] md:h-[60vh]">
-        <Image
-          src={secondImageUrl}
-          alt={content.secondImage?.alt || 'Brand products'}
+        <MediaRenderer
+          media={content.secondMedia}
+          fallbackUrl="https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          alt="Brand products"
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-stone-900/10" />
+        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
       </section>
 
       {/* Final CTA Section */}

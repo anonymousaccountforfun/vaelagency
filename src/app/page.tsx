@@ -1,4 +1,4 @@
-import { client, urlFor } from '../../sanity/lib/client'
+import { client } from '../../sanity/lib/client'
 import { homepageQuery } from '../../sanity/lib/queries'
 import type { HomepageData } from '../../sanity/lib/types'
 import HomePageClient from './HomePageClient'
@@ -13,7 +13,7 @@ const defaultContent: HomepageData = {
     secondaryButtonText: 'View Services',
     secondaryButtonLink: '/services',
   },
-  heroImage: null as any,
+  heroMedia: undefined,
   services: {
     label: 'What We Do',
     headline: 'Creative packages built for growth',
@@ -95,7 +95,7 @@ const defaultContent: HomepageData = {
       { number: '100%', label: 'Human Curation' },
     ],
   },
-  secondImage: null as any,
+  secondMedia: undefined,
   cta: {
     headline: 'Ready to accelerate your creative?',
     description: "Join New York's most ambitious consumer brands using AI-powered creative that doesn't sacrifice quality.",
@@ -130,20 +130,5 @@ async function getHomepageData(): Promise<HomepageData> {
 export default async function Home() {
   const content = await getHomepageData()
 
-  // Process images - convert Sanity images to URLs
-  const heroImageUrl = content.heroImage
-    ? urlFor(content.heroImage).width(2070).quality(80).url()
-    : 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
-
-  const secondImageUrl = content.secondImage
-    ? urlFor(content.secondImage).width(2070).quality(80).url()
-    : 'https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
-
-  return (
-    <HomePageClient
-      content={content}
-      heroImageUrl={heroImageUrl}
-      secondImageUrl={secondImageUrl}
-    />
-  )
+  return <HomePageClient content={content} />
 }

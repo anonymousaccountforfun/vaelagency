@@ -1,16 +1,15 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
+import MediaRenderer from '@/components/MediaRenderer'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 
 interface ServicesPageClientProps {
   content: ServicesPageData
-  heroImageUrl: string
 }
 
-export default function ServicesPageClient({ content, heroImageUrl }: ServicesPageClientProps) {
+export default function ServicesPageClient({ content }: ServicesPageClientProps) {
   return (
     <>
       {/* Hero Section */}
@@ -45,16 +44,17 @@ export default function ServicesPageClient({ content, heroImageUrl }: ServicesPa
         </div>
       </section>
 
-      {/* Full-bleed Image */}
+      {/* Full-bleed Media */}
       <section className="relative h-[40vh] md:h-[50vh]">
-        <Image
-          src={heroImageUrl}
-          alt={content.heroImage?.alt || 'Creative process'}
+        <MediaRenderer
+          media={content.heroMedia}
+          fallbackUrl="https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          alt="Creative process"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-stone-900/10" />
+        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
       </section>
 
       {/* Packages Section */}

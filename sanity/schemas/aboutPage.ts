@@ -59,24 +59,17 @@ export default defineType({
               of: [{ type: 'string' }],
             }),
             defineField({
-              name: 'image',
-              title: 'Photo',
-              type: 'image',
-              options: { hotspot: true },
-              fields: [
-                defineField({
-                  name: 'alt',
-                  title: 'Alt Text',
-                  type: 'string',
-                }),
-              ],
+              name: 'media',
+              title: 'Photo or Video',
+              type: 'media',
+              description: 'Founder photo or video',
             }),
           ],
           preview: {
             select: {
               title: 'name',
               subtitle: 'title',
-              media: 'image',
+              media: 'media.image',
             },
           },
         },
@@ -112,17 +105,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'teamImage',
-      title: 'Team Image (Full-bleed)',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-        }),
-      ],
+      name: 'teamMedia',
+      title: 'Team Media (Full-bleed)',
+      type: 'media',
+      description: 'Team image or video',
     }),
     defineField({
       name: 'cta',

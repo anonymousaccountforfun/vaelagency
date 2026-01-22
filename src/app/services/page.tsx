@@ -1,4 +1,4 @@
-import { client, urlFor } from '../../../sanity/lib/client'
+import { client } from '../../../sanity/lib/client'
 import { servicesPageQuery } from '../../../sanity/lib/queries'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 import ServicesPageClient from './ServicesPageClient'
@@ -10,7 +10,7 @@ const defaultContent: ServicesPageData = {
     headline: 'Creative packages that scale',
     description: 'Choose a package that fits your needs, or let us customize one for your specific requirements. Every deliverable is AI-accelerated and human-curated.',
   },
-  heroImage: null as any,
+  heroMedia: undefined,
   packages: [
     {
       name: 'Launch Campaign Package',
@@ -125,15 +125,5 @@ async function getServicesPageData(): Promise<ServicesPageData> {
 export default async function ServicesPage() {
   const content = await getServicesPageData()
 
-  // Process images
-  const heroImageUrl = content.heroImage
-    ? urlFor(content.heroImage).width(2070).quality(80).url()
-    : 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
-
-  return (
-    <ServicesPageClient
-      content={content}
-      heroImageUrl={heroImageUrl}
-    />
-  )
+  return <ServicesPageClient content={content} />
 }

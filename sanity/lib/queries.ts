@@ -1,26 +1,59 @@
 import { groq } from 'next-sanity'
 
+// Media fragment for reuse
+const mediaFragment = `{
+  type,
+  image {
+    asset,
+    alt
+  },
+  "videoUrl": coalesce(videoUrl, video.asset->url),
+  videoPoster {
+    asset
+  },
+  autoplay,
+  loop
+}`
+
 export const homepageQuery = groq`*[_type == "homepage"][0]{
   hero,
-  heroImage,
-  services,
+  heroMedia ${mediaFragment},
+  services {
+    label,
+    headline,
+    description,
+    items[] {
+      title,
+      description,
+      deliverables,
+      media ${mediaFragment}
+    },
+    buttonText,
+    buttonLink
+  },
   socialProof,
   localExpertise,
-  secondImage,
+  secondMedia ${mediaFragment},
   cta
 }`
 
 export const aboutPageQuery = groq`*[_type == "aboutPage"][0]{
   hero,
-  founders,
+  founders[] {
+    name,
+    title,
+    bio,
+    companies,
+    media ${mediaFragment}
+  },
   story,
-  teamImage,
+  teamMedia ${mediaFragment},
   cta
 }`
 
 export const servicesPageQuery = groq`*[_type == "servicesPage"][0]{
   hero,
-  heroImage,
+  heroMedia ${mediaFragment},
   packages,
   process,
   cta

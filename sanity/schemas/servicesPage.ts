@@ -29,17 +29,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'heroImage',
-      title: 'Hero Image (Full-bleed)',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-        }),
-      ],
+      name: 'heroMedia',
+      title: 'Hero Media (Full-bleed)',
+      type: 'media',
+      description: 'Hero image or video',
     }),
     defineField({
       name: 'packages',

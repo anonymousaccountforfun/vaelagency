@@ -46,17 +46,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'heroImage',
-      title: 'Hero Section Image (Full-bleed)',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-        }),
-      ],
+      name: 'heroMedia',
+      title: 'Hero Section Media (Full-bleed)',
+      type: 'media',
+      description: 'Choose an image or video for the hero section',
     }),
     defineField({
       name: 'services',
@@ -105,23 +98,16 @@ export default defineType({
                   of: [{ type: 'string' }],
                 }),
                 defineField({
-                  name: 'image',
-                  title: 'Service Image',
-                  type: 'image',
-                  options: { hotspot: true },
-                  fields: [
-                    defineField({
-                      name: 'alt',
-                      title: 'Alt Text',
-                      type: 'string',
-                    }),
-                  ],
+                  name: 'media',
+                  title: 'Service Media',
+                  type: 'media',
+                  description: 'Image or video for this service',
                 }),
               ],
               preview: {
                 select: {
                   title: 'title',
-                  media: 'image',
+                  media: 'media.image',
                 },
               },
             },
@@ -262,17 +248,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'secondImage',
-      title: 'Second Full-bleed Image',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-        }),
-      ],
+      name: 'secondMedia',
+      title: 'Second Full-bleed Media',
+      type: 'media',
+      description: 'Choose an image or video for the second full-bleed section',
     }),
     defineField({
       name: 'cta',

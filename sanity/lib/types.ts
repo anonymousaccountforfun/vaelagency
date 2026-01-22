@@ -7,6 +7,15 @@ export interface SanityImage {
   alt?: string
 }
 
+export interface SanityMedia {
+  type: 'image' | 'video'
+  image?: SanityImage
+  videoUrl?: string
+  videoPoster?: SanityImage
+  autoplay?: boolean
+  loop?: boolean
+}
+
 export interface HomepageData {
   hero: {
     headline: string
@@ -16,7 +25,7 @@ export interface HomepageData {
     secondaryButtonText: string
     secondaryButtonLink: string
   }
-  heroImage: SanityImage
+  heroMedia?: SanityMedia
   services: {
     label: string
     headline: string
@@ -25,7 +34,7 @@ export interface HomepageData {
       title: string
       description: string
       deliverables: string[]
-      image?: SanityImage
+      media?: SanityMedia
     }[]
     buttonText: string
     buttonLink: string
@@ -52,7 +61,7 @@ export interface HomepageData {
       label: string
     }[]
   }
-  secondImage: SanityImage
+  secondMedia?: SanityMedia
   cta: {
     headline: string
     description: string
@@ -74,7 +83,7 @@ export interface AboutPageData {
     title: string
     bio: string
     companies: string[]
-    image: SanityImage
+    media?: SanityMedia
   }[]
   story: {
     label: string
@@ -82,7 +91,7 @@ export interface AboutPageData {
     paragraphs: string[]
     pullQuote: string
   }
-  teamImage: SanityImage
+  teamMedia?: SanityMedia
   cta: {
     headline: string
     description: string
@@ -99,7 +108,7 @@ export interface ServicesPageData {
     headline: string
     description: string
   }
-  heroImage: SanityImage
+  heroMedia?: SanityMedia
   packages: {
     name: string
     description: string

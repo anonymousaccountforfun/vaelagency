@@ -1,4 +1,4 @@
-import { client, urlFor } from '../../../sanity/lib/client'
+import { client } from '../../../sanity/lib/client'
 import { aboutPageQuery } from '../../../sanity/lib/queries'
 import type { AboutPageData } from '../../../sanity/lib/types'
 import AboutPageClient from './AboutPageClient'
@@ -16,14 +16,14 @@ const defaultContent: AboutPageData = {
       title: 'Co-Founder & CEO',
       bio: 'Former GM at Hims & Hers, where he led growth initiatives reaching millions of customers. Prior to that, Brian spent years at Uber driving strategic operations. He holds an MBA from Harvard Business School and is a graduate of West Point, bringing both strategic rigor and operational excellence to every client engagement.',
       companies: ['Hims & Hers', 'Uber', 'Harvard Business School', 'West Point'],
-      image: null as any,
+      media: undefined,
     },
     {
       name: 'Chris McDonald',
       title: 'Co-Founder & Chief Creative Officer',
       bio: "An accomplished audio engineer turned creative strategist, Chris has shaped the sound and vision of some of the world's most innovative music and media companies. His experience spans Epidemic Sound, Artlist, and UnitedMasters—giving him unique insight into how creative content scales while maintaining quality and authenticity.",
       companies: ['Epidemic Sound', 'Artlist', 'UnitedMasters'],
-      image: null as any,
+      media: undefined,
     },
   ],
   story: {
@@ -36,7 +36,7 @@ const defaultContent: AboutPageData = {
     ],
     pullQuote: "Premium creative at startup speed—content that's on-brand, performance-ready, and delivered faster than you thought possible.",
   },
-  teamImage: null as any,
+  teamMedia: undefined,
   cta: {
     headline: "Let's build something great together",
     description: "Ready to see how Vael can transform your creative workflow? Book a discovery call and let's explore what's possible.",
@@ -70,25 +70,19 @@ async function getAboutPageData(): Promise<AboutPageData> {
 export default async function AboutPage() {
   const content = await getAboutPageData()
 
-  // Process images
-  const teamImageUrl = content.teamImage
-    ? urlFor(content.teamImage).width(2070).quality(80).url()
-    : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
-
-  const foundersWithImages = content.founders.map((founder) => ({
-    ...founder,
-    imageUrl: founder.image
-      ? urlFor(founder.image).width(800).quality(80).url()
-      : founder.name === 'Brian Hughes'
-        ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-        : 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+  // Pass founders with media directly
+  const foundersWithMedia = content.founders.map((founder) => ({
+    name: founder.name,
+    title: founder.title,
+    bio: founder.bio,
+    companies: founder.companies,
+    media: founder.media,
   }))
 
   return (
     <AboutPageClient
       content={content}
-      teamImageUrl={teamImageUrl}
-      foundersWithImages={foundersWithImages}
+      foundersWithMedia={foundersWithMedia}
     />
   )
 }

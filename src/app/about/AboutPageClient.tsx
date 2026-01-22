@@ -1,25 +1,24 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { FadeInSection } from '@/components/AnimatedSection'
-import type { AboutPageData } from '../../../sanity/lib/types'
+import MediaRenderer from '@/components/MediaRenderer'
+import type { AboutPageData, SanityMedia } from '../../../sanity/lib/types'
 
-interface FounderWithImage {
+interface FounderWithMedia {
   name: string
   title: string
   bio: string
   companies: string[]
-  imageUrl: string
+  media?: SanityMedia
 }
 
 interface AboutPageClientProps {
   content: AboutPageData
-  teamImageUrl: string
-  foundersWithImages: FounderWithImage[]
+  foundersWithMedia: FounderWithMedia[]
 }
 
-export default function AboutPageClient({ content, teamImageUrl, foundersWithImages }: AboutPageClientProps) {
+export default function AboutPageClient({ content, foundersWithMedia }: AboutPageClientProps) {
   return (
     <>
       {/* Hero Section */}
@@ -58,7 +57,7 @@ export default function AboutPageClient({ content, teamImageUrl, foundersWithIma
       <section className="py-20 md:py-28 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {foundersWithImages.map((founder, index) => (
+            {foundersWithMedia.map((founder, index) => (
               <motion.div
                 key={founder.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -67,10 +66,15 @@ export default function AboutPageClient({ content, teamImageUrl, foundersWithIma
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="bg-white rounded-3xl overflow-hidden border border-stone-200 shadow-sm"
               >
-                {/* Photo */}
+                {/* Photo/Video */}
                 <div className="relative aspect-square w-full max-h-[400px] overflow-hidden">
-                  <Image
-                    src={founder.imageUrl}
+                  <MediaRenderer
+                    media={founder.media}
+                    fallbackUrl={
+                      founder.name === 'Brian Hughes'
+                        ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                        : 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                    }
                     alt={founder.name}
                     fill
                     className="object-cover"
@@ -130,15 +134,16 @@ export default function AboutPageClient({ content, teamImageUrl, foundersWithIma
         </div>
       </section>
 
-      {/* Full-bleed Image */}
+      {/* Full-bleed Media */}
       <section className="relative h-[50vh] md:h-[60vh]">
-        <Image
-          src={teamImageUrl}
-          alt={content.teamImage?.alt || 'Team collaboration'}
+        <MediaRenderer
+          media={content.teamMedia}
+          fallbackUrl="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          alt="Team collaboration"
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-stone-900/10" />
+        <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
       </section>
 
       {/* CTA Section */}
