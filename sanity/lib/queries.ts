@@ -31,7 +31,18 @@ export const homepageQuery = groq`*[_type == "homepage"][0]{
     buttonText,
     buttonLink
   },
-  socialProof,
+  socialProof {
+    label,
+    headline,
+    companies[] {
+      name,
+      logo {
+        asset,
+        alt
+      }
+    },
+    additionalText
+  },
   localExpertise,
   secondMedia ${mediaFragment},
   cta

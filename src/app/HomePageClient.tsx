@@ -1,9 +1,11 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import ServiceCard from '@/components/ServiceCard'
 import MediaRenderer from '@/components/MediaRenderer'
+import { urlFor } from '../../sanity/lib/client'
 import type { HomepageData } from '../../sanity/lib/types'
 
 interface HomePageClientProps {
@@ -160,9 +162,19 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                   whileHover={{ scale: 1.05 }}
                   className="flex items-center justify-center h-20 px-4"
                 >
-                  <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
-                    {company.name.toUpperCase()}
-                  </span>
+                  {company.logo?.asset ? (
+                    <Image
+                      src={urlFor(company.logo).height(48).url()}
+                      alt={company.logo.alt || company.name}
+                      width={120}
+                      height={48}
+                      className="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
+                    />
+                  ) : (
+                    <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
+                      {company.name.toUpperCase()}
+                    </span>
+                  )}
                 </motion.div>
               </StaggerItem>
             ))}
