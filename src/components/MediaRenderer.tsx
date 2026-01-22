@@ -29,8 +29,14 @@ export default function MediaRenderer({
 }: MediaRendererProps) {
   // If no media or media is image type
   if (!media || media.type === 'image' || !media.type) {
+    // For fill mode, don't constrain width - let Sanity serve original quality
+    // For explicit dimensions, use those; otherwise use high quality defaults
     const imageUrl = media?.image
-      ? urlFor(media.image).width(width || 2070).quality(80).url()
+      ? urlFor(media.image)
+          .width(fill ? 1200 : (width || 2070))
+          .quality(100)
+          .auto('format')
+          .url()
       : fallbackUrl
 
     const imageAlt = media?.image?.alt || alt
