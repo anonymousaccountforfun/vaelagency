@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import { ContactModalProvider } from '@/components/ContactModalContext'
+import ContactModal from '@/components/ContactModal'
 
 export default function LayoutWrapper({
   children,
@@ -17,10 +19,11 @@ export default function LayoutWrapper({
   }
 
   return (
-    <>
+    <ContactModalProvider>
       <Navigation />
       <main>{children}</main>
       <Footer />
-    </>
+      <ContactModal />
+    </ContactModalProvider>
   )
 }

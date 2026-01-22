@@ -4,9 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useContactModal } from '@/components/ContactModalContext'
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { openModal } = useContactModal()
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -59,14 +61,14 @@ export default function Navigation() {
           {/* Right Column - CTA Button (desktop) / Mobile Menu Button (mobile) */}
           <div className="flex justify-end shrink-0">
             {/* CTA Button - Desktop only */}
-            <motion.a
-              href="#calendly"
+            <motion.button
+              onClick={openModal}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="hidden md:inline-flex items-center px-5 py-2.5 bg-stone-900 text-white text-sm font-medium rounded-full hover:bg-stone-800 transition-colors"
             >
               Book Call
-            </motion.a>
+            </motion.button>
 
             {/* Mobile Menu Button */}
             <button
@@ -132,12 +134,15 @@ export default function Navigation() {
                 transition={{ delay: 0.3 }}
                 className="pt-4"
               >
-                <a
-                  href="#calendly"
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false)
+                    openModal()
+                  }}
                   className="inline-flex items-center px-6 py-3 bg-stone-900 text-white text-sm font-medium rounded-full"
                 >
                   Book Call
-                </a>
+                </button>
               </motion.div>
             </div>
           </motion.div>

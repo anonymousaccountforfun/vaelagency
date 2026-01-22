@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
+import { useContactModal } from '@/components/ContactModalContext'
 import type { AboutPageData, SanityMedia } from '../../../sanity/lib/types'
 
 // Helper function to highlight specific words in red
@@ -29,6 +30,8 @@ interface AboutPageClientProps {
 }
 
 export default function AboutPageClient({ content, foundersWithMedia }: AboutPageClientProps) {
+  const { openModal } = useContactModal()
+
   return (
     <>
       {/* Hero Section */}
@@ -174,14 +177,14 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
               {content.cta.description}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <motion.a
-                href={content.cta.primaryButtonLink}
+              <motion.button
+                onClick={openModal}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
               >
                 {content.cta.primaryButtonText}
-              </motion.a>
+              </motion.button>
               <motion.a
                 href={content.cta.secondaryButtonLink}
                 whileHover={{ scale: 1.05 }}

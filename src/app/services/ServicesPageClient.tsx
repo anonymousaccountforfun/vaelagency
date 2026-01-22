@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
+import { useContactModal } from '@/components/ContactModalContext'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 
 // Helper function to highlight specific words in red
@@ -20,6 +21,8 @@ interface ServicesPageClientProps {
 }
 
 export default function ServicesPageClient({ content }: ServicesPageClientProps) {
+  const { openModal } = useContactModal()
+
   return (
     <>
       {/* Hero Section */}
@@ -167,14 +170,14 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                         <p className="text-stone-500 text-sm mb-4">
                           Let&apos;s discuss your needs
                         </p>
-                        <motion.a
-                          href="#calendly"
+                        <motion.button
+                          onClick={openModal}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className="inline-flex items-center justify-center w-full px-6 py-3 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
                         >
                           Book Call
-                        </motion.a>
+                        </motion.button>
                         <p className="text-stone-400 text-xs mt-4">
                           Custom pricing based on scope
                         </p>
@@ -232,14 +235,14 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
               {content.cta.description}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <motion.a
-                href={content.cta.primaryButtonLink}
+              <motion.button
+                onClick={openModal}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
               >
                 {content.cta.primaryButtonText}
-              </motion.a>
+              </motion.button>
               <motion.a
                 href={content.cta.secondaryButtonLink}
                 whileHover={{ scale: 1.05 }}
