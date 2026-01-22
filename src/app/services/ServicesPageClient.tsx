@@ -5,6 +5,16 @@ import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/Anima
 import MediaRenderer from '@/components/MediaRenderer'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 
+// Helper function to highlight specific words in red
+function highlightWord(text: string, word: string) {
+  const parts = text.split(new RegExp(`(${word})`, 'gi'))
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase()
+      ? <span key={i} className="text-red-500">{part}</span>
+      : part
+  )
+}
+
 interface ServicesPageClientProps {
   content: ServicesPageData
 }
@@ -30,7 +40,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
               {content.hero.label}
             </motion.p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-stone-900 mb-6">
-              {content.hero.headline}
+              {highlightWord(content.hero.headline, 'scale')}
             </h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -216,7 +226,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <FadeInSection>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-stone-900 mb-4">
-              {content.cta.headline}
+              {highlightWord(content.cta.headline, 'custom')}
             </h2>
             <p className="text-stone-600 text-lg mb-10 max-w-2xl mx-auto">
               {content.cta.description}
