@@ -30,6 +30,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@vaelcreative',
+    creator: '@vaelcreative',
     title: 'Vael Creative | Premium Creative for Consumer Brands',
     description: 'Human-curated, AI-accelerated creative content for consumer brands.',
   },
@@ -47,7 +49,7 @@ export const metadata: Metadata = {
 }
 
 // JSON-LD structured data for Organization
-const jsonLd = {
+const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Vael Creative',
@@ -96,6 +98,56 @@ const jsonLd = {
   ],
 }
 
+// JSON-LD structured data for LocalBusiness (enhanced local SEO)
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${baseUrl}/#localbusiness`,
+  name: 'Vael Creative',
+  description: 'Premium creative agency offering AI-accelerated, human-curated content for consumer brands in New York and nationwide.',
+  url: baseUrl,
+  logo: `${baseUrl}/images/vael-creative-logo.png`,
+  image: `${baseUrl}/opengraph-image`,
+  priceRange: '$$$$',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'New York',
+    addressRegion: 'NY',
+    postalCode: '10001',
+    addressCountry: 'US',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 40.7128,
+    longitude: -74.0060,
+  },
+  areaServed: [
+    {
+      '@type': 'City',
+      name: 'New York',
+    },
+    {
+      '@type': 'Country',
+      name: 'United States',
+    },
+  ],
+  serviceType: [
+    'Brand Content Creation',
+    'AI-Accelerated Creative Services',
+    'Ad Creative Production',
+    'Video Production',
+    'Brand Photography',
+    'Marketing Creative',
+  ],
+  knowsAbout: [
+    'Brand Strategy',
+    'Content Marketing',
+    'AI-Generated Content',
+    'Consumer Brands',
+    'Performance Marketing',
+  ],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -106,7 +158,11 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
         />
       </head>
       <body className="bg-background text-foreground antialiased min-h-screen" suppressHydrationWarning>

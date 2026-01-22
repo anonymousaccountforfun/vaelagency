@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { clientNoCache } from '../../../sanity/lib/client'
 import { aboutPageQuery } from '../../../sanity/lib/queries'
 import type { AboutPageData } from '../../../sanity/lib/types'
 import AboutPageClient from './AboutPageClient'
+
+const baseUrl = 'https://vaelagency.vercel.app'
 
 export const metadata: Metadata = {
   title: 'About Us | Vael Creative - Meet the Team Behind Premium Brand Content',
@@ -16,6 +19,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@vaelcreative',
+    creator: '@vaelcreative',
     title: 'About Us | Vael Creative',
     description: 'Meet the founders of Vael Creative - former leaders from Hims & Hers, Uber, and top music platforms.',
   },
@@ -88,6 +93,89 @@ async function getAboutPageData(): Promise<AboutPageData> {
   }
 }
 
+// JSON-LD schemas for about page
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: baseUrl,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'About',
+      item: `${baseUrl}/about`,
+    },
+  ],
+}
+
+const founderSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${baseUrl}/about#brian-hughes`,
+    name: 'Brian Hughes',
+    jobTitle: 'Co-Founder & CEO',
+    description: 'Former GM at Hims & Hers, prior experience at Uber. MBA from Harvard Business School, graduate of West Point.',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Vael Creative',
+      url: baseUrl,
+    },
+    alumniOf: [
+      {
+        '@type': 'Organization',
+        name: 'Harvard Business School',
+      },
+      {
+        '@type': 'Organization',
+        name: 'West Point',
+      },
+      {
+        '@type': 'Organization',
+        name: 'Hims & Hers',
+      },
+      {
+        '@type': 'Organization',
+        name: 'Uber',
+      },
+    ],
+    knowsAbout: ['Business Strategy', 'Growth Marketing', 'Operations', 'Consumer Brands'],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${baseUrl}/about#chris-mcdonald`,
+    name: 'Chris McDonald',
+    jobTitle: 'Co-Founder & Chief Creative Officer',
+    description: 'Audio engineer turned creative strategist with experience at Epidemic Sound, Artlist, and UnitedMasters.',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'Vael Creative',
+      url: baseUrl,
+    },
+    alumniOf: [
+      {
+        '@type': 'Organization',
+        name: 'Epidemic Sound',
+      },
+      {
+        '@type': 'Organization',
+        name: 'Artlist',
+      },
+      {
+        '@type': 'Organization',
+        name: 'UnitedMasters',
+      },
+    ],
+    knowsAbout: ['Creative Direction', 'Audio Engineering', 'Content Strategy', 'Brand Identity'],
+  },
+]
+
 export default async function AboutPage() {
   const content = await getAboutPageData()
 
@@ -101,9 +189,24 @@ export default async function AboutPage() {
   }))
 
   return (
-    <AboutPageClient
-      content={content}
-      foundersWithMedia={foundersWithMedia}
-    />
+    <>
+      <Script
+        id="about-breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {founderSchemas.map((schema, index) => (
+        <Script
+          key={index}
+          id={`founder-schema-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+      <AboutPageClient
+        content={content}
+        foundersWithMedia={foundersWithMedia}
+      />
+    </>
   )
 }

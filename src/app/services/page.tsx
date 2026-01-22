@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { clientNoCache } from '../../../sanity/lib/client'
 import { servicesPageQuery } from '../../../sanity/lib/queries'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 import ServicesPageClient from './ServicesPageClient'
+
+const baseUrl = 'https://vaelagency.vercel.app'
 
 export const metadata: Metadata = {
   title: 'Services & Pricing | Vael Creative - AI-Accelerated Brand Content',
@@ -16,6 +19,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@vaelcreative',
+    creator: '@vaelcreative',
     title: 'Services & Pricing | Vael Creative',
     description: 'AI-accelerated, human-curated creative packages for consumer brands.',
   },
@@ -143,8 +148,114 @@ async function getServicesPageData(): Promise<ServicesPageData> {
   }
 }
 
+// JSON-LD schemas for services page
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: baseUrl,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Services',
+      item: `${baseUrl}/services`,
+    },
+  ],
+}
+
+const serviceSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${baseUrl}/services#launch-campaign`,
+    name: 'Launch Campaign Package',
+    description: 'Everything you need to make a splash with your next product launch. Hero imagery, launch videos, social media content, and messaging framework.',
+    provider: {
+      '@type': 'Organization',
+      name: 'Vael Creative',
+      url: baseUrl,
+    },
+    serviceType: 'Brand Content Creation',
+    areaServed: 'United States',
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Launch Campaign Deliverables',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Hero images & product photography' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Launch video production' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Social media content suite' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Launch copy & messaging framework' } },
+      ],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${baseUrl}/services#seasonal-refresh`,
+    name: 'Seasonal Refresh Package',
+    description: 'Keep your brand fresh with seasonally-appropriate creative that maintains brand consistency while capturing the moment.',
+    provider: {
+      '@type': 'Organization',
+      name: 'Vael Creative',
+      url: baseUrl,
+    },
+    serviceType: 'Brand Content Creation',
+    areaServed: 'United States',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${baseUrl}/services#paid-media`,
+    name: 'Paid Media Assets Package',
+    description: 'Performance-optimized creative built for paid acquisition channels. Static ads, video ads, UGC-style content, and A/B test variants.',
+    provider: {
+      '@type': 'Organization',
+      name: 'Vael Creative',
+      url: baseUrl,
+    },
+    serviceType: 'Ad Creative Production',
+    areaServed: 'United States',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${baseUrl}/services#brand-storytelling`,
+    name: 'Brand Storytelling Content Package',
+    description: 'Authentic content that connects your brand with your audience through documentary-style video, photography, and narratives.',
+    provider: {
+      '@type': 'Organization',
+      name: 'Vael Creative',
+      url: baseUrl,
+    },
+    serviceType: 'Video Production',
+    areaServed: 'United States',
+  },
+]
+
 export default async function ServicesPage() {
   const content = await getServicesPageData()
 
-  return <ServicesPageClient content={content} />
+  return (
+    <>
+      <Script
+        id="services-breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {serviceSchemas.map((schema, index) => (
+        <Script
+          key={index}
+          id={`service-schema-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+      <ServicesPageClient content={content} />
+    </>
+  )
 }
