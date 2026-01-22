@@ -122,7 +122,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           <FadeInSection className="text-center mb-20">
             <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.services.label}</p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6">
-              {content.services.headline}
+              {highlightWord(content.services.headline, 'growth')}
             </h2>
             <p className="text-stone-600 text-lg max-w-2xl mx-auto">
               {content.services.description}
@@ -149,7 +149,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
             >
-              {content.services.buttonText}
+              <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.services.buttonText}</span>
             </motion.a>
           </FadeInSection>
         </div>
@@ -161,7 +161,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           <FadeInSection className="text-center mb-16">
             <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.socialProof.label}</p>
             <h2 className="text-3xl md:text-4xl font-medium text-stone-900 mb-6">
-              {content.socialProof.headline}
+              {highlightWord(content.socialProof.headline, 'boldest')}
             </h2>
           </FadeInSection>
 
@@ -321,7 +321,7 @@ function CTASection({ content }: { content: HomepageData }) {
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
             >
-              {content.cta.primaryButtonText}
+              <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.cta.primaryButtonText}</span>
             </motion.a>
             <motion.a
               href={content.cta.secondaryButtonLink}
