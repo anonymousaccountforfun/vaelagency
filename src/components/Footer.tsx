@@ -8,9 +8,10 @@ export default function Footer() {
     <footer className="bg-background-secondary border-t border-stone-200" data-version="2026-01-22">
       <div>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Logo & Copyright */}
-            <div className="flex flex-col md:flex-row items-center gap-4">
+          {/* Mobile: stacked, Desktop: 3-column grid for centered nav */}
+          <div className="flex flex-col md:grid md:grid-cols-3 items-center gap-6">
+            {/* Logo & Copyright - Left */}
+            <div className="flex flex-col md:flex-row items-center md:justify-start gap-4">
               <Link href="/">
                 <Image
                   src="/images/vael-creative-logo.png"
@@ -25,8 +26,8 @@ export default function Footer() {
               </span>
             </div>
 
-            {/* Navigation */}
-            <div className="flex items-center gap-6">
+            {/* Navigation - Center */}
+            <div className="flex items-center justify-center gap-8">
               <Link href="/" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">
                 Home
               </Link>
@@ -38,8 +39,8 @@ export default function Footer() {
               </Link>
             </div>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-4">
+            {/* Social Links - Right */}
+            <div className="flex items-center justify-end gap-4">
               <a
                 href="#"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-stone-100 hover:bg-stone-200 transition-colors"
