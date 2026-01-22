@@ -168,7 +168,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <FadeInSection>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-stone-900 mb-6">
-              {content.cta.headline}
+              {highlightWord(content.cta.headline, 'together')}
             </h2>
             <p className="text-stone-600 text-lg mb-10 max-w-2xl mx-auto">
               {content.cta.description}
