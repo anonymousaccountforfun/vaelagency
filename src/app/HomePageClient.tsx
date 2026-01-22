@@ -12,6 +12,16 @@ interface HomePageClientProps {
   content: HomepageData
 }
 
+// Helper function to highlight specific words in red
+function highlightWord(text: string, word: string) {
+  const parts = text.split(new RegExp(`(${word})`, 'gi'))
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase()
+      ? <span key={i} className="text-red-500">{part}</span>
+      : part
+  )
+}
+
 export default function HomePageClient({ content }: HomePageClientProps) {
   // Parse headline to handle line breaks
   const headlineParts = content.hero.headline.split('\n')
@@ -63,7 +73,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             <h1 className={`text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.05] mb-8 max-w-5xl mx-auto tracking-tight ${hasHeroMedia ? 'text-white' : 'text-stone-900'}`}>
               {headlineParts.map((part, i) => (
                 <span key={i}>
-                  {part}
+                  {highlightWord(part, 'consumer')}
                   {i < headlineParts.length - 1 && <br />}
                 </span>
               ))}
