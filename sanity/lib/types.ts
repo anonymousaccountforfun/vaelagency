@@ -115,6 +115,7 @@ export interface ServicesPageData {
     deliverables: string[]
     timeline: string
     ideal: string
+    media?: SanityMedia
   }[]
   process: {
     label: string

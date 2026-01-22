@@ -69,11 +69,18 @@ export default defineType({
               title: 'Ideal For',
               type: 'string',
             }),
+            defineField({
+              name: 'media',
+              title: 'Package Media',
+              type: 'media',
+              description: '🎬 VIDEO SUPPORTED • Images: 800×600px minimum. Videos: upload file or paste YouTube/Vimeo URL.',
+            }),
           ],
           preview: {
             select: {
               title: 'name',
               subtitle: 'timeline',
+              media: 'media.image',
             },
           },
         },

@@ -54,7 +54,14 @@ export const aboutPageQuery = groq`*[_type == "aboutPage"][0]{
 export const servicesPageQuery = groq`*[_type == "servicesPage"][0]{
   hero,
   heroMedia ${mediaFragment},
-  packages,
+  packages[] {
+    name,
+    description,
+    deliverables,
+    timeline,
+    ideal,
+    media ${mediaFragment}
+  },
   process,
   cta
 }`

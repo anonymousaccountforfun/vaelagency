@@ -73,8 +73,30 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                 <motion.div
                   whileHover={{ scale: 1.01 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white rounded-3xl p-8 lg:p-10 border border-stone-200 hover:border-stone-300 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="bg-white rounded-3xl overflow-hidden border border-stone-200 hover:border-stone-300 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
+                  {/* Media Area */}
+                  {(pkg.media?.type === 'video' || pkg.media?.image) ? (
+                    <div className="relative h-48 md:h-56">
+                      <MediaRenderer
+                        media={pkg.media}
+                        fallbackUrl=""
+                        alt={pkg.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative h-48 md:h-56 bg-gradient-to-br from-stone-100 to-warm-accent flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-white/50 flex items-center justify-center">
+                        <span className="text-3xl font-semibold text-stone-400">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="p-8 lg:p-10">
                   <div className="grid lg:grid-cols-5 gap-8">
                     {/* Package Info */}
                     <div className="lg:col-span-3">
@@ -146,6 +168,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                         </p>
                       </div>
                     </div>
+                  </div>
                   </div>
                 </motion.div>
               </motion.div>
