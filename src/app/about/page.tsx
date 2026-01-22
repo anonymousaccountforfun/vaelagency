@@ -1,7 +1,10 @@
-import { client } from '../../../sanity/lib/client'
+import { clientNoCache } from '../../../sanity/lib/client'
 import { aboutPageQuery } from '../../../sanity/lib/queries'
 import type { AboutPageData } from '../../../sanity/lib/types'
 import AboutPageClient from './AboutPageClient'
+
+// Revalidate this page every 60 seconds
+export const revalidate = 60
 
 // Default content as fallback
 const defaultContent: AboutPageData = {
@@ -49,7 +52,7 @@ const defaultContent: AboutPageData = {
 
 async function getAboutPageData(): Promise<AboutPageData> {
   try {
-    const data = await client.fetch(aboutPageQuery)
+    const data = await clientNoCache.fetch(aboutPageQuery)
     if (data) {
       return {
         ...defaultContent,

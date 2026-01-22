@@ -1,7 +1,10 @@
-import { client } from '../../sanity/lib/client'
+import { clientNoCache } from '../../sanity/lib/client'
 import { homepageQuery } from '../../sanity/lib/queries'
 import type { HomepageData } from '../../sanity/lib/types'
 import HomePageClient from './HomePageClient'
+
+// Revalidate this page every 60 seconds
+export const revalidate = 60
 
 // Default content as fallback
 const defaultContent: HomepageData = {
@@ -108,7 +111,7 @@ const defaultContent: HomepageData = {
 
 async function getHomepageData(): Promise<HomepageData> {
   try {
-    const data = await client.fetch(homepageQuery)
+    const data = await clientNoCache.fetch(homepageQuery)
     if (data) {
       return {
         ...defaultContent,

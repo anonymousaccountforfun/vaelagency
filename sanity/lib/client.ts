@@ -5,11 +5,20 @@ export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-proj
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 export const apiVersion = '2024-01-01'
 
+// Client for general use (with CDN caching)
 export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: true,
+})
+
+// Client for fetching fresh data (bypasses CDN cache)
+export const clientNoCache = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false,
 })
 
 const builder = imageUrlBuilder(client)
