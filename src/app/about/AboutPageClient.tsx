@@ -5,6 +5,16 @@ import { FadeInSection } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
 import type { AboutPageData, SanityMedia } from '../../../sanity/lib/types'
 
+// Helper function to highlight specific words in red
+function highlightWord(text: string, word: string) {
+  const parts = text.split(new RegExp(`(${word})`, 'gi'))
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase()
+      ? <span key={i} className="text-red-500">{part}</span>
+      : part
+  )
+}
+
 interface FounderWithMedia {
   name: string
   title: string
@@ -39,7 +49,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
               {content.hero.label}
             </motion.p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium text-stone-900 mb-6">
-              {content.hero.headline}
+              {highlightWord(content.hero.headline, 'Team')}
             </h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -116,7 +126,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
           <FadeInSection>
             <p className="text-stone-500 text-sm uppercase tracking-widest mb-4 text-center">{content.story.label}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-stone-900 mb-8 text-center">
-              {content.story.headline}
+              {highlightWord(content.story.headline, 'Vael')}
             </h2>
           </FadeInSection>
 
@@ -170,7 +180,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
               >
-                {content.cta.primaryButtonText}
+                <span className="underline decoration-red-500 decoration-2 underline-offset-4">{content.cta.primaryButtonText}</span>
               </motion.a>
               <motion.a
                 href={content.cta.secondaryButtonLink}
