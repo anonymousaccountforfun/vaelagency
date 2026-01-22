@@ -176,6 +176,8 @@ function VideoPlayer({
 }) {
   const [isReady, setIsReady] = useState(false)
 
+  const handleReady = () => setIsReady(true)
+
   return (
     <video
       src={videoUrl}
@@ -184,7 +186,9 @@ function VideoPlayer({
       muted
       loop={loop}
       playsInline
-      onCanPlay={() => setIsReady(true)}
+      onCanPlay={handleReady}
+      onLoadedData={handleReady}
+      onPlaying={handleReady}
       className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className} transition-opacity duration-300`}
       style={{
         backgroundColor: '#FAF9F6',
