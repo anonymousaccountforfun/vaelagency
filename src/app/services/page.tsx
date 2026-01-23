@@ -109,7 +109,7 @@ const defaultContent: ServicesPageData = {
       {
         step: '03',
         title: 'Creation',
-        description: 'AI generates concepts using your assets. Human directors curate and perfect every piece.',
+        description: 'We use cutting-edge technology and proven taste to curate and perfect every piece.',
       },
       {
         step: '04',
