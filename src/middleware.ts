@@ -52,9 +52,9 @@ export function middleware(request: NextRequest) {
   return response
 }
 
-// Apply middleware to all routes except static files and API
+// Apply middleware to all routes except static files, API, and Sanity Studio
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.svg$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|studio|.*\\.png$|.*\\.jpg$|.*\\.svg$).*)',
   ],
 }
