@@ -278,20 +278,6 @@ export default function HomePageClient({ content }: HomePageClientProps) {
         </div>
       </section>
 
-      {/* Another Full-bleed Media */}
-      {content.secondMedia && (
-        <section className="relative h-[50vh] md:h-[60vh]">
-          <MediaRenderer
-            media={content.secondMedia}
-            fallbackUrl=""
-            alt="Brand products"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
-        </section>
-      )}
-
       {/* Final CTA Section */}
       <CTASection content={content} />
     </>
