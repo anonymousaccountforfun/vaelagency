@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
@@ -147,6 +148,15 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
                   &ldquo;{content.story.pullQuote}&rdquo;
                 </p>
               </div>
+
+              {/* Internal link to Services */}
+              <p className="text-stone-600 text-lg leading-relaxed">
+                Ready to see how we can help your brand?{' '}
+                <Link href="/services" className="text-stone-900 font-medium underline underline-offset-4 hover:text-red-500 transition-colors">
+                  Explore our services and packages
+                </Link>
+                .
+              </p>
             </div>
           </FadeInSection>
         </div>

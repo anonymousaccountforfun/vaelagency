@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import LayoutWrapper from '@/components/LayoutWrapper'
 
-const baseUrl = 'https://vaelagency.vercel.app'
+const baseUrl = 'https://vaelcreative.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -98,6 +98,46 @@ const organizationSchema = {
   ],
 }
 
+// JSON-LD structured data for FAQ (rich snippets)
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is AI-accelerated creative?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'AI-accelerated creative combines the efficiency of AI tools with human creative direction. We use AI to speed up production while our experienced creative directors ensure every piece is on-brand, high-quality, and performance-ready.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How fast can you deliver creative content?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Our turnaround times vary by package: Launch Campaigns deliver in 2-3 weeks, Seasonal Refreshes in 1-2 weeks, and Paid Media packages on an ongoing monthly basis. We move faster than traditional agencies while maintaining premium quality.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What types of creative content do you produce?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'We produce a full range of brand content including ad creative, brand photography, video production, social media content, and marketing copy. All content is created using your existing brand assets to ensure consistency.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do you work with brands outside of New York?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes! While we are based in New York and have deep expertise with NYC consumer brands, we work with brands nationwide. Our AI-accelerated workflow allows us to collaborate effectively with clients anywhere in the United States.',
+      },
+    },
+  ],
+}
+
 // JSON-LD structured data for LocalBusiness (enhanced local SEO)
 const localBusinessSchema = {
   '@context': 'https://schema.org',
@@ -163,6 +203,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
       <body className="bg-background text-foreground antialiased min-h-screen" suppressHydrationWarning>

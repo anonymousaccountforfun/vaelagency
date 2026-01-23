@@ -5,7 +5,7 @@ import { servicesPageQuery } from '../../../sanity/lib/queries'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 import ServicesPageClient from './ServicesPageClient'
 
-const baseUrl = 'https://vaelagency.vercel.app'
+const baseUrl = 'https://vaelcreative.com'
 
 export const metadata: Metadata = {
   title: 'Services & Pricing | Vael Creative - AI-Accelerated Brand Content',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: 'Services & Pricing | Vael Creative',
     description: 'AI-accelerated, human-curated creative packages for consumer brands. Choose from Brand Foundation, Growth Engine, or Scale Suite.',
     type: 'website',
-    url: 'https://vaelagency.vercel.app/services',
+    url: 'https://vaelcreative.com/services',
   },
   twitter: {
     card: 'summary_large_image',

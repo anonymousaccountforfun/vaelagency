@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
@@ -221,6 +222,16 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
               </StaggerItem>
             ))}
           </StaggerContainer>
+
+          <FadeInSection delay={0.3} className="text-center mt-12">
+            <p className="text-stone-600">
+              Want to learn more about who we are?{' '}
+              <Link href="/about" className="text-stone-900 font-medium underline underline-offset-4 hover:text-red-500 transition-colors">
+                Meet the team behind Vael
+              </Link>
+              .
+            </p>
+          </FadeInSection>
         </div>
       </section>
 

@@ -5,7 +5,7 @@ import { aboutPageQuery } from '../../../sanity/lib/queries'
 import type { AboutPageData } from '../../../sanity/lib/types'
 import AboutPageClient from './AboutPageClient'
 
-const baseUrl = 'https://vaelagency.vercel.app'
+const baseUrl = 'https://vaelcreative.com'
 
 export const metadata: Metadata = {
   title: 'About Us | Vael Creative - Meet the Team Behind Premium Brand Content',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: 'About Us | Vael Creative',
     description: 'Meet the founders of Vael Creative - former leaders from Hims & Hers, Uber, and top music platforms.',
     type: 'website',
-    url: 'https://vaelagency.vercel.app/about',
+    url: 'https://vaelcreative.com/about',
   },
   twitter: {
     card: 'summary_large_image',
