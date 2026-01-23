@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
       "img-src 'self' data: blob: https://cdn.sanity.io https://*.sanity.io",
       "media-src 'self' https://cdn.sanity.io https://*.sanity.io https://player.vimeo.com https://www.youtube.com",
       "frame-src https://player.vimeo.com https://www.youtube.com",
-      "connect-src 'self' https://*.sanity.io https://cdn.sanity.io",
+      "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://formspree.io",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

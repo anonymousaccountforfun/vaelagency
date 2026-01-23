@@ -6,7 +6,17 @@ export default function StudioLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="sanity-studio-wrapper" style={{ height: '100vh', width: '100vw', position: 'fixed', top: 0, left: 0, zIndex: 9999 }}>
+    <div
+      style={{
+        height: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 9999,
+        backgroundColor: '#101112'
+      }}
+    >
       {children}
     </div>
   )
