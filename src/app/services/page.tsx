@@ -139,7 +139,7 @@ async function getServicesPageData(): Promise<ServicesPageData> {
         process: {
           ...defaultContent.process,
           ...data?.process,
-          steps: data?.process?.steps?.length > 0 ? data.process.steps : defaultContent.process.steps,
+          steps: defaultContent.process.steps,
         },
         cta: { ...defaultContent.cta, ...data?.cta },
         packages: data?.packages?.length > 0 ? data.packages : defaultContent.packages,
