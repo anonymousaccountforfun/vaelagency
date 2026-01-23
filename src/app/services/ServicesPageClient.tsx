@@ -58,21 +58,6 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
         </div>
       </section>
 
-      {/* Full-bleed Media */}
-      {content.heroMedia && (
-        <section className="relative h-[40vh] md:h-[50vh]">
-          <MediaRenderer
-            media={content.heroMedia}
-            fallbackUrl=""
-            alt="Creative process"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-stone-900/10 pointer-events-none" />
-        </section>
-      )}
-
       {/* Packages Section */}
       <section className="py-32 md:py-40 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
