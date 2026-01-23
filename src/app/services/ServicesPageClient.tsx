@@ -101,16 +101,9 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                   <div className="grid lg:grid-cols-5 gap-8">
                     {/* Package Info */}
                     <div className="lg:col-span-3">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <span className="text-stone-400 text-sm font-medium">
-                            Package {String(index + 1).padStart(2, '0')}
-                          </span>
-                          <h3 className="text-2xl md:text-3xl font-semibold text-stone-900 mt-1">
-                            {pkg.name}
-                          </h3>
-                        </div>
-                      </div>
+                      <h3 className="text-2xl md:text-3xl font-semibold text-stone-900 mb-4">
+                        {pkg.name}
+                      </h3>
 
                       <p className="text-stone-600 text-lg leading-relaxed mb-6">
                         {pkg.description}
@@ -132,22 +125,6 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                         </ul>
                       </div>
 
-                      <div className="flex flex-wrap gap-4 text-sm">
-                        <div className="flex items-center gap-2">
-                          <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          <span className="text-stone-500">Timeline:</span>
-                          <span className="text-stone-700 font-medium">{pkg.timeline}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                          </svg>
-                          <span className="text-stone-500">Ideal for:</span>
-                          <span className="text-stone-700 font-medium">{pkg.ideal}</span>
-                        </div>
-                      </div>
                     </div>
 
                     {/* CTA */}
