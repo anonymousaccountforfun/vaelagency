@@ -9,7 +9,7 @@ import { urlFor } from '../../sanity/lib/client'
 import type { HomepageData } from '../../sanity/lib/types'
 import { useContactModal } from '@/components/ContactModalContext'
 
-const CONTACT_EMAIL = 'brian@vaelcreative.com'
+const CONTACT_EMAIL = 'brian@vaelcreative.com,chris@vaelcreative.com'
 
 interface HomePageClientProps {
   content: HomepageData

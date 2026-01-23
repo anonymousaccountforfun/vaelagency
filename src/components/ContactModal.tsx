@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useContactModal } from './ContactModalContext'
 
-const CONTACT_EMAIL = 'brian@vaelcreative.com'
+const CONTACT_EMAIL = 'brian@vaelcreative.com,chris@vaelcreative.com'
 
 export default function ContactModal() {
   const { isOpen, closeModal } = useContactModal()
