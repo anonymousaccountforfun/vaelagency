@@ -62,7 +62,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
       <section className="py-32 md:py-40 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="space-y-8">
-            {content.packages.map((pkg, index) => (
+            {content.packages?.map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -109,6 +109,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                         {pkg.description}
                       </p>
 
+                      {pkg.deliverables && pkg.deliverables.length > 0 && (
                       <div className="mb-6">
                         <p className="text-xs uppercase tracking-wider text-stone-400 mb-4">
                           Deliverables
@@ -124,6 +125,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
                           ))}
                         </ul>
                       </div>
+                      )}
 
                     </div>
 
@@ -169,7 +171,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
           </FadeInSection>
 
           <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {content.process.steps.map((step, index) => (
+            {content.process?.steps?.map((step, index) => (
               <StaggerItem key={step.step}>
                 <motion.div
                   whileHover={{ y: -8 }}
