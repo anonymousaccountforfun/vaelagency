@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { urlFor } from '../../sanity/lib/client'
 import type { SanityMedia } from '../../sanity/lib/types'
@@ -17,6 +17,10 @@ interface MediaRendererProps {
   sizes?: string
 }
 
+// Default responsive sizes for common layouts
+const DEFAULT_SIZES = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
+const HERO_SIZES = '100vw'
+
 export default function MediaRenderer({
   media,
   fallbackUrl,
@@ -30,15 +34,19 @@ export default function MediaRenderer({
 }: MediaRendererProps) {
   // If no media or media is image type
   if (!media || media.type === 'image' || !media.type) {
-    // Request full resolution from Sanity - no width constraint
+    // Quality 85 is visually indistinguishable from 100 but 40-60% smaller
+    // auto('format') lets Sanity serve AVIF/WebP based on browser support
     const imageUrl = media?.image
       ? urlFor(media.image)
-          .quality(100)
+          .quality(85)
           .auto('format')
           .url()
       : fallbackUrl
 
     const imageAlt = media?.image?.alt || alt
+
+    // Use appropriate sizes based on whether it's a fill image (likely hero) or fixed
+    const imageSizes = sizes || (fill ? HERO_SIZES : DEFAULT_SIZES)
 
     if (fill) {
       return (
@@ -48,7 +56,7 @@ export default function MediaRenderer({
           fill
           className={className}
           priority={priority}
-          sizes={sizes}
+          sizes={imageSizes}
         />
       )
     }
@@ -61,7 +69,7 @@ export default function MediaRenderer({
         height={height || 1380}
         className={className}
         priority={priority}
-        sizes={sizes}
+        sizes={imageSizes}
       />
     )
   }
@@ -69,9 +77,13 @@ export default function MediaRenderer({
   // Video type
   if (media.type === 'video') {
     const videoUrl = media.videoUrl
-    // Only use poster if explicitly set in Sanity, never fall back to legacy images
+    // Poster image: use responsive width based on device, quality 80 is good for posters
     const posterUrl = media.videoPoster
-      ? urlFor(media.videoPoster).width(width || 2070).quality(80).url()
+      ? urlFor(media.videoPoster)
+          .width(width || 1920)
+          .quality(80)
+          .auto('format')
+          .url()
       : undefined
 
     // Check if it's a YouTube URL
@@ -120,6 +132,8 @@ export default function MediaRenderer({
   }
 
   // Fallback to image
+  const fallbackSizes = sizes || (fill ? HERO_SIZES : DEFAULT_SIZES)
+
   if (fill) {
     return (
       <Image
@@ -128,7 +142,7 @@ export default function MediaRenderer({
         fill
         className={className}
         priority={priority}
-        sizes={sizes}
+        sizes={fallbackSizes}
       />
     )
   }
@@ -141,7 +155,7 @@ export default function MediaRenderer({
       height={height || 1380}
       className={className}
       priority={priority}
-      sizes={sizes}
+      sizes={fallbackSizes}
     />
   )
 }
@@ -158,7 +172,7 @@ function extractVimeoId(url: string): string {
   return match ? match[1] : ''
 }
 
-// Video player component that hides until ready to play
+// Video player component with optimized loading
 function VideoPlayer({
   videoUrl,
   posterUrl,
@@ -175,17 +189,48 @@ function VideoPlayer({
   className: string
 }) {
   const [isReady, setIsReady] = useState(false)
+  const [isInView, setIsInView] = useState(false)
+
+  // Only start loading video when it's close to viewport
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' } // Start loading 200px before entering viewport
+    )
+
+    // Small delay to let the ref attach
+    const timer = setTimeout(() => {
+      const video = document.querySelector(`video[data-src="${videoUrl}"]`)
+      if (video) observer.observe(video)
+    }, 0)
+
+    return () => {
+      clearTimeout(timer)
+      observer.disconnect()
+    }
+  }, [videoUrl])
 
   const handleReady = () => setIsReady(true)
 
   return (
     <video
-      src={videoUrl}
+      // Only set src when in view to defer loading
+      src={isInView ? videoUrl : undefined}
+      data-src={videoUrl}
       poster={posterUrl}
-      autoPlay={autoPlay}
+      autoPlay={isInView && autoPlay}
       muted
       loop={loop}
       playsInline
+      // preload="metadata" loads only video dimensions/duration, not content
+      preload={isInView ? 'auto' : 'none'}
       onCanPlay={handleReady}
       onLoadedData={handleReady}
       onPlaying={handleReady}

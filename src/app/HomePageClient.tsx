@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import ServiceCard from '@/components/ServiceCard'
@@ -172,26 +173,30 @@ export default function HomePageClient({ content }: HomePageClientProps) {
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
             {content.socialProof.companies.map((company) => {
-              // Generate logo URL if logo exists
+              // Generate logo URL with quality optimization
               let logoUrl: string | null = null
               try {
                 if (company.logo?.asset) {
-                  logoUrl = urlFor(company.logo).height(120).url()
+                  logoUrl = urlFor(company.logo)
+                    .height(120)
+                    .quality(85)
+                    .auto('format')
+                    .url()
                 }
               } catch {
                 logoUrl = null
               }
 
-              // Size classes based on Sanity field
-              const sizeClasses = {
-                small: 'h-6 md:h-7',
-                medium: 'h-8 md:h-9',
-                large: 'h-10 md:h-11',
-                xlarge: 'h-12 md:h-14',
-                xxlarge: 'h-16 md:h-20',
-                xxxlarge: 'h-20 md:h-24',
+              // Size dimensions based on Sanity field (for Next.js Image)
+              const sizeDimensions = {
+                small: { height: 28, width: 100 },
+                medium: { height: 36, width: 120 },
+                large: { height: 44, width: 140 },
+                xlarge: { height: 56, width: 160 },
+                xxlarge: { height: 80, width: 200 },
+                xxxlarge: { height: 96, width: 240 },
               }
-              const sizeClass = sizeClasses[company.size || 'medium']
+              const dimensions = sizeDimensions[company.size || 'medium']
 
               return (
                 <StaggerItem key={company.name}>
@@ -200,11 +205,15 @@ export default function HomePageClient({ content }: HomePageClientProps) {
                     className="flex items-center justify-center min-h-20 px-4"
                   >
                     {logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={logoUrl}
                         alt={company.logo?.alt || company.name}
-                        className={`${sizeClass} w-auto object-contain opacity-60 hover:opacity-100 transition-opacity`}
+                        width={dimensions.width}
+                        height={dimensions.height}
+                        className="w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
+                        style={{ height: dimensions.height, width: 'auto' }}
+                        loading="lazy"
+                        sizes="(max-width: 640px) 80px, 120px"
                       />
                     ) : (
                       <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
