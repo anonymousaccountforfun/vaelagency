@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { urlFor } from '../../sanity/lib/client'
 import type { SanityMedia } from '../../sanity/lib/types'
@@ -127,6 +127,7 @@ export default function MediaRenderer({
         loop={media.loop ?? true}
         fill={fill}
         className={className}
+        priority={priority}
       />
     )
   }
@@ -180,6 +181,7 @@ function VideoPlayer({
   loop,
   fill,
   className,
+  priority = false,
 }: {
   videoUrl?: string
   posterUrl?: string
@@ -187,13 +189,15 @@ function VideoPlayer({
   loop: boolean
   fill: boolean
   className: string
+  priority?: boolean
 }) {
   const [isReady, setIsReady] = useState(false)
-  const [isInView, setIsInView] = useState(false)
+  const [isInView, setIsInView] = useState(priority) // Priority videos start "in view"
+  const videoRef = useRef<HTMLVideoElement>(null)
 
-  // Only start loading video when it's close to viewport
+  // Only use intersection observer for non-priority videos
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (priority || typeof window === 'undefined') return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -202,42 +206,44 @@ function VideoPlayer({
           observer.disconnect()
         }
       },
-      { rootMargin: '200px' } // Start loading 200px before entering viewport
+      { rootMargin: '400px' } // Increased margin for earlier loading
     )
 
-    // Small delay to let the ref attach
-    const timer = setTimeout(() => {
-      const video = document.querySelector(`video[data-src="${videoUrl}"]`)
-      if (video) observer.observe(video)
-    }, 0)
-
-    return () => {
-      clearTimeout(timer)
-      observer.disconnect()
+    if (videoRef.current) {
+      observer.observe(videoRef.current)
     }
-  }, [videoUrl])
 
-  const handleReady = () => setIsReady(true)
+    return () => observer.disconnect()
+  }, [priority])
+
+  // Single handler - only use onCanPlayThrough for true readiness
+  const handleReady = () => {
+    if (!isReady) setIsReady(true)
+  }
+
+  // For priority videos, start loading immediately and show poster while loading
+  const shouldLoad = priority || isInView
 
   return (
     <video
-      // Only set src when in view to defer loading
-      src={isInView ? videoUrl : undefined}
-      data-src={videoUrl}
+      ref={videoRef}
+      src={shouldLoad ? videoUrl : undefined}
       poster={posterUrl}
-      autoPlay={isInView && autoPlay}
+      autoPlay={shouldLoad && autoPlay}
       muted
       loop={loop}
       playsInline
-      // preload="metadata" loads only video dimensions/duration, not content
-      preload={isInView ? 'auto' : 'none'}
-      onCanPlay={handleReady}
-      onLoadedData={handleReady}
-      onPlaying={handleReady}
-      className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className} transition-opacity duration-300`}
+      preload={priority ? 'auto' : (isInView ? 'auto' : 'metadata')}
+      onCanPlayThrough={handleReady}
+      className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className}`}
       style={{
-        backgroundColor: '#FAF9F6',
+        // Show poster immediately via CSS background while video loads
+        backgroundImage: posterUrl ? `url(${posterUrl})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        // Faster, smoother opacity transition
         opacity: isReady ? 1 : 0,
+        transition: 'opacity 150ms ease-out',
       }}
     />
   )
