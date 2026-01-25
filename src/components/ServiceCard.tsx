@@ -1,7 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import MediaRenderer from './MediaRenderer'
 import type { SanityMedia } from '../../sanity/lib/types'
 
@@ -15,15 +14,9 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ title, description, deliverables, index, media }: ServiceCardProps) {
   const hasMedia = media?.type === 'video' || media?.image
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className="group relative bg-white rounded-2xl overflow-hidden border border-stone-200 hover:border-stone-300 transition-all duration-300 shadow-sm hover:shadow-md"
     >
