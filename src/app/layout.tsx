@@ -15,6 +15,9 @@ const baseUrl = 'https://vaelcreative.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  icons: {
+    icon: '/favicon.ico',
+  },
   title: {
     default: 'Vael Creative | Premium Creative for Consumer Brands',
     template: '%s | Vael Creative',
