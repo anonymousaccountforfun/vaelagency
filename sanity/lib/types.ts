@@ -157,3 +157,55 @@ export interface SiteSettingsData {
     }[]
   }
 }
+
+// Blog Types
+export interface Author {
+  _id?: string
+  name: string
+  slug: { current: string }
+  role?: string
+  bio?: string
+  credentials?: string[]
+  linkedin?: string
+  twitter?: string
+  image?: SanityImage
+}
+
+export interface Category {
+  _id?: string
+  title: string
+  slug: { current: string }
+  description?: string
+  color?: string
+}
+
+export interface PostSummary {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  featuredImage?: SanityImage
+  author?: Author
+  categories?: Category[]
+  contentType?: string
+  publishedAt: string
+  updatedAt?: string
+  featured?: boolean
+  readingTime?: number
+}
+
+// Portable Text block type
+export interface PortableTextBlock {
+  _type: string
+  _key: string
+  [key: string]: unknown
+}
+
+export interface Post extends PostSummary {
+  body?: PortableTextBlock[]
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string[]
+  canonicalUrl?: string
+  relatedPosts?: PostSummary[]
+}
