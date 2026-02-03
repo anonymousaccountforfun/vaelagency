@@ -14,16 +14,79 @@ interface LeadListProps {
   onSelectionChange?: (ids: string[]) => void
 }
 
-function getEmailConfidenceBadge(confidence: number | undefined, compact = false) {
-  if (confidence === undefined || confidence === null) return null
-  if (compact) {
-    if (confidence >= 80) return <span className="text-green-600 dark:text-green-400" title={`${confidence}% confidence`}>✓</span>
-    if (confidence >= 50) return <span className="text-amber-600 dark:text-amber-400" title={`${confidence}% confidence`}>~</span>
-    return <span className="text-gray-400" title={`${confidence}% confidence`}>?</span>
+// Email confidence indicator component
+// - Green checkmark (90%+): Verified - high confidence
+// - Yellow dot (70-89%): Likely - medium confidence
+// - Gray question mark (< 70%): Uncertain - low confidence
+// - Red X (no email): Missing
+function EmailConfidenceIcon({ confidence, hasEmail }: { confidence?: number; hasEmail: boolean }) {
+  // No email case - red X
+  if (!hasEmail) {
+    return (
+      <span
+        className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
+        title="No email"
+      >
+        <svg className="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </span>
+    )
   }
-  if (confidence >= 80) return <span className="ml-1 text-[10px] text-green-600 dark:text-green-400">({confidence}%)</span>
-  if (confidence >= 50) return <span className="ml-1 text-[10px] text-amber-600 dark:text-amber-400">({confidence}%)</span>
-  return <span className="ml-1 text-[10px] text-gray-400">({confidence}%)</span>
+
+  // Has email but no confidence data
+  if (confidence === undefined || confidence === null) {
+    return (
+      <span
+        className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
+        title="Confidence unknown"
+      >
+        <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </span>
+    )
+  }
+
+  // High confidence (90%+) - Green checkmark
+  if (confidence >= 90) {
+    return (
+      <span
+        className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
+        title={`Verified - ${confidence}% confidence`}
+      >
+        <svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+        </svg>
+      </span>
+    )
+  }
+
+  // Medium confidence (70-89%) - Yellow dot
+  if (confidence >= 70) {
+    return (
+      <span
+        className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
+        title={`Likely - ${confidence}% confidence`}
+      >
+        <svg className="w-3 h-3 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="8" />
+        </svg>
+      </span>
+    )
+  }
+
+  // Low confidence (< 70%) - Gray question mark
+  return (
+    <span
+      className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
+      title={`Uncertain - ${confidence}% confidence`}
+    >
+      <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </span>
+  )
 }
 
 function getContactDisplay(lead: Lead) {
@@ -396,15 +459,15 @@ export default function LeadList({ leads, loading, sortBy, sortOrder, onSort, se
                 ) : (
                   <span className="text-xs text-gray-400 italic">No phone</span>
                 )}
-                {/* Row 2: Email */}
-                {lead.email ? (
-                  <div className="flex items-center gap-1">
+                {/* Row 2: Email with confidence indicator */}
+                <div className="flex items-center gap-1.5">
+                  <EmailConfidenceIcon confidence={lead.emailConfidence} hasEmail={!!lead.email} />
+                  {lead.email ? (
                     <span className="text-xs text-gray-500 dark:text-gray-400 truncate">{lead.email}</span>
-                    {getEmailConfidenceBadge(lead.emailConfidence, true)}
-                  </div>
-                ) : (
-                  <span className="text-xs text-gray-400 italic">No email</span>
-                )}
+                  ) : (
+                    <span className="text-xs text-gray-400 italic">No email</span>
+                  )}
+                </div>
               </div>
 
               {/* LOCATION COLUMN */}
