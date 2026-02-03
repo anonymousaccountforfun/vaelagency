@@ -345,12 +345,16 @@ export async function GET(request: NextRequest) {
           AND (${sourcesArr}::text[] IS NULL OR source = ANY(${sourcesArr}))
           AND (${senioritiesArr}::text[] IS NULL OR seniority = ANY(${senioritiesArr}))
           AND (${departmentsArr}::text[] IS NULL OR department = ANY(${departmentsArr}))
-          AND (${hasEmailFilter}::text IS NULL OR
-               (${hasEmailFilter}::text = 'yes' AND email IS NOT NULL AND email != '') OR
-               (${hasEmailFilter}::text = 'no' AND (email IS NULL OR email = '')))
-          AND (${hasPhoneFilter}::text IS NULL OR
-               (${hasPhoneFilter}::text = 'yes' AND (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != '')) OR
-               (${hasPhoneFilter}::text = 'no' AND (phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = '')))
+          AND (CASE
+               WHEN ${hasEmailFilter}::text = 'yes' THEN (email IS NOT NULL AND email != '')
+               WHEN ${hasEmailFilter}::text = 'no' THEN (email IS NULL OR email = '')
+               ELSE TRUE
+               END)
+          AND (CASE
+               WHEN ${hasPhoneFilter}::text = 'yes' THEN (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != '')
+               WHEN ${hasPhoneFilter}::text = 'no' THEN ((phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = ''))
+               ELSE TRUE
+               END)
           AND (${minConfVal}::int IS NULL OR email_confidence >= ${minConfVal})
           AND (${minEmployeesVal}::int IS NULL OR employee_count >= ${minEmployeesVal})
           AND (${maxEmployeesVal}::int IS NULL OR employee_count <= ${maxEmployeesVal})
@@ -399,12 +403,16 @@ export async function GET(request: NextRequest) {
           AND (${sourcesArr}::text[] IS NULL OR source = ANY(${sourcesArr}))
           AND (${senioritiesArr}::text[] IS NULL OR seniority = ANY(${senioritiesArr}))
           AND (${departmentsArr}::text[] IS NULL OR department = ANY(${departmentsArr}))
-          AND (${hasEmailFilter}::text IS NULL OR
-               (${hasEmailFilter}::text = 'yes' AND email IS NOT NULL AND email != '') OR
-               (${hasEmailFilter}::text = 'no' AND (email IS NULL OR email = '')))
-          AND (${hasPhoneFilter}::text IS NULL OR
-               (${hasPhoneFilter}::text = 'yes' AND (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != '')) OR
-               (${hasPhoneFilter}::text = 'no' AND (phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = '')))
+          AND (CASE
+               WHEN ${hasEmailFilter}::text = 'yes' THEN (email IS NOT NULL AND email != '')
+               WHEN ${hasEmailFilter}::text = 'no' THEN (email IS NULL OR email = '')
+               ELSE TRUE
+               END)
+          AND (CASE
+               WHEN ${hasPhoneFilter}::text = 'yes' THEN (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != '')
+               WHEN ${hasPhoneFilter}::text = 'no' THEN ((phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = ''))
+               ELSE TRUE
+               END)
           AND (${minConfVal}::int IS NULL OR email_confidence >= ${minConfVal})
           AND (${minEmployeesVal}::int IS NULL OR employee_count >= ${minEmployeesVal})
           AND (${maxEmployeesVal}::int IS NULL OR employee_count <= ${maxEmployeesVal})
