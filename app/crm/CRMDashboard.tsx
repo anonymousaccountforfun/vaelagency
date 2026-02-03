@@ -1024,12 +1024,9 @@ export default function CRMDashboard() {
             )}
             <Link
               href="/crm/search"
-              className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors px-4 py-2 border border-accent/30 bg-accent/5 dark:bg-accent/10 rounded-lg font-medium"
+              className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-accent transition-colors px-4 py-2 border border-gray-200 dark:border-neutral-700 rounded-lg"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-              </svg>
-              Find New Leads
+              Apollo Search
             </Link>
             <button
               onClick={() => setImportModalOpen(true)}
