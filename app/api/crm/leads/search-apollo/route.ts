@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
       page: body.page || 1,
       per_page: Math.min(body.perPage || 25, 100),
       // Default to e-commerce related industries
-      organization_industry_tag_ids: body.organizationIndustries || DEFAULT_INDUSTRIES,
+      organization_industries: body.organizationIndustries || DEFAULT_INDUSTRIES,
       // Default to decision makers
       person_seniorities: body.personSeniorities || DEFAULT_SENIORITIES,
     }
