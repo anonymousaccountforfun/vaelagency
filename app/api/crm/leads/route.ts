@@ -321,11 +321,13 @@ export async function GET(request: NextRequest) {
       const minRevenueVal = minRevenue ? parseInt(minRevenue) : null
       const maxRevenueVal = maxRevenue ? parseInt(maxRevenue) : null
       const technologiesPattern = technologies.length > 0 ? technologies.map(t => `%${t}%`) : null
-      // Normalize hasEmail: null means no filter, 'yes' means has email, 'no' means no email
-      const hasEmailFilter = hasEmail === 'true' ? 'yes' : hasEmail === 'false' ? 'no' : null
-      const hasPhoneFilter = hasPhone === 'true' ? 'yes' : hasPhone === 'false' ? 'no' : null
+      // Boolean flags for email/phone filtering
+      const wantHasEmail = hasEmail === 'true'
+      const wantNoEmail = hasEmail === 'false'
+      const wantHasPhone = hasPhone === 'true'
+      const wantNoPhone = hasPhone === 'false'
 
-      console.log('[CRM Leads API] Filter debug:', { hasEmail, hasEmailFilter, hasPhone, hasPhoneFilter, conditionsLength: conditions.length })
+      console.log('[CRM Leads API] Filter debug:', { hasEmail, wantHasEmail, wantNoEmail, hasPhone, wantHasPhone, wantNoPhone })
 
       leads = await db`
         SELECT * FROM crm_leads
@@ -347,16 +349,16 @@ export async function GET(request: NextRequest) {
           AND (${sourcesArr}::text[] IS NULL OR source = ANY(${sourcesArr}))
           AND (${senioritiesArr}::text[] IS NULL OR seniority = ANY(${senioritiesArr}))
           AND (${departmentsArr}::text[] IS NULL OR department = ANY(${departmentsArr}))
-          AND (CASE
-               WHEN ${hasEmailFilter}::text = 'yes' THEN (email IS NOT NULL AND email != '')
-               WHEN ${hasEmailFilter}::text = 'no' THEN (email IS NULL OR email = '')
-               ELSE TRUE
-               END)
-          AND (CASE
-               WHEN ${hasPhoneFilter}::text = 'yes' THEN (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != '')
-               WHEN ${hasPhoneFilter}::text = 'no' THEN ((phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = ''))
-               ELSE TRUE
-               END)
+          AND (
+            (NOT ${wantHasEmail} AND NOT ${wantNoEmail})
+            OR (${wantHasEmail} AND email IS NOT NULL AND email != '')
+            OR (${wantNoEmail} AND (email IS NULL OR email = ''))
+          )
+          AND (
+            (NOT ${wantHasPhone} AND NOT ${wantNoPhone})
+            OR (${wantHasPhone} AND (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != ''))
+            OR (${wantNoPhone} AND (phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = ''))
+          )
           AND (${minConfVal}::int IS NULL OR email_confidence >= ${minConfVal})
           AND (${minEmployeesVal}::int IS NULL OR employee_count >= ${minEmployeesVal})
           AND (${maxEmployeesVal}::int IS NULL OR employee_count <= ${maxEmployeesVal})
@@ -405,16 +407,16 @@ export async function GET(request: NextRequest) {
           AND (${sourcesArr}::text[] IS NULL OR source = ANY(${sourcesArr}))
           AND (${senioritiesArr}::text[] IS NULL OR seniority = ANY(${senioritiesArr}))
           AND (${departmentsArr}::text[] IS NULL OR department = ANY(${departmentsArr}))
-          AND (CASE
-               WHEN ${hasEmailFilter}::text = 'yes' THEN (email IS NOT NULL AND email != '')
-               WHEN ${hasEmailFilter}::text = 'no' THEN (email IS NULL OR email = '')
-               ELSE TRUE
-               END)
-          AND (CASE
-               WHEN ${hasPhoneFilter}::text = 'yes' THEN (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != '')
-               WHEN ${hasPhoneFilter}::text = 'no' THEN ((phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = ''))
-               ELSE TRUE
-               END)
+          AND (
+            (NOT ${wantHasEmail} AND NOT ${wantNoEmail})
+            OR (${wantHasEmail} AND email IS NOT NULL AND email != '')
+            OR (${wantNoEmail} AND (email IS NULL OR email = ''))
+          )
+          AND (
+            (NOT ${wantHasPhone} AND NOT ${wantNoPhone})
+            OR (${wantHasPhone} AND (phone IS NOT NULL AND phone != '' OR mobile_phone IS NOT NULL AND mobile_phone != '' OR corporate_phone IS NOT NULL AND corporate_phone != ''))
+            OR (${wantNoPhone} AND (phone IS NULL OR phone = '') AND (mobile_phone IS NULL OR mobile_phone = '') AND (corporate_phone IS NULL OR corporate_phone = ''))
+          )
           AND (${minConfVal}::int IS NULL OR email_confidence >= ${minConfVal})
           AND (${minEmployeesVal}::int IS NULL OR employee_count >= ${minEmployeesVal})
           AND (${maxEmployeesVal}::int IS NULL OR employee_count <= ${maxEmployeesVal})
