@@ -325,6 +325,8 @@ export async function GET(request: NextRequest) {
       const hasEmailFilter = hasEmail === 'true' ? 'yes' : hasEmail === 'false' ? 'no' : null
       const hasPhoneFilter = hasPhone === 'true' ? 'yes' : hasPhone === 'false' ? 'no' : null
 
+      console.log('[CRM Leads API] Filter debug:', { hasEmail, hasEmailFilter, hasPhone, hasPhoneFilter, conditionsLength: conditions.length })
+
       leads = await db`
         SELECT * FROM crm_leads
         WHERE
@@ -428,6 +430,7 @@ export async function GET(request: NextRequest) {
     }
 
     const total = parseInt(String(countResult[0]?.total || '0'))
+    console.log('[CRM Leads API] Query results:', { leadsCount: leads.length, total })
 
     // Get stats for metrics (unfiltered)
     const stats = await db`
