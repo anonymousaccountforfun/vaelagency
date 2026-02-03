@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Lead, CRMMetrics, PIPELINE_STAGES, LEAD_SOURCES, PipelineStage, LeadSource, LeadSortField, SortOrder } from '@/lib/crm'
@@ -8,6 +8,154 @@ import LeadList from './LeadList'
 import ActivityFeed from './ActivityFeed'
 import MetricsCards from './MetricsCards'
 import ImportModal from './ImportModal'
+
+// Confirmation Modal Component
+function ConfirmModal({
+  isOpen,
+  title,
+  message,
+  confirmLabel,
+  confirmVariant = 'danger',
+  onConfirm,
+  onCancel,
+  loading = false,
+}: {
+  isOpen: boolean
+  title: string
+  message: string
+  confirmLabel: string
+  confirmVariant?: 'danger' | 'primary'
+  onConfirm: () => void
+  onCancel: () => void
+  loading?: boolean
+}) {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black/50" onClick={onCancel} />
+      <div className="relative bg-white dark:bg-neutral-900 rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{title}</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">{message}</p>
+        <div className="flex justify-end gap-3">
+          <button
+            onClick={onCancel}
+            disabled={loading}
+            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={loading}
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-2 ${
+              confirmVariant === 'danger'
+                ? 'bg-red-600 text-white hover:bg-red-700'
+                : 'bg-accent text-white hover:bg-accent/90'
+            } disabled:opacity-50`}
+          >
+            {loading && (
+              <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+            )}
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Bulk Action Toolbar Component
+function BulkActionToolbar({
+  selectedCount,
+  onDelete,
+  onChangeStage,
+  onClearSelection,
+  loading = false,
+}: {
+  selectedCount: number
+  onDelete: () => void
+  onChangeStage: (stage: PipelineStage) => void
+  onClearSelection: () => void
+  loading?: boolean
+}) {
+  const [stageDropdownOpen, setStageDropdownOpen] = useState(false)
+
+  if (selectedCount === 0) return null
+
+  return (
+    <div className="sticky top-0 z-30 bg-accent text-white rounded-xl shadow-lg p-4 mb-4 flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <span className="font-medium">
+          {selectedCount} lead{selectedCount !== 1 ? 's' : ''} selected
+        </span>
+        <button
+          onClick={onClearSelection}
+          className="text-white/80 hover:text-white text-sm underline"
+        >
+          Clear selection
+        </button>
+      </div>
+      <div className="flex items-center gap-3">
+        {/* Change Stage Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setStageDropdownOpen(!stageDropdownOpen)}
+            disabled={loading}
+            className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors disabled:opacity-50"
+          >
+            Change Stage
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {stageDropdownOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setStageDropdownOpen(false)} />
+              <div className="absolute right-0 top-full mt-1 z-20 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-1 min-w-[180px] max-h-64 overflow-y-auto">
+                {(Object.keys(PIPELINE_STAGES) as PipelineStage[]).map((stage) => (
+                  <button
+                    key={stage}
+                    onClick={() => {
+                      onChangeStage(stage)
+                      setStageDropdownOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-700 flex items-center gap-2"
+                  >
+                    <span className={`w-2 h-2 rounded-full ${PIPELINE_STAGES[stage].bgColor}`}></span>
+                    {PIPELINE_STAGES[stage].label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Delete Button */}
+        <button
+          onClick={onDelete}
+          disabled={loading}
+          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors disabled:opacity-50"
+        >
+          {loading ? (
+            <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          )}
+          Delete Selected
+        </button>
+      </div>
+    </div>
+  )
+}
 
 interface Filters {
   search: string
@@ -113,6 +261,11 @@ export default function CRMDashboard() {
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'list' | 'activity'>('list')
   const [importModalOpen, setImportModalOpen] = useState(false)
+
+  // Bulk selection state
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [bulkActionLoading, setBulkActionLoading] = useState(false)
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
 
   // Apollo enrichment state
   const [enrichmentStatus, setEnrichmentStatus] = useState<{
@@ -594,6 +747,8 @@ export default function CRMDashboard() {
       console.error('Failed to fetch CRM data:', error)
     } finally {
       setLoading(false)
+      // Clear selection when data changes
+      setSelectedIds([])
     }
   }
 
@@ -628,6 +783,61 @@ export default function CRMDashboard() {
     filters.priorities.length > 0 ||
     filters.sources.length > 0 ||
     filters.hasEmail !== 'any'
+
+  // Bulk delete handler
+  async function handleBulkDelete() {
+    if (selectedIds.length === 0) return
+
+    setBulkActionLoading(true)
+    try {
+      const res = await fetch('/api/crm/leads/bulk', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: selectedIds }),
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        console.error('Bulk delete failed:', data.error)
+        return
+      }
+
+      // Refresh data (which also clears selection)
+      fetchData()
+    } catch (error) {
+      console.error('Bulk delete error:', error)
+    } finally {
+      setBulkActionLoading(false)
+      setDeleteConfirmOpen(false)
+    }
+  }
+
+  // Bulk stage change handler
+  async function handleBulkStageChange(stage: PipelineStage) {
+    if (selectedIds.length === 0) return
+
+    setBulkActionLoading(true)
+    try {
+      const res = await fetch('/api/crm/leads/bulk', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: selectedIds, updates: { stage } }),
+      })
+      const data = await res.json()
+
+      if (!res.ok) {
+        console.error('Bulk update failed:', data.error)
+        return
+      }
+
+      // Refresh data (which also clears selection)
+      fetchData()
+    } catch (error) {
+      console.error('Bulk update error:', error)
+    } finally {
+      setBulkActionLoading(false)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -968,6 +1178,15 @@ export default function CRMDashboard() {
       {/* Content */}
       {view === 'list' ? (
         <>
+          {/* Bulk Action Toolbar */}
+          <BulkActionToolbar
+            selectedCount={selectedIds.length}
+            onDelete={() => setDeleteConfirmOpen(true)}
+            onChangeStage={handleBulkStageChange}
+            onClearSelection={() => setSelectedIds([])}
+            loading={bulkActionLoading}
+          />
+
           <LeadList
             leads={leads}
             loading={loading}
@@ -975,6 +1194,8 @@ export default function CRMDashboard() {
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSort={handleSort}
+            selectedIds={selectedIds}
+            onSelectionChange={setSelectedIds}
           />
 
           {/* Pagination */}
@@ -1026,6 +1247,18 @@ export default function CRMDashboard() {
         isOpen={importModalOpen}
         onClose={() => setImportModalOpen(false)}
         onSuccess={fetchData}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={deleteConfirmOpen}
+        title="Delete Selected Leads"
+        message={`Are you sure you want to delete ${selectedIds.length} lead${selectedIds.length !== 1 ? 's' : ''}? This action cannot be undone.`}
+        confirmLabel="Delete"
+        confirmVariant="danger"
+        onConfirm={handleBulkDelete}
+        onCancel={() => setDeleteConfirmOpen(false)}
+        loading={bulkActionLoading}
       />
     </div>
   )
