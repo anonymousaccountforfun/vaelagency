@@ -5,8 +5,49 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
-import { urlFor } from '../../../sanity/lib/client'
-import type { PostSummary, Category } from '../../../sanity/lib/types'
+
+// Types for the insights data (can come from API or Sanity)
+interface PostImage {
+  url?: string // Direct URL from API
+  asset?: { _ref: string } // Sanity reference
+  alt?: string
+}
+
+interface PostAuthor {
+  name: string
+  slug?: { current: string }
+  image?: PostImage | null
+  role?: string
+}
+
+interface PostCategory {
+  title: string
+  slug: { current: string }
+  color?: string
+}
+
+interface PostSummary {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  featuredImage?: PostImage | null
+  author?: PostAuthor | null
+  categories?: PostCategory[]
+  contentType?: string
+  publishedAt: string
+  updatedAt?: string
+  featured?: boolean
+  readingTime?: number
+}
+
+interface Category {
+  _id?: string
+  title: string
+  slug: { current: string }
+  description?: string
+  color?: string
+}
 
 interface InsightsPageClientProps {
   posts: PostSummary[]
@@ -22,16 +63,28 @@ function formatDate(dateString: string) {
   })
 }
 
+// Helper to get image URL from either direct URL or Sanity format
+function getImageUrl(image: PostImage | null | undefined): string | null {
+  if (!image) return null
+  // Direct URL from API
+  if (image.url) return image.url
+  // Sanity asset reference - would need urlFor, but we're not using Sanity for insights
+  return null
+}
+
 function PostCard({ post, featured = false }: { post: PostSummary; featured?: boolean }) {
+  const featuredImageUrl = getImageUrl(post.featuredImage)
+  const authorImageUrl = post.author?.image ? getImageUrl(post.author.image) : null
+
   return (
     <Link href={`/insights/${post.slug.current}`} className="group block">
       <article className={`bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-md transition-shadow ${featured ? 'h-full' : ''}`}>
         {/* Image */}
         <div className={`relative bg-stone-100 ${featured ? 'aspect-[16/10]' : 'aspect-[16/9]'}`}>
-          {post.featuredImage?.asset ? (
+          {featuredImageUrl ? (
             <Image
-              src={urlFor(post.featuredImage).width(800).height(450).url()}
-              alt={post.featuredImage.alt || post.title}
+              src={featuredImageUrl}
+              alt={post.featuredImage?.alt || post.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes={featured ? '(max-width: 768px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'}
@@ -78,11 +131,11 @@ function PostCard({ post, featured = false }: { post: PostSummary; featured?: bo
 
           {/* Author & date */}
           <div className="flex items-center gap-3">
-            {post.author?.image?.asset && (
+            {authorImageUrl && (
               <div className="relative w-8 h-8 rounded-full overflow-hidden bg-stone-200">
                 <Image
-                  src={urlFor(post.author.image).width(64).height(64).url()}
-                  alt={post.author.name}
+                  src={authorImageUrl}
+                  alt={post.author?.name || 'Author'}
                   fill
                   className="object-cover"
                 />

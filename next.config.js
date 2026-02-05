@@ -6,6 +6,15 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
       },
+      // Vercel Blob Storage (for images from the dashboard insights API)
+      {
+        protocol: 'https',
+        hostname: '*.blob.vercel-storage.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
     ],
     // Enable AVIF for better compression (30-50% smaller than WebP)
     formats: ['image/avif', 'image/webp'],

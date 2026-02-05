@@ -4,10 +4,45 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
-import PortableTextRenderer from '@/components/PortableTextRenderer'
-import { urlFor } from '../../../../sanity/lib/client'
 import { useContactModal } from '@/components/ContactModalContext'
-import type { Post } from '../../../../sanity/lib/types'
+
+// Types for the post data (from API with direct URLs)
+interface PostImage {
+  url?: string
+  alt?: string
+}
+
+interface PostAuthor {
+  name: string
+  slug?: { current: string }
+  role?: string
+  bio?: string
+  credentials?: string[]
+  linkedin?: string
+  twitter?: string
+  image?: PostImage | null
+}
+
+interface PostCategory {
+  title: string
+  slug: { current: string }
+  color?: string
+}
+
+interface Post {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  body: string // HTML content from API
+  featuredImage?: PostImage | null
+  author?: PostAuthor | null
+  categories?: PostCategory[]
+  contentType?: string
+  publishedAt: string
+  updatedAt?: string
+  readingTime?: number
+}
 
 interface PostPageClientProps {
   post: Post
@@ -21,8 +56,17 @@ function formatDate(dateString: string) {
   })
 }
 
+// Helper to get image URL from the new format
+function getImageUrl(image: PostImage | null | undefined): string | null {
+  if (!image) return null
+  return image.url || null
+}
+
 export default function PostPageClient({ post }: PostPageClientProps) {
   const { openModal } = useContactModal()
+
+  const featuredImageUrl = getImageUrl(post.featuredImage)
+  const authorImageUrl = post.author?.image ? getImageUrl(post.author.image) : null
 
   return (
     <>
@@ -105,11 +149,11 @@ export default function PostPageClient({ post }: PostPageClientProps) {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex items-center gap-4 pb-8 border-b border-stone-200"
             >
-              {post.author?.image?.asset && (
+              {authorImageUrl && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-stone-200">
                   <Image
-                    src={urlFor(post.author.image).width(96).height(96).url()}
-                    alt={post.author.name}
+                    src={authorImageUrl}
+                    alt={post.author?.name || 'Author'}
                     fill
                     className="object-cover"
                   />
@@ -129,7 +173,7 @@ export default function PostPageClient({ post }: PostPageClientProps) {
                 <div className="text-sm text-stone-500">
                   {post.publishedAt && formatDate(post.publishedAt)}
                   {post.updatedAt && post.updatedAt !== post.publishedAt && (
-                    <span> · Updated {formatDate(post.updatedAt)}</span>
+                    <span> - Updated {formatDate(post.updatedAt)}</span>
                   )}
                 </div>
               </div>
@@ -138,7 +182,7 @@ export default function PostPageClient({ post }: PostPageClientProps) {
         </header>
 
         {/* Featured Image */}
-        {post.featuredImage?.asset && (
+        {featuredImageUrl && (
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -147,8 +191,8 @@ export default function PostPageClient({ post }: PostPageClientProps) {
           >
             <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-stone-100">
               <Image
-                src={urlFor(post.featuredImage).width(1200).height(675).url()}
-                alt={post.featuredImage.alt || post.title}
+                src={featuredImageUrl}
+                alt={post.featuredImage?.alt || post.title}
                 fill
                 className="object-cover"
                 priority
@@ -161,7 +205,11 @@ export default function PostPageClient({ post }: PostPageClientProps) {
         {/* Body Content */}
         <div className="max-w-3xl mx-auto px-6 lg:px-8 pb-16">
           <FadeInSection>
-            {post.body && <PortableTextRenderer value={post.body} />}
+            {/* Render HTML body content */}
+            <div
+              className="prose prose-lg prose-stone max-w-none prose-headings:font-medium prose-headings:text-stone-900 prose-p:text-stone-600 prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-900 prose-img:rounded-xl"
+              dangerouslySetInnerHTML={{ __html: post.body }}
+            />
           </FadeInSection>
 
           {/* Author Bio Box */}
@@ -169,10 +217,10 @@ export default function PostPageClient({ post }: PostPageClientProps) {
             <FadeInSection delay={0.2}>
               <div className="mt-16 p-8 bg-stone-50 rounded-2xl border border-stone-200">
                 <div className="flex items-start gap-4">
-                  {post.author.image?.asset && (
+                  {authorImageUrl && (
                     <div className="relative w-16 h-16 rounded-full overflow-hidden bg-stone-200 flex-shrink-0">
                       <Image
-                        src={urlFor(post.author.image).width(128).height(128).url()}
+                        src={authorImageUrl}
                         alt={post.author.name}
                         fill
                         className="object-cover"
@@ -212,45 +260,6 @@ export default function PostPageClient({ post }: PostPageClientProps) {
                       </a>
                     )}
                   </div>
-                </div>
-              </div>
-            </FadeInSection>
-          )}
-
-          {/* Related Posts */}
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <FadeInSection delay={0.3}>
-              <div className="mt-16">
-                <h2 className="text-xl font-semibold text-stone-900 mb-6">
-                  Related Articles
-                </h2>
-                <div className="grid gap-6">
-                  {post.relatedPosts.map((related) => (
-                    <Link
-                      key={related._id}
-                      href={`/insights/${related.slug.current}`}
-                      className="group flex gap-4 p-4 rounded-xl bg-stone-50 hover:bg-stone-100 transition-colors"
-                    >
-                      {related.featuredImage?.asset && (
-                        <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-stone-200 flex-shrink-0">
-                          <Image
-                            src={urlFor(related.featuredImage).width(192).height(192).url()}
-                            alt={related.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <h3 className="font-medium text-stone-900 group-hover:text-red-500 transition-colors mb-1">
-                          {related.title}
-                        </h3>
-                        <p className="text-sm text-stone-500 line-clamp-2">
-                          {related.excerpt}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
                 </div>
               </div>
             </FadeInSection>

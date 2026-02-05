@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { clientNoCache } from '../../../sanity/lib/client'
-import { postsQuery, featuredPostsQuery, categoriesQuery } from '../../../sanity/lib/queries'
-import type { PostSummary, Category } from '../../../sanity/lib/types'
+import { getInsights } from '@/lib/insights-api'
 import InsightsPageClient from './InsightsPageClient'
 
 const baseUrl = 'https://vaelcreative.com'
@@ -40,16 +38,41 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 async function getInsightsData() {
-  const [posts, featuredPosts, categories] = await Promise.all([
-    clientNoCache.fetch<PostSummary[]>(postsQuery),
-    clientNoCache.fetch<PostSummary[]>(featuredPostsQuery),
-    clientNoCache.fetch<Category[]>(categoriesQuery),
-  ])
+  const { articles, categories } = await getInsights()
+
+  // Transform API response to match component props
+  // Map articles to the PostSummary format expected by InsightsPageClient
+  const posts = articles.map((article) => ({
+    _id: article.slug, // Use slug as ID
+    title: article.title,
+    slug: { current: article.slug },
+    excerpt: article.excerpt,
+    featuredImage: article.featuredImage ? { url: article.featuredImage } : null,
+    author: article.author ? {
+      name: article.author.name,
+      slug: { current: article.author.slug },
+      image: article.author.image ? { url: article.author.image } : null,
+    } : null,
+    categories: article.categories.map((cat) => ({
+      title: cat,
+      slug: { current: cat.toLowerCase().replace(/\s+/g, '-') },
+    })),
+    publishedAt: article.publishedAt,
+    featured: false, // API doesn't have featured flag
+    readingTime: Math.ceil(article.body.replace(/<[^>]+>/g, '').split(/\s+/).length / 200), // Estimate from body
+  }))
+
+  // Transform categories to match component props
+  const categoryList = categories.map((cat) => ({
+    _id: cat.slug,
+    title: cat.title,
+    slug: { current: cat.slug },
+  }))
 
   return {
-    posts: posts || [],
-    featuredPosts: featuredPosts || [],
-    categories: categories || [],
+    posts,
+    featuredPosts: [], // No featured posts from API
+    categories: categoryList,
   }
 }
 

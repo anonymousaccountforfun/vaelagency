@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { client } from '../../../../sanity/lib/client'
-import { groq } from 'next-sanity'
+import { getInsightBySlug } from '@/lib/insights-api'
 
 export const runtime = 'edge'
 
@@ -11,41 +10,23 @@ export const size = {
 }
 export const contentType = 'image/png'
 
-interface PostData {
-  title: string
-  excerpt: string
-  author?: {
-    name: string
-  }
-  categories?: {
-    title: string
-  }[]
-  contentType?: string
-}
-
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
-  let post: PostData | null = null
+  let title = 'Insights'
+  let category = 'Article'
+  let author = 'Vael Creative'
 
   try {
-    post = await client.fetch<PostData>(
-      groq`*[_type == "post" && slug.current == $slug][0] {
-        title,
-        excerpt,
-        author->{ name },
-        categories[]->{ title },
-        contentType
-      }`,
-      { slug }
-    )
+    const post = await getInsightBySlug(slug)
+    if (post) {
+      title = post.title
+      category = post.categories?.[0] || 'Article'
+      author = post.author?.name || 'Vael Creative'
+    }
   } catch (error) {
     console.error('Error fetching post for OG image:', error)
   }
-
-  const title = post?.title || 'Insights'
-  const category = post?.categories?.[0]?.title || post?.contentType?.replace('-', ' ') || 'Article'
-  const author = post?.author?.name || 'Vael Creative'
 
   return new ImageResponse(
     (
