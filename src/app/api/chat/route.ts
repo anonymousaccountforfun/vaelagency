@@ -111,12 +111,14 @@ export async function POST(request: NextRequest) {
       [assistantMessageId, conversationId, aiResult.content, assistantMessage.metadata]
     )
 
-    // Sync to CRM if profile is complete enough
+    // Sync to CRM if profile is complete enough (must await in serverless)
     if (await shouldSyncToCrm(visitor)) {
       const summary = generateConversationSummary(messages)
-      syncLeadToCrm(visitor, conversationId, summary).catch((err) => {
-        console.error('Background CRM sync failed:', err)
-      })
+      try {
+        await syncLeadToCrm(visitor, conversationId, summary)
+      } catch (err) {
+        console.error('CRM sync failed:', err)
+      }
     }
 
     const response: ChatResponse = {

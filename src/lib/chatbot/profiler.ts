@@ -65,29 +65,29 @@ export async function updateVisitorProfile(
   const values: unknown[] = []
   let paramIndex = 1
 
-  if (updates.email) {
+  if (updates.email !== undefined) {
     setClauses.push(`email = $${paramIndex++}`)
-    values.push(updates.email)
+    values.push(updates.email || null)
   }
 
-  if (updates.firstName) {
+  if (updates.firstName !== undefined) {
     setClauses.push(`first_name = $${paramIndex++}`)
-    values.push(updates.firstName)
+    values.push(updates.firstName || null)
   }
 
-  if (updates.lastName) {
+  if (updates.lastName !== undefined) {
     setClauses.push(`last_name = $${paramIndex++}`)
-    values.push(updates.lastName)
+    values.push(updates.lastName || null)
   }
 
-  if (updates.company) {
+  if (updates.company !== undefined) {
     setClauses.push(`company = $${paramIndex++}`)
-    values.push(updates.company)
+    values.push(updates.company || null)
   }
 
-  if (updates.phone) {
+  if (updates.phone !== undefined) {
     setClauses.push(`phone = $${paramIndex++}`)
-    values.push(updates.phone)
+    values.push(updates.phone || null)
   }
 
   if (updates.interests && updates.interests.length > 0) {
