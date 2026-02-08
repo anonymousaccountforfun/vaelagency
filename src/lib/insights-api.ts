@@ -59,11 +59,14 @@ export async function getInsights(options?: {
       return { articles: [], categories: [] }
     }
 
-    const data = await res.json()
+    const json = await res.json()
+
+    // API returns { data: { articles: [...] }, status, timestamp }
+    const articles = json.data?.articles || json.articles || []
 
     // Extract unique categories from articles
     const categoryMap = new Map<string, { title: string; count: number }>()
-    for (const article of data.articles || []) {
+    for (const article of articles) {
       for (const cat of article.categories || []) {
         const slug = cat.toLowerCase().replace(/\s+/g, '-')
         const existing = categoryMap.get(slug)
@@ -82,7 +85,7 @@ export async function getInsights(options?: {
     }))
 
     return {
-      articles: data.articles || [],
+      articles,
       categories,
     }
   } catch (error) {
