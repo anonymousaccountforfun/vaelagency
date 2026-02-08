@@ -11,7 +11,7 @@ export const config = {
 
   crm: {
     apiKey: process.env.VAEL_CRM_API_KEY || '',
-    url: process.env.VAEL_CRM_URL || 'https://vaelcreative.com/api/webhooks/chatbot',
+    url: process.env.VAEL_CRM_URL || 'https://dashboard.vaelcreative.com/api/webhooks/chatbot',
   },
 
   cal: {
