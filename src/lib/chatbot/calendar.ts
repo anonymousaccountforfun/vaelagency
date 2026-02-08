@@ -25,13 +25,17 @@ export async function getAvailability(
   }
 
   try {
-    const url = new URL(`${config.cal.baseUrl}/availability`)
-    url.searchParams.set('apiKey', config.cal.apiKey)
+    const url = new URL(`${config.cal.baseUrl}/slots/available`)
     url.searchParams.set('eventTypeId', config.cal.eventTypeId)
-    url.searchParams.set('dateFrom', dateFrom)
-    url.searchParams.set('dateTo', dateTo)
+    url.searchParams.set('startTime', dateFrom)
+    url.searchParams.set('endTime', dateTo)
 
-    const response = await fetch(url.toString())
+    const response = await fetch(url.toString(), {
+      headers: {
+        'Authorization': `Bearer ${config.cal.apiKey}`,
+        'cal-api-version': '2024-08-13',
+      },
+    })
 
     if (!response.ok) {
       console.error('Cal.com availability error:', await response.text())
@@ -51,10 +55,12 @@ export async function createBooking(request: ScheduleRequest): Promise<ScheduleR
   }
 
   try {
-    const response = await fetch(`${config.cal.baseUrl}/bookings?apiKey=${config.cal.apiKey}`, {
+    const response = await fetch(`${config.cal.baseUrl}/bookings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${config.cal.apiKey}`,
+        'cal-api-version': '2024-08-13',
       },
       body: JSON.stringify({
         eventTypeId: parseInt(config.cal.eventTypeId, 10),

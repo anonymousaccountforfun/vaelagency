@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isRateLimited } from '@/lib/chatbot/rate-limit'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 import type { ChatMessage, ChatResponse } from '@/lib/chatbot/types'
@@ -18,6 +19,15 @@ const chatRequestSchema = z.object({
 // POST /api/chat - Send a message and get a response
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Too many messages. Please wait a moment.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const parseResult = chatRequestSchema.safeParse(body)
     if (!parseResult.success) {

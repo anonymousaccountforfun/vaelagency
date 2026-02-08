@@ -1,6 +1,7 @@
 import type { CrmLeadPayload, VisitorProfile, ChatMessage } from './types'
 import { config } from './config'
 import { setCrmLeadId } from './profiler'
+import { signPayload } from './webhook-signing'
 
 interface CrmResponse {
   success: boolean
@@ -41,13 +42,21 @@ export async function syncLeadToCrm(
   }
 
   try {
+    const body = JSON.stringify(payload)
+    const signature = signPayload(body)
+
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'X-API-Key': config.crm.apiKey,
+    }
+    if (signature) {
+      headers['X-Webhook-Signature'] = signature
+    }
+
     const response = await fetch(config.crm.url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': config.crm.apiKey,
-      },
-      body: JSON.stringify(payload),
+      headers,
+      body,
     })
 
     if (!response.ok) {

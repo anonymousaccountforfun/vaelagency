@@ -10,10 +10,16 @@ export async function GET(
   try {
     const { id } = await params
 
-    // Verify conversation exists
+    // Require visitor ID for ownership verification
+    const visitorId = request.headers.get('X-Visitor-ID')
+    if (!visitorId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Verify conversation exists AND belongs to this visitor
     const convResult = await query<{ id: string; visitor_id: string }>(
-      'SELECT id, visitor_id FROM conversations WHERE id = $1',
-      [id]
+      'SELECT id, visitor_id FROM conversations WHERE id = $1 AND visitor_id = $2',
+      [id, visitorId]
     )
 
     if (convResult.rows.length === 0) {
@@ -45,7 +51,6 @@ export async function GET(
 
     return NextResponse.json({
       conversationId: id,
-      visitorId: convResult.rows[0].visitor_id,
       messages,
     })
   } catch (error) {

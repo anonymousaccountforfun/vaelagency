@@ -17,6 +17,6 @@ export const config = {
   cal: {
     apiKey: process.env.CAL_API_KEY || '',
     eventTypeId: process.env.CAL_EVENT_TYPE_ID || '',
-    baseUrl: 'https://api.cal.com/v1',
+    baseUrl: 'https://api.cal.com/v2',
   },
 } as const
