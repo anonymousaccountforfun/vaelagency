@@ -1,56 +1,32 @@
-# Pricing Information
+# Pricing
 
-## Our Approach to Pricing
+## Our Approach
 
-At Vael Creative, we believe in transparent, value-based pricing. Every project is unique, so we provide custom quotes based on your specific needs. Here's a general overview:
+All pricing at Vael Creative is custom-scoped based on your specific project needs, brand goals, timeline, and deliverables. We do not use one-size-fits-all pricing. Every brand is unique, so we build custom packages tailored to your specific creative needs.
 
-## Investment Ranges
+## How Pricing Works
 
-### Logo Design
-Starting at $2,500
-Includes concept development, revisions, and final files.
+We scope each project individually based on:
+- The type and volume of deliverables needed
+- Your timeline and turnaround requirements
+- The complexity of creative direction
+- Platform-specific requirements and optimizations
+- Whether you need ongoing content or a one-time project
 
-### Brand Identity Package
-$5,000 - $15,000
-Includes logo, color palette, typography, and brand guidelines.
+## What Is Included
 
-### Full Brand Strategy
-$10,000 - $25,000
-Comprehensive brand strategy plus visual identity development.
+Every project includes:
+- Discovery and brand alignment
+- Creative strategy and direction
+- AI-accelerated production
+- Human creative direction and quality assurance
+- One round of revisions
+- Final delivery in all required formats and specifications
 
-### Website Design
-$5,000 - $20,000
-Custom design for marketing websites. Complexity and page count affect pricing.
+## Custom Packages
 
-### Website Development
-$5,000 - $30,000
-Development cost depends on functionality, integrations, and CMS needs.
+We build custom packages matched to specific needs, timelines, and budgets. Whether you need a one-time launch campaign, ongoing social content, or a comprehensive creative suite, we will design a package that fits.
 
-### Complete Brand + Website
-$15,000 - $50,000+
-Full branding and web presence packages for businesses wanting everything.
+## Getting a Quote
 
-## What's Included
-
-All projects include:
-- Strategy and discovery
-- Multiple concept directions
-- Revision rounds
-- Final file delivery
-- Usage guidelines
-
-## Payment Structure
-
-- 50% deposit to begin work
-- 50% upon completion
-- For larger projects, we offer milestone-based payments
-
-## Additional Services
-
-- Rush projects: +25-50%
-- Additional revision rounds: Quoted separately
-- Ongoing retainer: Custom pricing based on needs
-
-## Getting Started
-
-The best way to get an accurate quote is to schedule a discovery call. We'll discuss your goals, timeline, and budget to create a proposal that works for you.
+The best way to get an accurate quote is to book a free discovery call. We will discuss your goals, timeline, and budget, then create a tailored proposal. You can book a call at vaelcreative.com.
