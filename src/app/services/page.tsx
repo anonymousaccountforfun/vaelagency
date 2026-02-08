@@ -8,9 +8,12 @@ import ServicesPageClient from './ServicesPageClient'
 const baseUrl = 'https://vaelcreative.com'
 
 export const metadata: Metadata = {
-  title: 'Services & Pricing | Vael Creative - AI-Accelerated Brand Content',
+  title: 'Services & Pricing - AI-Accelerated Brand Content',
   description: 'Explore Vael Creative service packages: Brand Foundation, Growth Engine, and Scale Suite. AI-accelerated, human-curated content for consumer brands. Images, ads, video, and copy delivered fast.',
   keywords: ['creative services', 'brand content packages', 'AI content creation', 'marketing creative', 'ad creative services', 'video production', 'brand photography'],
+  alternates: {
+    canonical: 'https://vaelcreative.com/services',
+  },
   openGraph: {
     title: 'Services & Pricing | Vael Creative',
     description: 'AI-accelerated, human-curated creative packages for consumer brands. Choose from Brand Foundation, Growth Engine, or Scale Suite.',

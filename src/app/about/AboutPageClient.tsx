@@ -168,7 +168,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
           <MediaRenderer
             media={content.teamMedia}
             fallbackUrl=""
-            alt="Team collaboration"
+            alt="Vael Creative team collaborating on brand content"
             fill
             className="object-cover"
           />

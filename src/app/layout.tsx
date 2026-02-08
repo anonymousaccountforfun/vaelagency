@@ -47,6 +47,9 @@ export const metadata: Metadata = {
     title: 'Vael Creative | Premium Creative for Consumer Brands',
     description: 'Human-curated, AI-accelerated creative content for consumer brands.',
   },
+  alternates: {
+    canonical: baseUrl,
+  },
   robots: {
     index: true,
     follow: true,
