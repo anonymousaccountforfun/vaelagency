@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: 'Vael Creative | Premium Creative for Consumer Brands',
     template: '%s | Vael Creative',
   },
-  description: 'Human-curated, AI-accelerated creative content. On-brand, performance-ready creative (images, ads, video, copy) using your asset library. Serving New York\'s boldest consumer brands.',
+  description: 'Human-curated, AI-accelerated creative content for consumer brands. On-brand images, ads, video, and copy with 48-hour turnaround.',
   keywords: ['creative agency', 'AI creative', 'consumer brands', 'New York', 'brand content', 'marketing', 'ad creative', 'brand photography', 'video production'],
   authors: [{ name: 'Vael Creative' }],
   creator: 'Vael Creative',
