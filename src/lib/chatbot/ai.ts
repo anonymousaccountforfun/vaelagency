@@ -1,5 +1,8 @@
+import OpenAI from 'openai'
 import type { ChatMessage } from './types'
 import { config } from './config'
+
+const openai = new OpenAI({ apiKey: config.openai.apiKey })
 
 const SYSTEM_PROMPT = `You are a helpful assistant for Vael Creative, a branding and web design agency based in the United States.
 
@@ -50,31 +53,15 @@ export async function generateResponse({ messages, context = '' }: AiServiceOpti
     })),
   ]
 
-  const response = await fetch(`${config.nvidia.baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${config.nvidia.apiKey}`,
-    },
-    body: JSON.stringify({
-      model: config.nvidia.model,
-      messages: formattedMessages,
-      temperature: 0.7,
-      max_tokens: 500,
-      top_p: 0.9,
-    }),
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: formattedMessages,
+    temperature: 0.7,
+    max_tokens: 500,
+    top_p: 0.9,
   })
 
-  if (!response.ok) {
-    const error = await response.text()
-    throw new Error(`NVIDIA API error: ${response.status} - ${error}`)
-  }
-
-  const data = (await response.json()) as {
-    choices: Array<{ message: { content: string } }>
-  }
-
-  const content = data.choices[0]?.message?.content || 'I apologize, but I had trouble generating a response. Could you please try again?'
+  const content = completion.choices[0]?.message?.content || 'I apologize, but I had trouble generating a response. Could you please try again?'
 
   // Extract any profile data from the conversation
   const profileData = extractProfileFromMessages(messages)
