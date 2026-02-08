@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import LayoutWrapper from '@/components/LayoutWrapper'
 
@@ -229,6 +230,10 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground antialiased min-h-screen" suppressHydrationWarning>
         <LayoutWrapper>{children}</LayoutWrapper>
+        <Script
+          src="/vael-chat.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   )
