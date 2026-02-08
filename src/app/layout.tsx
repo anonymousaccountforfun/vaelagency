@@ -72,7 +72,7 @@ const organizationSchema = {
   description: 'Human-curated, AI-accelerated creative content for consumer brands.',
   url: baseUrl,
   logo: `${baseUrl}/images/vael-creative-logo.png`,
-  foundingDate: '2024',
+  foundingDate: '2025',
   founders: [
     {
       '@type': 'Person',

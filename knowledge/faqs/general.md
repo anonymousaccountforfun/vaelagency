@@ -31,7 +31,7 @@ Yes! While we're based in New York, we work with brands nationwide across the Un
 
 ## Who founded Vael Creative?
 
-Vael Creative was founded in 2024 by Brian Hughes (CEO) and Chris McDonald (Chief Creative Officer). Brian is a former General Manager at Hims & Hers who previously led strategy at Spotify and operations at Uber. Chris is an audio engineer turned creative strategist who scaled sales at Epidemic Sound, Artlist, and UnitedMasters. The founders come from Uber, Spotify, Hims & Hers, Epidemic Sound, Artlist, and United Masters.
+Vael Creative was founded in 2025 by Brian Hughes (CEO) and Chris McDonald (Chief Creative Officer). Brian is a former General Manager at Hims & Hers who previously led strategy at Spotify and operations at Uber. Chris is an audio engineer turned creative strategist who scaled sales at Epidemic Sound, Artlist, and UnitedMasters. The founders come from Uber, Spotify, Hims & Hers, Epidemic Sound, Artlist, and United Masters.
 
 ## What industries do you serve?
 
