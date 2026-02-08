@@ -8,11 +8,14 @@ import AboutPageClient from './AboutPageClient'
 const baseUrl = 'https://vaelcreative.com'
 
 export const metadata: Metadata = {
-  title: 'About Us | Vael Creative - Meet the Team Behind Premium Brand Content',
+  title: 'About Us - Meet the Team Behind Premium Brand Content',
   description: 'Meet the founders of Vael Creative. Former leaders from Hims & Hers, Uber, Epidemic Sound, and more. We combine AI efficiency with human creativity to deliver premium content for consumer brands.',
   keywords: ['creative agency team', 'brand content experts', 'AI creative directors', 'NYC creative agency', 'consumer brand specialists'],
+  alternates: {
+    canonical: 'https://vaelcreative.com/about',
+  },
   openGraph: {
-    title: 'About Us | Vael Creative',
+    title: 'About Us - Meet the Team | Vael Creative',
     description: 'Meet the founders of Vael Creative - former leaders from Hims & Hers, Uber, and top music platforms.',
     type: 'website',
     url: 'https://vaelcreative.com/about',

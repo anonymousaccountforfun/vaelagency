@@ -47,7 +47,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
               <MediaRenderer
                 media={content.heroMedia}
                 fallbackUrl=""
-                alt="Hero background"
+                alt="Vael Creative premium brand content showcase"
                 fill
                 className="object-cover"
                 priority
