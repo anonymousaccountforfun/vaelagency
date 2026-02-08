@@ -45,10 +45,10 @@ export async function generateResponse({ messages, context = '' }: AiServiceOpti
 }> {
   const systemPrompt = SYSTEM_PROMPT.replace('{context}', context || 'No specific context available.')
 
-  const formattedMessages = [
-    { role: 'system', content: systemPrompt },
+  const formattedMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    { role: 'system' as const, content: systemPrompt },
     ...messages.map((m) => ({
-      role: m.role as 'user' | 'assistant' | 'system',
+      role: m.role as 'user' | 'assistant',
       content: m.content,
     })),
   ]
