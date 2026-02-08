@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(response)
   } catch (error) {
     console.error('Chat error:', error)
-    return NextResponse.json({ error: 'Failed to process message' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Unknown error'
+    return NextResponse.json({ error: 'Failed to process message', detail: message }, { status: 500 })
   }
 }
