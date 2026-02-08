@@ -184,7 +184,7 @@
 
     var input = document.createElement('textarea');
     input.id = 'vael-chat-input';
-    input.placeholder = 'iMessage';
+    input.placeholder = 'How can we help?';
     input.rows = 1;
     input.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && !e.shiftKey) {
