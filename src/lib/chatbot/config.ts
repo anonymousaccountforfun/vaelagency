@@ -5,12 +5,6 @@ export const config = {
     url: process.env.DATABASE_URL || 'postgresql://localhost:5432/vael_support_bot',
   },
 
-  nvidia: {
-    apiKey: process.env.NVIDIA_API_KEY || '',
-    baseUrl: 'https://integrate.api.nvidia.com/v1',
-    model: 'nvidia/llama-3.1-nemotron-70b-instruct',
-  },
-
   openai: {
     apiKey: process.env.OPENAI_API_KEY || '',
   },
