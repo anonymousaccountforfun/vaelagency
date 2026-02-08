@@ -40,31 +40,14 @@
     } catch(e) {}
   }
 
-  // Inline SVG avatar — professional woman illustration
-  var avatarSVG = '<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<circle cx="32" cy="32" r="32" fill="#E8E0F0"/>' +
-    '<path d="M16 28c0-10 6-17 16-17s16 7 16 17c0 3-1 6-2 8l-1 2c0 4 2 7 3 9H16c1-2 3-5 3-9l-1-2c-1-2-2-5-2-8z" fill="#4A3728"/>' +
-    '<ellipse cx="32" cy="30" rx="12" ry="13" fill="#F5D0B0"/>' +
-    '<path d="M20 28c0-8 5-14 12-14s12 6 12 14c0 1 0 2-.5 3C43 25 38 22 32 22s-11 3-11.5 9c-.3-1-.5-2-.5-3z" fill="#4A3728"/>' +
-    '<ellipse cx="27" cy="30" rx="1.8" ry="2" fill="#1C1C1E"/>' +
-    '<ellipse cx="37" cy="30" rx="1.8" ry="2" fill="#1C1C1E"/>' +
-    '<circle cx="27.6" cy="29.2" r="0.7" fill="white"/>' +
-    '<circle cx="37.6" cy="29.2" r="0.7" fill="white"/>' +
-    '<path d="M24 27c1-1.5 3-2 4.5-1.5" stroke="#3D2E1F" stroke-width="0.8" stroke-linecap="round" fill="none"/>' +
-    '<path d="M35.5 25.5c1.5-.5 3.5 0 4.5 1.5" stroke="#3D2E1F" stroke-width="0.8" stroke-linecap="round" fill="none"/>' +
-    '<path d="M31 31.5c.5 1.5 1 2 2 2" stroke="#D4A882" stroke-width="0.7" stroke-linecap="round" fill="none"/>' +
-    '<path d="M28 36c1.5 2 6.5 2 8 0" stroke="#C4826E" stroke-width="1" stroke-linecap="round" fill="none"/>' +
-    '<path d="M29.5 35.5c1 .3 4 .3 5 0" stroke="#D4908A" stroke-width="0.6" fill="none"/>' +
-    '<rect x="29" y="42" width="6" height="5" rx="2" fill="#F5D0B0"/>' +
-    '<path d="M18 58c0-8 6-13 14-13s14 5 14 13" fill="#007AFF"/>' +
-    '<path d="M27 45l5 4 5-4" stroke="white" stroke-width="0.8" fill="none" stroke-linecap="round"/>' +
-    '</svg>';
-
   function createAvatar(size) {
     var el = document.createElement('div');
     el.style.cssText = 'width:' + size + 'px;height:' + size + 'px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#F2F2F7;';
-    el.innerHTML = avatarSVG;
-    el.querySelector('svg').style.cssText = 'width:100%;height:100%;display:block;';
+    var img = document.createElement('img');
+    img.src = '/chat-avatar.jpg';
+    img.alt = 'Vael Creative';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+    el.appendChild(img);
     return el;
   }
 
