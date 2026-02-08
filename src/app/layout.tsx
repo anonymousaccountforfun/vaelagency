@@ -232,7 +232,7 @@ export default function RootLayout({
         <LayoutWrapper>{children}</LayoutWrapper>
         <Script
           src="/vael-chat.js"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
       </body>
     </html>
