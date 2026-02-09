@@ -1,4 +1,4 @@
-import { clientNoCache } from '../../sanity/lib/client'
+import { client } from '../../sanity/lib/client'
 import { homepageQuery } from '../../sanity/lib/queries'
 import type { HomepageData } from '../../sanity/lib/types'
 import HomePageClient from './HomePageClient'
@@ -111,15 +111,27 @@ const defaultContent: HomepageData = {
 
 async function getHomepageData(): Promise<HomepageData> {
   try {
-    const data = await clientNoCache.fetch(homepageQuery)
+    const data = await client.fetch(homepageQuery)
     if (data) {
       return {
         ...defaultContent,
         ...data,
         hero: { ...defaultContent.hero, ...data?.hero },
-        services: { ...defaultContent.services, ...data?.services },
-        socialProof: { ...defaultContent.socialProof, ...data?.socialProof },
-        localExpertise: { ...defaultContent.localExpertise, ...data?.localExpertise },
+        services: {
+          ...defaultContent.services,
+          ...data?.services,
+          items: data?.services?.items?.length > 0 ? data.services.items : defaultContent.services.items,
+        },
+        socialProof: {
+          ...defaultContent.socialProof,
+          ...data?.socialProof,
+          companies: data?.socialProof?.companies?.length > 0 ? data.socialProof.companies : defaultContent.socialProof.companies,
+        },
+        localExpertise: {
+          ...defaultContent.localExpertise,
+          ...data?.localExpertise,
+          stats: data?.localExpertise?.stats?.length > 0 ? data.localExpertise.stats : defaultContent.localExpertise.stats,
+        },
         cta: { ...defaultContent.cta, ...data?.cta },
       }
     }

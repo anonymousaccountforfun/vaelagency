@@ -85,7 +85,13 @@ export default async function PostPage({ params }: PageProps) {
       slug: { current: cat.toLowerCase().replace(/\s+/g, '-') },
     })),
     publishedAt: article.publishedAt,
-    readingTime: Math.ceil(article.body.replace(/<[^>]+>/g, '').split(/\s+/).length / 200),
+    readingTime: (() => {
+      const textContent = typeof article.body === 'string'
+        ? article.body.replace(/<[^>]+>/g, '')
+        : JSON.stringify(article.body)
+      const wordCount = textContent.split(/\s+/).filter(Boolean).length
+      return Math.max(1, Math.ceil(wordCount / 200))
+    })(),
   }
 
   // Article schema
