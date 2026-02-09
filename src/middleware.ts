@@ -29,13 +29,13 @@ export function middleware(request: NextRequest) {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://app.cal.com", // Required for Next.js + Cal.com
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Required for Next.js
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://cdn.sanity.io https://*.sanity.io",
       "media-src 'self' https://cdn.sanity.io https://*.sanity.io https://player.vimeo.com https://www.youtube.com",
-      "frame-src https://player.vimeo.com https://www.youtube.com https://app.cal.com https://cal.com",
-      "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://formspree.io https://api.cal.com",
+      "frame-src https://player.vimeo.com https://www.youtube.com",
+      "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://formspree.io",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

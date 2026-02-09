@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import sanitizeHtml from 'sanitize-html'
 import { FadeInSection } from '@/components/AnimatedSection'
 import { useContactModal } from '@/components/ContactModalContext'
 
@@ -206,33 +205,11 @@ export default function PostPageClient({ post }: PostPageClientProps) {
         {/* Body Content */}
         <div className="max-w-3xl mx-auto px-6 lg:px-8 pb-16">
           <FadeInSection>
-            {/* Render sanitized HTML body content */}
-            {(() => {
-              const cleanBody = sanitizeHtml(post.body || '', {
-                allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-                  'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                ]),
-                allowedAttributes: {
-                  ...sanitizeHtml.defaults.allowedAttributes,
-                  img: ['src', 'alt', 'width', 'height'],
-                },
-              })
-              // Filter out "Word Count" metadata that leaks into visible content
-              const filteredBody = cleanBody.replace(
-                /<p[^>]*>\s*"?Word Count:[^<]*<\/p>/gi,
-                ''
-              )
-              return filteredBody ? (
-                <div
-                  className="prose prose-lg prose-stone max-w-none text-stone-700 prose-headings:font-medium prose-headings:text-stone-900 prose-p:text-stone-600 prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-900 prose-img:rounded-xl"
-                  dangerouslySetInnerHTML={{ __html: filteredBody }}
-                />
-              ) : (
-                <p className="text-stone-500 italic">
-                  Article content is currently unavailable.
-                </p>
-              )
-            })()}
+            {/* Render HTML body content */}
+            <div
+              className="prose prose-lg prose-stone max-w-none prose-headings:font-medium prose-headings:text-stone-900 prose-p:text-stone-600 prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-stone-900 prose-img:rounded-xl"
+              dangerouslySetInnerHTML={{ __html: post.body }}
+            />
           </FadeInSection>
 
           {/* Author Bio Box */}

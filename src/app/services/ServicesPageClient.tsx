@@ -5,8 +5,17 @@ import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
 import { useContactModal } from '@/components/ContactModalContext'
-import { highlightWord } from '@/lib/utils'
 import type { ServicesPageData } from '../../../sanity/lib/types'
+
+// Helper function to highlight specific words in red
+function highlightWord(text: string, word: string) {
+  const parts = text.split(new RegExp(`(${word})`, 'gi'))
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase()
+      ? <span key={i} className="text-red-500">{part}</span>
+      : part
+  )
+}
 
 interface ServicesPageClientProps {
   content: ServicesPageData
@@ -53,36 +62,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
       <section className="py-32 md:py-40 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="space-y-8">
-            {(content.packages?.length > 0 ? content.packages : [
-              {
-                name: 'Brand & Identity',
-                description: 'Everything you need to make a splash with your next product launch.',
-                deliverables: ['Logo Design', 'Sonic Logos', 'Sound Design', 'Graphic Design', 'Web Design and Copy'],
-                timeline: '2-4 weeks',
-                ideal: 'New brands or rebrands',
-              },
-              {
-                name: 'Content Production',
-                description: 'High-volume, high-quality assets for your social media and website.',
-                deliverables: ['Product Images', 'Lifestyle Photography', 'Product Videos', 'Short-Form Video', 'UGC-Style Content'],
-                timeline: '1-2 weeks',
-                ideal: 'Brands scaling content output',
-              },
-              {
-                name: 'Digital & Growth',
-                description: 'Assets and strategies designed to drive traffic and engagement.',
-                deliverables: ['Social Media Content & Copy', 'Ad Creative', 'Email Design & Copy', 'Influencer Content'],
-                timeline: 'Ongoing',
-                ideal: 'Brands focused on acquisition',
-              },
-              {
-                name: 'Custom',
-                description: 'Partner with Vael Creative to design a custom package that fits your creative needs.',
-                deliverables: ['Tailored to your needs', 'In your brand voice', 'On the timeline you require'],
-                timeline: 'Flexible',
-                ideal: 'Any brand with unique needs',
-              },
-            ]).map((pkg, index) => (
+            {content.packages?.map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -191,12 +171,7 @@ export default function ServicesPageClient({ content }: ServicesPageClientProps)
           </FadeInSection>
 
           <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(content.process?.steps?.length > 0 ? content.process.steps : [
-              { step: '01', title: 'Discovery', description: 'We dive deep into your brand\u2014guidelines, voice, existing assets, and goals.' },
-              { step: '02', title: 'Strategy', description: 'We recommend the right package and align on creative direction and timelines.' },
-              { step: '03', title: 'Creation', description: 'We use cutting-edge technology and proven taste to curate and perfect every piece.' },
-              { step: '04', title: 'Delivery', description: 'You receive polished, ready-to-use assets with one round of revisions included.' },
-            ]).map((step, index) => (
+            {content.process?.steps?.map((step, index) => (
               <StaggerItem key={step.step}>
                 <motion.div
                   whileHover={{ y: -8 }}

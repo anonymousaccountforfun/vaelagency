@@ -6,7 +6,6 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 import Footer from '@/components/Footer'
 import { ContactModalProvider } from '@/components/ContactModalContext'
 import ContactModal from '@/components/ContactModal'
-import ChatProactiveTrigger from '@/components/ChatProactiveTrigger'
 
 export default function LayoutWrapper({
   children,
@@ -27,7 +26,6 @@ export default function LayoutWrapper({
       <main>{children}</main>
       <Footer />
       <ContactModal />
-      <ChatProactiveTrigger />
     </ContactModalProvider>
   )
 }

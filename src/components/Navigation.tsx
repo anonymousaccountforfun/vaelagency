@@ -14,6 +14,7 @@ export default function Navigation() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
+    { href: '/insights', label: 'Insights' },
   ]
 
   return (
@@ -56,13 +57,6 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-stone-900 group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
-            <button
-              onClick={openModal}
-              className="text-sm text-stone-600 hover:text-stone-900 transition-colors relative group"
-            >
-              Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-stone-900 group-hover:w-full transition-all duration-300" />
-            </button>
           </div>
 
           {/* Right Column - CTA Button (desktop) / Mobile Menu Button (mobile) */}
@@ -138,22 +132,7 @@ export default function Navigation() {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navLinks.length * 0.1 }}
-              >
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false)
-                    openModal()
-                  }}
-                  className="block text-lg text-stone-700 hover:text-stone-900 transition-colors py-2"
-                >
-                  Contact
-                </button>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: (navLinks.length + 1) * 0.1 }}
+                transition={{ delay: 0.3 }}
                 className="pt-4"
               >
                 <button

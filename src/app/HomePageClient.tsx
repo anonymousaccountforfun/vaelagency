@@ -9,12 +9,21 @@ import MediaRenderer from '@/components/MediaRenderer'
 import { urlFor } from '../../sanity/lib/client'
 import type { HomepageData } from '../../sanity/lib/types'
 import { useContactModal } from '@/components/ContactModalContext'
-import { highlightWord } from '@/lib/utils'
 
-import { FORMSPREE_ENDPOINT } from '@/lib/constants'
+const FORMSPREE_ID = 'mjgygdpl'
 
 interface HomePageClientProps {
   content: HomepageData
+}
+
+// Helper function to highlight specific words in red
+function highlightWord(text: string, word: string) {
+  const parts = text.split(new RegExp(`(${word})`, 'gi'))
+  return parts.map((part, i) =>
+    part.toLowerCase() === word.toLowerCase()
+      ? <span key={i} className="text-red-500">{part}</span>
+      : part
+  )
 }
 
 export default function HomePageClient({ content }: HomePageClientProps) {
@@ -23,12 +32,8 @@ export default function HomePageClient({ content }: HomePageClientProps) {
   // Parse headline to handle line breaks
   const headlineParts = content.hero.headline.split('\n')
 
-  // Check if hero has uploaded media (guard against empty media objects)
-  const hasHeroMedia = Boolean(
-    content.heroMedia?.type === 'video'
-      ? content.heroMedia.videoUrl
-      : content.heroMedia?.image
-  )
+  // Check if hero has uploaded media
+  const hasHeroMedia = content.heroMedia?.type === 'video' || content.heroMedia?.image
 
   return (
     <>
@@ -74,7 +79,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             <h1 className={`text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.05] mb-8 max-w-5xl mx-auto tracking-tight ${hasHeroMedia ? 'text-white' : 'text-stone-900'}`}>
               {headlineParts.map((part, i) => (
                 <span key={i}>
-                  {highlightWord(part, '48 hours')}
+                  {highlightWord(part, 'consumer')}
                   {i < headlineParts.length - 1 && <br />}
                 </span>
               ))}
@@ -117,6 +122,45 @@ export default function HomePageClient({ content }: HomePageClientProps) {
         </div>
       </section>
 
+      {/* Services Section */}
+      <section className="py-32 md:py-40 bg-background-secondary">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <FadeInSection className="text-center mb-20">
+            <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.services.label}</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6">
+              {highlightWord(content.services.headline, 'growth')}
+            </h2>
+            <p className="text-stone-600 text-lg max-w-2xl mx-auto">
+              {content.services.description}
+            </p>
+          </FadeInSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {content.services.items.map((service, index) => (
+              <ServiceCard
+                key={service.title}
+                title={service.title}
+                description={service.description}
+                deliverables={service.deliverables}
+                index={index}
+                media={service.media}
+              />
+            ))}
+          </div>
+
+          <FadeInSection delay={0.4} className="text-center mt-16">
+            <motion.a
+              href={content.services.buttonLink}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
+            >
+              {content.services.buttonText}
+            </motion.a>
+          </FadeInSection>
+        </div>
+      </section>
+
       {/* Social Proof Section */}
       <section className="py-32 md:py-40 bg-background">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -128,14 +172,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {(content.socialProof?.companies?.length > 0 ? content.socialProof.companies : [
-              { name: 'Uber' },
-              { name: 'Spotify' },
-              { name: 'Hims & Hers' },
-              { name: 'Epidemic Sound' },
-              { name: 'Artlist' },
-              { name: 'UnitedMasters' },
-            ]).map((company) => {
+            {content.socialProof.companies.map((company) => {
               // Generate logo URL with quality optimization
               let logoUrl: string | null = null
               try {
@@ -197,110 +234,6 @@ export default function HomePageClient({ content }: HomePageClientProps) {
         </div>
       </section>
 
-      {/* Our Work Section */}
-      <section className="py-32 md:py-40 bg-background">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <FadeInSection>
-            <div className="text-center mb-16">
-              <p className="text-sm font-medium text-stone-500 uppercase tracking-wider mb-4">
-                Sample Work
-              </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900 mb-4">
-                What we {highlightWord('deliver', 'deliver')}
-              </h2>
-              <p className="text-stone-600 text-lg max-w-2xl mx-auto">
-                A preview of the creative we produce. Every piece is AI-generated,
-                then refined and curated by our creative directors.
-              </p>
-            </div>
-          </FadeInSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'Brand Identity Package', category: 'Brand & Identity', description: 'Logo, color palette, and visual guidelines for a DTC skincare brand.' },
-              { title: 'Product Photography', category: 'Content Production', description: 'Studio-quality product shots for ecommerce and social.' },
-              { title: 'Social Media Campaign', category: 'Digital & Growth', description: 'Instagram carousel and story templates for a wellness brand.' },
-              { title: 'Ad Creative Suite', category: 'Digital & Growth', description: 'Performance ad variants for Meta and TikTok paid acquisition.' },
-              { title: 'Email Design', category: 'Digital & Growth', description: 'Welcome series email templates with on-brand visuals.' },
-              { title: 'Short-Form Video', category: 'Content Production', description: 'TikTok/Reels-native product showcase content.' },
-            ].map((item, index) => (
-              <FadeInSection key={index} delay={index * 0.1}>
-                <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200 hover:shadow-lg transition-shadow duration-300">
-                  <div className="relative h-56 bg-gradient-to-br from-stone-100 to-stone-200" />
-                  <div className="p-5">
-                    <span className="text-xs font-medium text-stone-500 uppercase tracking-wider">
-                      {item.category}
-                    </span>
-                    <h3 className="font-semibold text-stone-900 mt-1 mb-1">{item.title}</h3>
-                    <p className="text-stone-500 text-sm">{item.description}</p>
-                  </div>
-                </div>
-              </FadeInSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-32 md:py-40 bg-background-secondary">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <FadeInSection className="text-center mb-20">
-            <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.services.label}</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6">
-              {highlightWord(content.services.headline, 'growth')}
-            </h2>
-            <p className="text-stone-600 text-lg max-w-2xl mx-auto">
-              {content.services.description}
-            </p>
-          </FadeInSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(content.services?.items?.length > 0 ? content.services.items : [
-              {
-                title: 'Launch Campaign Package',
-                description: 'Everything you need to make a splash with your next product launch.',
-                deliverables: ['Hero images & product photography', 'Launch video (30s + 60s cuts)', 'Social media content suite', 'Launch copy & messaging', 'Email announcement designs'],
-              },
-              {
-                title: 'Seasonal Refresh',
-                description: 'Keep your brand fresh with seasonally-relevant creative assets.',
-                deliverables: ['Seasonal campaign imagery', 'Updated lifestyle photography', 'Social content calendar assets', 'Seasonal ad creative variations', 'Email template designs'],
-              },
-              {
-                title: 'Paid Media Assets',
-                description: 'Performance-optimized creative for your paid acquisition channels.',
-                deliverables: ['Static ad variations (multiple sizes)', 'Video ads (15s, 30s formats)', 'UGC-style content', 'A/B test creative variants', 'Platform-specific optimizations'],
-              },
-              {
-                title: 'Brand Storytelling Content',
-                description: 'Authentic content that connects your brand with your audience.',
-                deliverables: ['Brand documentary-style video', 'Founder/team photography', 'Behind-the-scenes content', 'Long-form brand copy', 'Social storytelling assets'],
-              },
-            ]).map((service, index) => (
-              <ServiceCard
-                key={service.title}
-                title={service.title}
-                description={service.description}
-                deliverables={service.deliverables}
-                index={index}
-                media={service.media}
-              />
-            ))}
-          </div>
-
-          <FadeInSection delay={0.4} className="text-center mt-16">
-            <motion.a
-              href={content.services.buttonLink}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
-            >
-              {content.services.buttonText}
-            </motion.a>
-          </FadeInSection>
-        </div>
-      </section>
-
       {/* NYC Focus Section */}
       <section className="py-32 md:py-40 bg-warm-accent relative overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
@@ -335,12 +268,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
 
             <FadeInSection delay={0.2}>
               <div className="grid grid-cols-2 gap-6">
-                {(content.localExpertise?.stats?.length > 0 ? content.localExpertise.stats : [
-                  { number: '10+', label: 'Years Combined Experience' },
-                  { number: '600M+', label: 'Users Reached Across Our Careers' },
-                  { number: '48hr', label: 'Avg. Turnaround' },
-                  { number: '100%', label: 'Human Curation' },
-                ]).map((stat, index) => (
+                {content.localExpertise.stats.map((stat, index) => (
                   <motion.div
                     key={stat.label}
                     initial={{ opacity: 0, y: 20 }}
@@ -377,7 +305,7 @@ function CTASection({ content }: { content: HomepageData }) {
     setFormState('submitting')
 
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, message }),

@@ -43,16 +43,6 @@ export default function MediaRenderer({
           .url()
       : fallbackUrl
 
-    // If no valid image source exists, render a styled placeholder
-    if (!imageUrl) {
-      return (
-        <div
-          className={`bg-gradient-to-br from-stone-100 to-stone-200 ${className}`}
-          style={{ width: '100%', height: '100%' }}
-        />
-      )
-    }
-
     const imageAlt = media?.image?.alt || alt
 
     // Use appropriate sizes based on whether it's a fill image (likely hero) or fixed
@@ -142,16 +132,7 @@ export default function MediaRenderer({
     )
   }
 
-  // Fallback to image — guard against empty fallbackUrl
-  if (!fallbackUrl) {
-    return (
-      <div
-        className={`bg-gradient-to-br from-stone-100 to-stone-200 ${className}`}
-        style={{ width: '100%', height: '100%' }}
-      />
-    )
-  }
-
+  // Fallback to image
   const fallbackSizes = sizes || (fill ? HERO_SIZES : DEFAULT_SIZES)
 
   if (fill) {

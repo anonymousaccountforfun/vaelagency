@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { client } from '../../../sanity/lib/client'
+import { clientNoCache } from '../../../sanity/lib/client'
 import { aboutPageQuery } from '../../../sanity/lib/queries'
 import type { AboutPageData } from '../../../sanity/lib/types'
 import AboutPageClient from './AboutPageClient'
@@ -78,7 +78,7 @@ const defaultContent: AboutPageData = {
 
 async function getAboutPageData(): Promise<AboutPageData> {
   try {
-    const data = await client.fetch(aboutPageQuery)
+    const data = await clientNoCache.fetch(aboutPageQuery)
     if (data) {
       return {
         ...defaultContent,
