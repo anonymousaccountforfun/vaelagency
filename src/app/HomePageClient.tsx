@@ -9,21 +9,12 @@ import MediaRenderer from '@/components/MediaRenderer'
 import { urlFor } from '../../sanity/lib/client'
 import type { HomepageData } from '../../sanity/lib/types'
 import { useContactModal } from '@/components/ContactModalContext'
+import { highlightWord } from '@/lib/utils'
 
 const FORMSPREE_ID = 'mjgygdpl'
 
 interface HomePageClientProps {
   content: HomepageData
-}
-
-// Helper function to highlight specific words in red
-function highlightWord(text: string, word: string) {
-  const parts = text.split(new RegExp(`(${word})`, 'gi'))
-  return parts.map((part, i) =>
-    part.toLowerCase() === word.toLowerCase()
-      ? <span key={i} className="text-red-500">{part}</span>
-      : part
-  )
 }
 
 export default function HomePageClient({ content }: HomePageClientProps) {
@@ -32,8 +23,12 @@ export default function HomePageClient({ content }: HomePageClientProps) {
   // Parse headline to handle line breaks
   const headlineParts = content.hero.headline.split('\n')
 
-  // Check if hero has uploaded media
-  const hasHeroMedia = content.heroMedia?.type === 'video' || content.heroMedia?.image
+  // Check if hero has uploaded media (guard against empty media objects)
+  const hasHeroMedia = Boolean(
+    content.heroMedia?.type === 'video'
+      ? content.heroMedia.videoUrl
+      : content.heroMedia?.image
+  )
 
   return (
     <>
@@ -136,7 +131,28 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           </FadeInSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {content.services.items.map((service, index) => (
+            {(content.services?.items?.length > 0 ? content.services.items : [
+              {
+                title: 'Brand & Identity',
+                description: 'Everything you need to make a splash with your next product launch.',
+                deliverables: ['Logo Design', 'Sonic Logos', 'Sound Design', 'Graphic Design', 'Web Design and Copy'],
+              },
+              {
+                title: 'Content Production',
+                description: 'High-volume, high-quality assets for your social media and website.',
+                deliverables: ['Product Images', 'Lifestyle Photography', 'Product Videos', 'Short-Form Video', 'UGC-Style Content'],
+              },
+              {
+                title: 'Digital & Growth',
+                description: 'Assets and strategies designed to drive traffic and engagement.',
+                deliverables: ['Social Media Content & Copy', 'Ad Creative', 'Email Design & Copy', 'Influencer Content'],
+              },
+              {
+                title: 'Custom',
+                description: 'Partner with Vael Creative to design a custom package that fits your creative needs.',
+                deliverables: ['Tailored to your needs', 'In your brand voice', 'On the timeline you require'],
+              },
+            ]).map((service, index) => (
               <ServiceCard
                 key={service.title}
                 title={service.title}
@@ -172,7 +188,14 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {content.socialProof.companies.map((company) => {
+            {(content.socialProof?.companies?.length > 0 ? content.socialProof.companies : [
+              { name: 'Hims & Hers' },
+              { name: 'Ro' },
+              { name: 'GNC' },
+              { name: 'Athletic Greens' },
+              { name: 'Thrive Market' },
+              { name: 'Keeps' },
+            ]).map((company) => {
               // Generate logo URL with quality optimization
               let logoUrl: string | null = null
               try {
@@ -268,7 +291,12 @@ export default function HomePageClient({ content }: HomePageClientProps) {
 
             <FadeInSection delay={0.2}>
               <div className="grid grid-cols-2 gap-6">
-                {content.localExpertise.stats.map((stat, index) => (
+                {(content.localExpertise?.stats?.length > 0 ? content.localExpertise.stats : [
+                  { number: '35+', label: 'Years Combined Experience' },
+                  { number: '600M+', label: 'Users Reached Across Our Careers' },
+                  { number: '48hr', label: 'Avg. Turnaround' },
+                  { number: '100%', label: 'Human Curation' },
+                ]).map((stat, index) => (
                   <motion.div
                     key={stat.label}
                     initial={{ opacity: 0, y: 20 }}

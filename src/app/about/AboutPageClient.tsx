@@ -5,17 +5,8 @@ import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
 import { useContactModal } from '@/components/ContactModalContext'
+import { highlightWord } from '@/lib/utils'
 import type { AboutPageData, SanityMedia } from '../../../sanity/lib/types'
-
-// Helper function to highlight specific words in red
-function highlightWord(text: string, word: string) {
-  const parts = text.split(new RegExp(`(${word})`, 'gi'))
-  return parts.map((part, i) =>
-    part.toLowerCase() === word.toLowerCase()
-      ? <span key={i} className="text-red-500">{part}</span>
-      : part
-  )
-}
 
 interface FounderWithMedia {
   name: string
@@ -71,7 +62,22 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
       <section className="py-20 md:py-28 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {foundersWithMedia.map((founder, index) => (
+            {(foundersWithMedia?.length > 0 ? foundersWithMedia : [
+              {
+                name: 'Brian Hughes',
+                title: 'Co-Founder & CEO',
+                bio: 'Former GM at Hims & Hers, Brian brings over a decade of experience scaling direct-to-consumer brands. He combines data-driven strategy with creative intuition to help brands break through the noise.',
+                companies: ['Hims & Hers', 'Data Geek', 'Rock n Roll Fan', 'Dad', 'Iraq & Afghanistan Vet'],
+                media: undefined,
+              },
+              {
+                name: 'Chris McDonald',
+                title: 'Co-Founder & Chief Creative Officer',
+                bio: 'An accomplished audio engineer turned creative strategist, Chris has spent his career at the intersection of art and commerce. He leads Vael\'s creative vision with an obsessive eye for quality.',
+                companies: ['Songwriter', 'Golfer', 'Dad', 'Dog Lover', 'Knows B2B'],
+                media: undefined,
+              },
+            ]).map((founder, index) => (
               <motion.div
                 key={founder.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -136,7 +142,11 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
 
           <FadeInSection delay={0.2}>
             <div className="space-y-6">
-              {content.story.paragraphs?.map((paragraph, index) => (
+              {(content.story?.paragraphs?.length > 0 ? content.story.paragraphs : [
+                'We started Vael because we saw a gap: brands spending big on ads but starving for the creative assets to make them work. As operators ourselves, we knew that speed, taste, and reliability shouldn\'t be mutually exclusive.',
+                'Vael Creative was born from the belief that every consumer brand deserves access to world-class creative — without the agency overhead, the endless revisions, or the six-figure retainers. We combine cutting-edge AI tools with human curation to deliver premium content at a pace the market demands.',
+                'Our founding team brings experience from Hims & Hers, major audio studios, and high-growth DTC brands. We\'ve been on the brand side. We know what it takes to ship great creative, fast.',
+              ]).map((paragraph, index) => (
                 <p key={index} className="text-stone-600 text-lg leading-relaxed">
                   {paragraph}
                 </p>
