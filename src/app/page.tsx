@@ -1,4 +1,4 @@
-import { clientNoCache } from '../../sanity/lib/client'
+import { client } from '../../sanity/lib/client'
 import { homepageQuery } from '../../sanity/lib/queries'
 import type { HomepageData } from '../../sanity/lib/types'
 import HomePageClient from './HomePageClient'
@@ -9,8 +9,8 @@ export const revalidate = 60
 // Default content as fallback
 const defaultContent: HomepageData = {
   hero: {
-    headline: 'Premium creative\nfor consumer brands.',
-    subheadline: "Human-curated, AI-accelerated content that's on-brand and performance-ready. Serving New York's boldest consumer brands.",
+    headline: 'On-brand creative\nin 48 hours, not 4 weeks.',
+    subheadline: "Human-curated, AI-accelerated content that's performance-ready. Built for consumer brands ready to scale.",
     primaryButtonText: 'Book Discovery Call',
     primaryButtonLink: '#calendly',
     secondaryButtonText: 'View Services',
@@ -85,7 +85,7 @@ const defaultContent: HomepageData = {
   },
   localExpertise: {
     label: 'Local Expertise',
-    headline: "Serving New York's boldest consumer brands",
+    headline: "Built for the boldest consumer brands",
     description: "We understand the pace and ambition of New York's startup ecosystem. Our team brings Fortune 500 experience to emerging brands ready to scale.",
     primaryButtonText: 'Book Discovery Call',
     primaryButtonLink: '#calendly',
@@ -93,7 +93,7 @@ const defaultContent: HomepageData = {
     secondaryButtonLink: '/about',
     stats: [
       { number: '10+', label: 'Years Combined Experience' },
-      { number: '50M+', label: 'Users Reached' },
+      { number: '600M+', label: 'Users Reached Across Our Careers' },
       { number: '48hr', label: 'Avg. Turnaround' },
       { number: '100%', label: 'Human Curation' },
     ],
@@ -101,7 +101,7 @@ const defaultContent: HomepageData = {
   secondMedia: undefined,
   cta: {
     headline: 'Ready to accelerate your creative?',
-    description: "Join New York's most ambitious consumer brands using AI-powered creative that doesn't sacrifice quality.",
+    description: "AI-powered creative that doesn't sacrifice quality. See how we can accelerate your brand.",
     primaryButtonText: 'Book Discovery Call',
     primaryButtonLink: '#calendly',
     secondaryButtonText: 'View Packages',
@@ -111,15 +111,27 @@ const defaultContent: HomepageData = {
 
 async function getHomepageData(): Promise<HomepageData> {
   try {
-    const data = await clientNoCache.fetch(homepageQuery)
+    const data = await client.fetch(homepageQuery)
     if (data) {
       return {
         ...defaultContent,
         ...data,
         hero: { ...defaultContent.hero, ...data?.hero },
-        services: { ...defaultContent.services, ...data?.services },
-        socialProof: { ...defaultContent.socialProof, ...data?.socialProof },
-        localExpertise: { ...defaultContent.localExpertise, ...data?.localExpertise },
+        services: {
+          ...defaultContent.services,
+          ...data?.services,
+          items: data?.services?.items?.length > 0 ? data.services.items : defaultContent.services.items,
+        },
+        socialProof: {
+          ...defaultContent.socialProof,
+          ...data?.socialProof,
+          companies: data?.socialProof?.companies?.length > 0 ? data.socialProof.companies : defaultContent.socialProof.companies,
+        },
+        localExpertise: {
+          ...defaultContent.localExpertise,
+          ...data?.localExpertise,
+          stats: data?.localExpertise?.stats?.length > 0 ? data.localExpertise.stats : defaultContent.localExpertise.stats,
+        },
         cta: { ...defaultContent.cta, ...data?.cta },
       }
     }
