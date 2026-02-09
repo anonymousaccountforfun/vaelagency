@@ -45,6 +45,18 @@ export default function MediaRenderer({
 
     const imageAlt = media?.image?.alt || alt
 
+    // Guard: if no image URL available, render a styled placeholder instead of broken <Image src="">
+    if (!imageUrl) {
+      return (
+        <div
+          className={`bg-gradient-to-br from-stone-100 to-stone-200 ${fill ? 'absolute inset-0' : ''} ${className}`}
+          style={!fill ? { width: width || 2070, height: height || 1380 } : undefined}
+          role="img"
+          aria-label={imageAlt || 'Image placeholder'}
+        />
+      )
+    }
+
     // Use appropriate sizes based on whether it's a fill image (likely hero) or fixed
     const imageSizes = sizes || (fill ? HERO_SIZES : DEFAULT_SIZES)
 
@@ -132,7 +144,18 @@ export default function MediaRenderer({
     )
   }
 
-  // Fallback to image
+  // Fallback to image — guard against empty fallbackUrl
+  if (!fallbackUrl) {
+    return (
+      <div
+        className={`bg-gradient-to-br from-stone-100 to-stone-200 ${fill ? 'absolute inset-0' : ''} ${className}`}
+        style={!fill ? { width: width || 2070, height: height || 1380 } : undefined}
+        role="img"
+        aria-label={alt || 'Image placeholder'}
+      />
+    )
+  }
+
   const fallbackSizes = sizes || (fill ? HERO_SIZES : DEFAULT_SIZES)
 
   if (fill) {

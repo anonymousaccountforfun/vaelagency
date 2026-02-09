@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { clientNoCache } from '../../../sanity/lib/client'
+import { client } from '../../../sanity/lib/client'
 import { servicesPageQuery } from '../../../sanity/lib/queries'
 import type { ServicesPageData } from '../../../sanity/lib/types'
 import ServicesPageClient from './ServicesPageClient'
@@ -133,7 +133,7 @@ const defaultContent: ServicesPageData = {
 
 async function getServicesPageData(): Promise<ServicesPageData> {
   try {
-    const data = await clientNoCache.fetch(servicesPageQuery)
+    const data = await client.fetch(servicesPageQuery)
     if (data) {
       return {
         ...defaultContent,
