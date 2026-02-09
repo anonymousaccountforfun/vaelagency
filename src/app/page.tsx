@@ -1,4 +1,4 @@
-import { clientNoCache } from '../../sanity/lib/client'
+import { client } from '../../sanity/lib/client'
 import { homepageQuery } from '../../sanity/lib/queries'
 import type { HomepageData } from '../../sanity/lib/types'
 import HomePageClient from './HomePageClient'
@@ -111,7 +111,7 @@ const defaultContent: HomepageData = {
 
 async function getHomepageData(): Promise<HomepageData> {
   try {
-    const data = await clientNoCache.fetch(homepageQuery)
+    const data = await client.fetch(homepageQuery)
     if (data) {
       return {
         ...defaultContent,
