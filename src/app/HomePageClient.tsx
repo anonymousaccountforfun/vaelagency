@@ -11,7 +11,7 @@ import type { HomepageData } from '../../sanity/lib/types'
 import { useContactModal } from '@/components/ContactModalContext'
 import { highlightWord } from '@/lib/utils'
 
-const FORMSPREE_ID = 'mjgygdpl'
+import { FORMSPREE_ENDPOINT } from '@/lib/constants'
 
 interface HomePageClientProps {
   content: HomepageData
@@ -377,7 +377,7 @@ function CTASection({ content }: { content: HomepageData }) {
     setFormState('submitting')
 
     try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, message }),

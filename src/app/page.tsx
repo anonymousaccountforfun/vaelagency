@@ -117,9 +117,21 @@ async function getHomepageData(): Promise<HomepageData> {
         ...defaultContent,
         ...data,
         hero: { ...defaultContent.hero, ...data?.hero },
-        services: { ...defaultContent.services, ...data?.services },
-        socialProof: { ...defaultContent.socialProof, ...data?.socialProof },
-        localExpertise: { ...defaultContent.localExpertise, ...data?.localExpertise },
+        services: {
+          ...defaultContent.services,
+          ...data?.services,
+          items: data?.services?.items?.length > 0 ? data.services.items : defaultContent.services.items,
+        },
+        socialProof: {
+          ...defaultContent.socialProof,
+          ...data?.socialProof,
+          companies: data?.socialProof?.companies?.length > 0 ? data.socialProof.companies : defaultContent.socialProof.companies,
+        },
+        localExpertise: {
+          ...defaultContent.localExpertise,
+          ...data?.localExpertise,
+          stats: data?.localExpertise?.stats?.length > 0 ? data.localExpertise.stats : defaultContent.localExpertise.stats,
+        },
         cta: { ...defaultContent.cta, ...data?.cta },
       }
     }
