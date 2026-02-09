@@ -197,6 +197,50 @@ export default function HomePageClient({ content }: HomePageClientProps) {
         </div>
       </section>
 
+      {/* Our Work Section */}
+      <section className="py-32 md:py-40 bg-background">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <p className="text-sm font-medium text-stone-500 uppercase tracking-wider mb-4">
+                Sample Work
+              </p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-stone-900 mb-4">
+                What we {highlightWord('deliver', 'deliver')}
+              </h2>
+              <p className="text-stone-600 text-lg max-w-2xl mx-auto">
+                A preview of the creative we produce. Every piece is AI-generated,
+                then refined and curated by our creative directors.
+              </p>
+            </div>
+          </FadeInSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'Brand Identity Package', category: 'Brand & Identity', description: 'Logo, color palette, and visual guidelines for a DTC skincare brand.' },
+              { title: 'Product Photography', category: 'Content Production', description: 'Studio-quality product shots for ecommerce and social.' },
+              { title: 'Social Media Campaign', category: 'Digital & Growth', description: 'Instagram carousel and story templates for a wellness brand.' },
+              { title: 'Ad Creative Suite', category: 'Digital & Growth', description: 'Performance ad variants for Meta and TikTok paid acquisition.' },
+              { title: 'Email Design', category: 'Digital & Growth', description: 'Welcome series email templates with on-brand visuals.' },
+              { title: 'Short-Form Video', category: 'Content Production', description: 'TikTok/Reels-native product showcase content.' },
+            ].map((item, index) => (
+              <FadeInSection key={index} delay={index * 0.1}>
+                <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200 hover:shadow-lg transition-shadow duration-300">
+                  <div className="relative h-56 bg-gradient-to-br from-stone-100 to-stone-200" />
+                  <div className="p-5">
+                    <span className="text-xs font-medium text-stone-500 uppercase tracking-wider">
+                      {item.category}
+                    </span>
+                    <h3 className="font-semibold text-stone-900 mt-1 mb-1">{item.title}</h3>
+                    <p className="text-stone-500 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
       <section className="py-32 md:py-40 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
