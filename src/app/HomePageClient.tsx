@@ -74,7 +74,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             <h1 className={`text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[1.05] mb-8 max-w-5xl mx-auto tracking-tight ${hasHeroMedia ? 'text-white' : 'text-stone-900'}`}>
               {headlineParts.map((part, i) => (
                 <span key={i}>
-                  {highlightWord(part, 'consumer')}
+                  {highlightWord(part, '48 hours')}
                   {i < headlineParts.length - 1 && <br />}
                 </span>
               ))}
