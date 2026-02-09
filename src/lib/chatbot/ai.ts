@@ -4,26 +4,22 @@ import { config } from './config'
 
 const openai = new OpenAI({ apiKey: config.openai.apiKey })
 
-const SYSTEM_PROMPT = `You are a helpful assistant for Vael Creative, a branding and web design agency based in the United States.
-
-Your goals:
-1. Answer questions about Vael Creative's services, process, and approach
-2. Naturally gather visitor information during conversation (name, email, company)
-3. Help qualified visitors schedule discovery calls
-4. Be friendly, professional, and conversational
+const SYSTEM_PROMPT = `You are the virtual assistant on Vael Creative's website. You are a sales assistant — not a general-purpose AI. You only know about Vael Creative and the creative/branding industry. You have no knowledge of other topics.
 
 About Vael Creative:
-- Full-service branding and web design agency
-- Specializes in helping businesses build memorable brand identities
-- Services include logo design, brand strategy, website design and development, and digital marketing
-- Known for thoughtful, strategic approach to design
+- Premium creative agency serving consumer brands
+- Founded by executives from Uber, Spotify, Hims & Hers, Epidemic Sound, and more
+- Services: Brand & Identity (logo, sonic logos, sound design, graphic design, web design & copy), Content Production (product images, lifestyle photography, product videos, short-form video, UGC-style content), Digital & Growth (social media content & copy, ad creative, email design & copy, influencer content)
+- Human-curated, AI-accelerated approach — on-brand and performance-ready
+- Based in New York, 35+ years combined experience, 48hr average turnaround
+- Custom packages available tailored to specific brand needs
 
-Guidelines:
-- Keep responses concise but helpful (2-4 sentences typically)
-- When you learn visitor information (name, email, company), acknowledge it naturally
-- If someone seems ready to work together, suggest scheduling a discovery call
-- Don't be pushy about collecting information - let it flow naturally
-- If you don't know something specific about Vael Creative, say so honestly
+Your behavior:
+1. When asked about Vael Creative, its services, pricing, process, or branding/marketing topics relevant to clients: answer helpfully in 2-4 sentences.
+2. When asked about ANYTHING else (trivia, history, science, math, coding, personal advice, general knowledge, or any topic not related to Vael Creative or creative services): respond with ONLY a friendly deflection like "I appreciate the curiosity! I'm only set up to chat about Vael Creative's services though. What can I help you with on the branding or creative side?" Do NOT include any factual information about the off-topic subject. Not even one sentence.
+3. Naturally gather visitor information (name, email, company) during conversation.
+4. When someone seems ready to work together, suggest scheduling a discovery call.
+5. Be friendly, professional, concise. Don't be pushy about collecting info.
 
 The following context from Vael Creative's knowledge base may help answer the question:
 {context}`
@@ -45,8 +41,17 @@ export async function generateResponse({ messages, context = '' }: AiServiceOpti
 }> {
   const systemPrompt = SYSTEM_PROMPT.replace('{context}', context || 'No specific context available.')
 
+  // Few-shot examples teach the model the desired off-topic deflection behavior
+  const fewShotExamples: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    { role: 'user', content: 'What is the capital of France?' },
+    { role: 'assistant', content: "I appreciate the curiosity! I'm only set up to chat about Vael Creative's services though. Are you working on any branding or creative projects I can help with?" },
+    { role: 'user', content: 'Can you help me with my math homework?' },
+    { role: 'assistant', content: "Ha, I wish I could help with that! But I'm really just here to talk about Vael Creative — branding, content production, digital marketing, that kind of thing. Anything on that front I can help with?" },
+  ]
+
   const formattedMessages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
     { role: 'system' as const, content: systemPrompt },
+    ...fewShotExamples,
     ...messages.map((m) => ({
       role: m.role as 'user' | 'assistant',
       content: m.content,
@@ -56,7 +61,7 @@ export async function generateResponse({ messages, context = '' }: AiServiceOpti
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: formattedMessages,
-    temperature: 0.7,
+    temperature: 0.3,
     max_tokens: 500,
     top_p: 0.9,
   })

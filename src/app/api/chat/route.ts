@@ -93,8 +93,30 @@ export async function POST(request: NextRequest) {
     const knowledgeResults = await searchKnowledge(message)
     const context = formatContextForPrompt(knowledgeResults)
 
-    // Generate AI response
-    const aiResult = await generateResponse({ messages, context })
+    // Off-topic filter: if the message has no relevance to our knowledge base
+    // and contains no business-related keywords, return a canned deflection
+    // without calling the AI — saves cost and guarantees the behavior.
+    const bestSimilarity = knowledgeResults.length > 0 ? Math.max(...knowledgeResults.map((r) => r.similarity)) : 0
+    const businessKeywords = /\b(vael|brand|logo|design|creative|content|video|photo|social media|marketing|ad\b|ads\b|advertising|website|web|package|pricing|price|cost|quote|service|portfolio|discovery call|book a call|schedule|UGC|influencer|email design|graphic|sonic|sound|identity|campaign|strategy|copy|copywriting|reels|tiktok|instagram|facebook|linkedin)\b/i
+    const isOnTopic = bestSimilarity > 0.5 || businessKeywords.test(message)
+
+    let aiResult: { content: string; profileData?: { email?: string; firstName?: string; lastName?: string; company?: string; phone?: string } }
+
+    if (!isOnTopic && messages.length <= 2) {
+      // First or second message is off-topic — deflect without calling AI
+      const deflections = [
+        "I appreciate the curiosity! I'm only set up to chat about Vael Creative's services though — branding, content production, digital marketing, and more. What can I help you with on the creative side?",
+        "Ha, great question! But I'm really just here to help with Vael Creative's services. Are you working on any branding or creative projects I can help with?",
+        "Interesting question! I'm best suited to help with branding and creative services though. Is there anything about Vael Creative I can help you with?",
+      ]
+      aiResult = {
+        content: deflections[Math.floor(Math.random() * deflections.length)],
+        profileData: undefined,
+      }
+    } else {
+      // On-topic or ongoing conversation — use AI
+      aiResult = await generateResponse({ messages, context })
+    }
 
     // Extract profile data and update visitor
     let profileUpdates: Partial<typeof visitor> | undefined
