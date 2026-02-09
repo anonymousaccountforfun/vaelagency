@@ -16,12 +16,16 @@ export default function ChatProactiveTrigger() {
     }, 30000)
 
     // Or show on 50% scroll
+    let scrollTriggered = false
     const handleScroll = () => {
+      if (scrollTriggered) return
       const scrollableHeight = document.body.scrollHeight - window.innerHeight
       if (scrollableHeight <= 0) return
       const scrollPercent = window.scrollY / scrollableHeight
       if (scrollPercent > 0.5) {
+        scrollTriggered = true
         setShowBubble(true)
+        window.removeEventListener('scroll', handleScroll)
       }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })

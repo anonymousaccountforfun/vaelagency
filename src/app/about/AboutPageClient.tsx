@@ -66,15 +66,15 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
               {
                 name: 'Brian Hughes',
                 title: 'Co-Founder & CEO',
-                bio: 'Former GM at Hims & Hers, Brian brings over a decade of experience scaling direct-to-consumer brands. He combines data-driven strategy with creative intuition to help brands break through the noise.',
-                companies: ['Hims & Hers', 'Data Geek', 'Rock n Roll Fan', 'Dad', 'Iraq & Afghanistan Vet'],
+                bio: 'Former GM at Hims & Hers, where he led growth initiatives reaching millions of customers. Prior to that, Brian spent years at Uber driving strategic operations. He holds an MBA from Harvard Business School and is a graduate of West Point, bringing both strategic rigor and operational excellence to every client engagement.',
+                companies: ['Hims & Hers', 'Uber', 'Harvard Business School', 'West Point'],
                 media: undefined,
               },
               {
                 name: 'Chris McDonald',
                 title: 'Co-Founder & Chief Creative Officer',
-                bio: 'An accomplished audio engineer turned creative strategist, Chris has spent his career at the intersection of art and commerce. He leads Vael\'s creative vision with an obsessive eye for quality.',
-                companies: ['Songwriter', 'Golfer', 'Dad', 'Dog Lover', 'Knows B2B'],
+                bio: "An accomplished audio engineer turned creative strategist, Chris has shaped the sound and vision of some of the world's most innovative music and media companies. His experience spans Epidemic Sound, Artlist, and UnitedMasters—giving him unique insight into how creative content scales while maintaining quality and authenticity.",
+                companies: ['Epidemic Sound', 'Artlist', 'UnitedMasters'],
                 media: undefined,
               },
             ]).map((founder, index) => (

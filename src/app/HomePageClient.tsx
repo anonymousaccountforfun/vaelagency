@@ -129,12 +129,12 @@ export default function HomePageClient({ content }: HomePageClientProps) {
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
             {(content.socialProof?.companies?.length > 0 ? content.socialProof.companies : [
+              { name: 'Uber' },
+              { name: 'Spotify' },
               { name: 'Hims & Hers' },
-              { name: 'Ro' },
-              { name: 'GNC' },
-              { name: 'Athletic Greens' },
-              { name: 'Thrive Market' },
-              { name: 'Keeps' },
+              { name: 'Epidemic Sound' },
+              { name: 'Artlist' },
+              { name: 'UnitedMasters' },
             ]).map((company) => {
               // Generate logo URL with quality optimization
               let logoUrl: string | null = null
@@ -257,24 +257,24 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {(content.services?.items?.length > 0 ? content.services.items : [
               {
-                title: 'Brand & Identity',
+                title: 'Launch Campaign Package',
                 description: 'Everything you need to make a splash with your next product launch.',
-                deliverables: ['Logo Design', 'Sonic Logos', 'Sound Design', 'Graphic Design', 'Web Design and Copy'],
+                deliverables: ['Hero images & product photography', 'Launch video (30s + 60s cuts)', 'Social media content suite', 'Launch copy & messaging', 'Email announcement designs'],
               },
               {
-                title: 'Content Production',
-                description: 'High-volume, high-quality assets for your social media and website.',
-                deliverables: ['Product Images', 'Lifestyle Photography', 'Product Videos', 'Short-Form Video', 'UGC-Style Content'],
+                title: 'Seasonal Refresh',
+                description: 'Keep your brand fresh with seasonally-relevant creative assets.',
+                deliverables: ['Seasonal campaign imagery', 'Updated lifestyle photography', 'Social content calendar assets', 'Seasonal ad creative variations', 'Email template designs'],
               },
               {
-                title: 'Digital & Growth',
-                description: 'Assets and strategies designed to drive traffic and engagement.',
-                deliverables: ['Social Media Content & Copy', 'Ad Creative', 'Email Design & Copy', 'Influencer Content'],
+                title: 'Paid Media Assets',
+                description: 'Performance-optimized creative for your paid acquisition channels.',
+                deliverables: ['Static ad variations (multiple sizes)', 'Video ads (15s, 30s formats)', 'UGC-style content', 'A/B test creative variants', 'Platform-specific optimizations'],
               },
               {
-                title: 'Custom',
-                description: 'Partner with Vael Creative to design a custom package that fits your creative needs.',
-                deliverables: ['Tailored to your needs', 'In your brand voice', 'On the timeline you require'],
+                title: 'Brand Storytelling Content',
+                description: 'Authentic content that connects your brand with your audience.',
+                deliverables: ['Brand documentary-style video', 'Founder/team photography', 'Behind-the-scenes content', 'Long-form brand copy', 'Social storytelling assets'],
               },
             ]).map((service, index) => (
               <ServiceCard
@@ -336,7 +336,7 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             <FadeInSection delay={0.2}>
               <div className="grid grid-cols-2 gap-6">
                 {(content.localExpertise?.stats?.length > 0 ? content.localExpertise.stats : [
-                  { number: '35+', label: 'Years Combined Experience' },
+                  { number: '10+', label: 'Years Combined Experience' },
                   { number: '600M+', label: 'Users Reached Across Our Careers' },
                   { number: '48hr', label: 'Avg. Turnaround' },
                   { number: '100%', label: 'Human Curation' },
