@@ -117,66 +117,6 @@ export default function HomePageClient({ content }: HomePageClientProps) {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-32 md:py-40 bg-background-secondary">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <FadeInSection className="text-center mb-20">
-            <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.services.label}</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6">
-              {highlightWord(content.services.headline, 'growth')}
-            </h2>
-            <p className="text-stone-600 text-lg max-w-2xl mx-auto">
-              {content.services.description}
-            </p>
-          </FadeInSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(content.services?.items?.length > 0 ? content.services.items : [
-              {
-                title: 'Brand & Identity',
-                description: 'Everything you need to make a splash with your next product launch.',
-                deliverables: ['Logo Design', 'Sonic Logos', 'Sound Design', 'Graphic Design', 'Web Design and Copy'],
-              },
-              {
-                title: 'Content Production',
-                description: 'High-volume, high-quality assets for your social media and website.',
-                deliverables: ['Product Images', 'Lifestyle Photography', 'Product Videos', 'Short-Form Video', 'UGC-Style Content'],
-              },
-              {
-                title: 'Digital & Growth',
-                description: 'Assets and strategies designed to drive traffic and engagement.',
-                deliverables: ['Social Media Content & Copy', 'Ad Creative', 'Email Design & Copy', 'Influencer Content'],
-              },
-              {
-                title: 'Custom',
-                description: 'Partner with Vael Creative to design a custom package that fits your creative needs.',
-                deliverables: ['Tailored to your needs', 'In your brand voice', 'On the timeline you require'],
-              },
-            ]).map((service, index) => (
-              <ServiceCard
-                key={service.title}
-                title={service.title}
-                description={service.description}
-                deliverables={service.deliverables}
-                index={index}
-                media={service.media}
-              />
-            ))}
-          </div>
-
-          <FadeInSection delay={0.4} className="text-center mt-16">
-            <motion.a
-              href={content.services.buttonLink}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
-            >
-              {content.services.buttonText}
-            </motion.a>
-          </FadeInSection>
-        </div>
-      </section>
-
       {/* Social Proof Section */}
       <section className="py-32 md:py-40 bg-background">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
@@ -253,6 +193,66 @@ export default function HomePageClient({ content }: HomePageClientProps) {
             <p className="text-stone-400 text-sm">
               {content.socialProof.additionalText}
             </p>
+          </FadeInSection>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-32 md:py-40 bg-background-secondary">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <FadeInSection className="text-center mb-20">
+            <p className="text-stone-500 text-sm uppercase tracking-widest mb-4">{content.services.label}</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-stone-900 mb-6">
+              {highlightWord(content.services.headline, 'growth')}
+            </h2>
+            <p className="text-stone-600 text-lg max-w-2xl mx-auto">
+              {content.services.description}
+            </p>
+          </FadeInSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {(content.services?.items?.length > 0 ? content.services.items : [
+              {
+                title: 'Brand & Identity',
+                description: 'Everything you need to make a splash with your next product launch.',
+                deliverables: ['Logo Design', 'Sonic Logos', 'Sound Design', 'Graphic Design', 'Web Design and Copy'],
+              },
+              {
+                title: 'Content Production',
+                description: 'High-volume, high-quality assets for your social media and website.',
+                deliverables: ['Product Images', 'Lifestyle Photography', 'Product Videos', 'Short-Form Video', 'UGC-Style Content'],
+              },
+              {
+                title: 'Digital & Growth',
+                description: 'Assets and strategies designed to drive traffic and engagement.',
+                deliverables: ['Social Media Content & Copy', 'Ad Creative', 'Email Design & Copy', 'Influencer Content'],
+              },
+              {
+                title: 'Custom',
+                description: 'Partner with Vael Creative to design a custom package that fits your creative needs.',
+                deliverables: ['Tailored to your needs', 'In your brand voice', 'On the timeline you require'],
+              },
+            ]).map((service, index) => (
+              <ServiceCard
+                key={service.title}
+                title={service.title}
+                description={service.description}
+                deliverables={service.deliverables}
+                index={index}
+                media={service.media}
+              />
+            ))}
+          </div>
+
+          <FadeInSection delay={0.4} className="text-center mt-16">
+            <motion.a
+              href={content.services.buttonLink}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center px-8 py-4 bg-stone-900 text-white font-medium rounded-full hover:bg-stone-800 transition-colors"
+            >
+              {content.services.buttonText}
+            </motion.a>
           </FadeInSection>
         </div>
       </section>
