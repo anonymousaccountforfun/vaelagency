@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://vaelcreative.com'
-
   return {
     rules: [
       {
@@ -10,7 +8,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/studio/', '/api/'],
       },
+      { userAgent: 'GPTBot', allow: '/' },
+      { userAgent: 'ClaudeBot', allow: '/' },
+      { userAgent: 'PerplexityBot', allow: '/' },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: 'https://vaelcreative.com/sitemap.xml',
   }
 }
