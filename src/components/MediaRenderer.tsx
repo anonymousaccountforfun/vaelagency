@@ -217,8 +217,9 @@ function VideoPlayer({
   const [isReady, setIsReady] = useState(false)
   const [isInView, setIsInView] = useState(priority) // Priority videos start "in view"
   const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Only use intersection observer for non-priority videos
+  // Observe the container (not the video) for intersection
   useEffect(() => {
     if (priority || typeof window === 'undefined') return
 
@@ -232,8 +233,8 @@ function VideoPlayer({
       { rootMargin: '400px' } // Increased margin for earlier loading
     )
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current)
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
     }
 
     return () => observer.disconnect()
@@ -248,26 +249,38 @@ function VideoPlayer({
   const shouldLoad = priority || isInView
 
   return (
-    <video
-      ref={videoRef}
-      src={shouldLoad ? videoUrl : undefined}
-      poster={posterUrl}
-      autoPlay={shouldLoad && autoPlay}
-      muted
-      loop={loop}
-      playsInline
-      preload={priority ? 'auto' : (isInView ? 'auto' : 'metadata')}
-      onCanPlayThrough={handleReady}
-      className={`${fill ? 'absolute inset-0 w-full h-full object-cover' : ''} ${className}`}
-      style={{
-        // Show poster immediately via CSS background while video loads
-        backgroundImage: posterUrl ? `url(${posterUrl})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        // Faster, smoother opacity transition
-        opacity: isReady ? 1 : 0,
-        transition: 'opacity 150ms ease-out',
-      }}
-    />
+    <div
+      ref={containerRef}
+      className={fill ? 'absolute inset-0' : 'relative'}
+    >
+      {/* Next.js optimized poster — gets AVIF/WebP, priority preload, responsive sizing */}
+      {posterUrl && (
+        <Image
+          src={posterUrl}
+          alt=""
+          fill
+          className={`object-cover transition-opacity duration-150 ease-out ${isReady ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          priority={priority}
+          sizes="100vw"
+        />
+      )}
+      <video
+        ref={videoRef}
+        src={shouldLoad ? videoUrl : undefined}
+        autoPlay={shouldLoad && autoPlay}
+        muted
+        loop={loop}
+        playsInline
+        preload={priority ? 'auto' : (isInView ? 'auto' : 'metadata')}
+        onCanPlayThrough={handleReady}
+        className={`${fill ? 'w-full h-full object-cover' : ''} ${className}`}
+        style={{
+          // GPU layer promotion during load — releases GPU memory after ready
+          willChange: isReady ? 'auto' : 'opacity',
+          opacity: isReady ? 1 : 0,
+          transition: 'opacity 150ms ease-out',
+        }}
+      />
+    </div>
   )
 }

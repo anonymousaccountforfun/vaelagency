@@ -18,22 +18,15 @@ export default function Navigation() {
   ]
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-stone-200"
+    <header
+      className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-stone-200 animate-slide-down"
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Mobile: flex with justify-between, Desktop: 3-column grid */}
         <div className="flex md:grid md:grid-cols-3 items-center justify-between h-20">
           {/* Logo - Left */}
           <Link href="/" className="group flex items-center justify-start shrink-0">
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative"
-            >
+            <div className="relative hover:scale-[1.02] active:scale-[0.98] transition-transform">
               <Image
                 src="/images/vael-creative-logo.png"
                 alt="Vael Creative"
@@ -42,7 +35,7 @@ export default function Navigation() {
                 className="h-6 md:h-7 w-auto max-w-[180px] md:max-w-[220px] object-contain"
                 priority
               />
-            </motion.div>
+            </div>
           </Link>
 
           {/* Desktop Navigation - Center */}
@@ -149,6 +142,6 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   )
 }

@@ -55,9 +55,9 @@ body {
   background: #a8a29e;
 }
 
-/* Smooth transitions for interactive elements */
+/* Smooth transitions for interactive elements — scoped to avoid reflow on layout properties */
 a, button {
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 /* Focus states for accessibility */
@@ -80,4 +80,18 @@ button:focus-visible {
   50% {
     background-position: 100% 50%;
   }
+}
+
+/* Navigation slide-down — CSS compositor thread instead of JS main thread */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.6s ease-out;
 }
