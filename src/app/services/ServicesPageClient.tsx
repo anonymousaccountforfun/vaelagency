@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
 import { useContactModal } from '@/components/ContactModalContext'
-import type { ServicesPageData } from '../../../sanity/lib/types'
+import type { ServicesPageData } from '@/lib/types'
 
 // Helper function to highlight specific words in red
 function highlightWord(text: string, word: string) {

@@ -2,10 +2,6 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.sanity.io',
-      },
       // Vercel Blob Storage (for images from the dashboard insights API)
       {
         protocol: 'https',

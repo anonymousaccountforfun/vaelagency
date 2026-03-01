@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { urlFor } from '../../sanity/lib/client'
-import type { SanityMedia } from '../../sanity/lib/types'
+import type { MediaObject } from '@/lib/types'
 
 interface MediaRendererProps {
-  media?: SanityMedia
+  media?: MediaObject
   fallbackUrl: string
   alt?: string
   fill?: boolean
@@ -34,14 +33,7 @@ export default function MediaRenderer({
 }: MediaRendererProps) {
   // If no media or media is image type
   if (!media || media.type === 'image' || !media.type) {
-    // Quality 85 is visually indistinguishable from 100 but 40-60% smaller
-    // auto('format') lets Sanity serve AVIF/WebP based on browser support
-    const imageUrl = media?.image
-      ? urlFor(media.image)
-          .quality(85)
-          .auto('format')
-          .url()
-      : fallbackUrl
+    const imageUrl = media?.image?.url || fallbackUrl
 
     const imageAlt = media?.image?.alt || alt
 
@@ -89,14 +81,7 @@ export default function MediaRenderer({
   // Video type
   if (media.type === 'video') {
     const videoUrl = media.videoUrl
-    // Poster image: use responsive width based on device, quality 80 is good for posters
-    const posterUrl = media.videoPoster
-      ? urlFor(media.videoPoster)
-          .width(width || 1920)
-          .quality(80)
-          .auto('format')
-          .url()
-      : undefined
+    const posterUrl = media.videoPoster?.url || undefined
 
     // Check if it's a YouTube URL
     if (videoUrl && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be'))) {

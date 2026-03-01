@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { client } from '../../../sanity/lib/client'
-import { aboutPageQuery } from '../../../sanity/lib/queries'
-import type { AboutPageData } from '../../../sanity/lib/types'
+import type { AboutPageData } from '@/lib/types'
 import AboutPageClient from './AboutPageClient'
 
 const baseUrl = 'https://vaelcreative.com'
@@ -29,10 +27,6 @@ export const metadata: Metadata = {
   },
 }
 
-// Revalidate this page every 60 seconds
-export const revalidate = 60
-
-// Default content as fallback
 const defaultContent: AboutPageData = {
   hero: {
     label: 'About Vael',
@@ -74,26 +68,6 @@ const defaultContent: AboutPageData = {
     secondaryButtonText: 'Explore Services',
     secondaryButtonLink: '/services',
   },
-}
-
-async function getAboutPageData(): Promise<AboutPageData> {
-  try {
-    const data = await client.fetch(aboutPageQuery)
-    if (data) {
-      return {
-        ...defaultContent,
-        ...data,
-        hero: { ...defaultContent.hero, ...data?.hero },
-        story: { ...defaultContent.story, ...data?.story },
-        cta: { ...defaultContent.cta, ...data?.cta },
-        founders: data?.founders?.length > 0 ? data.founders : defaultContent.founders,
-      }
-    }
-    return defaultContent
-  } catch (error) {
-    console.error('Error fetching about page data:', error)
-    return defaultContent
-  }
 }
 
 // JSON-LD schemas for about page
@@ -179,18 +153,7 @@ const founderSchemas = [
   },
 ]
 
-export default async function AboutPage() {
-  const content = await getAboutPageData()
-
-  // Pass founders with media directly
-  const foundersWithMedia = content.founders.map((founder) => ({
-    name: founder.name,
-    title: founder.title,
-    bio: founder.bio,
-    companies: founder.companies,
-    media: founder.media,
-  }))
-
+export default function AboutPage() {
   return (
     <>
       <Script
@@ -206,10 +169,7 @@ export default async function AboutPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-      <AboutPageClient
-        content={content}
-        foundersWithMedia={foundersWithMedia}
-      />
+      <AboutPageClient content={defaultContent} />
     </>
   )
 }

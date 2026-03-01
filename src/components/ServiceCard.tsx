@@ -2,14 +2,14 @@
 
 import { motion } from 'framer-motion'
 import MediaRenderer from './MediaRenderer'
-import type { SanityMedia } from '../../sanity/lib/types'
+import type { MediaObject } from '@/lib/types'
 
 interface ServiceCardProps {
   title: string
   description: string
   deliverables: string[]
   index: number
-  media?: SanityMedia
+  media?: MediaObject
 }
 
 export default function ServiceCard({ title, description, deliverables, index, media }: ServiceCardProps) {

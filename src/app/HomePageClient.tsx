@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection, StaggerContainer, StaggerItem } from '@/components/AnimatedSection'
 import ServiceCard from '@/components/ServiceCard'
 import MediaRenderer from '@/components/MediaRenderer'
-import { urlFor } from '../../sanity/lib/client'
-import type { HomepageData } from '../../sanity/lib/types'
+import type { HomepageData } from '@/lib/types'
 import { useContactModal } from '@/components/ContactModalContext'
 
 const FORMSPREE_ID = 'mjgygdpl'
@@ -172,58 +170,18 @@ export default function HomePageClient({ content }: HomePageClientProps) {
           </FadeInSection>
 
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-            {content.socialProof.companies.map((company) => {
-              // Generate logo URL with quality optimization
-              let logoUrl: string | null = null
-              try {
-                if (company.logo?.asset) {
-                  logoUrl = urlFor(company.logo)
-                    .height(120)
-                    .quality(85)
-                    .auto('format')
-                    .url()
-                }
-              } catch {
-                logoUrl = null
-              }
-
-              // Size dimensions based on Sanity field (for Next.js Image)
-              const sizeDimensions = {
-                small: { height: 28, width: 100 },
-                medium: { height: 36, width: 120 },
-                large: { height: 44, width: 140 },
-                xlarge: { height: 56, width: 160 },
-                xxlarge: { height: 80, width: 200 },
-                xxxlarge: { height: 96, width: 240 },
-              }
-              const dimensions = sizeDimensions[company.size || 'medium']
-
-              return (
-                <StaggerItem key={company.name}>
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    className="flex items-center justify-center min-h-20 px-4"
-                  >
-                    {logoUrl ? (
-                      <Image
-                        src={logoUrl}
-                        alt={company.logo?.alt || company.name}
-                        width={dimensions.width}
-                        height={dimensions.height}
-                        className="w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
-                        style={{ height: dimensions.height, width: 'auto' }}
-                        loading="lazy"
-                        sizes="(max-width: 640px) 80px, 120px"
-                      />
-                    ) : (
-                      <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
-                        {company.name.toUpperCase()}
-                      </span>
-                    )}
-                  </motion.div>
-                </StaggerItem>
-              )
-            })}
+            {content.socialProof.companies.map((company) => (
+              <StaggerItem key={company.name}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center justify-center min-h-20 px-4"
+                >
+                  <span className="text-stone-400 text-sm font-semibold tracking-wider hover:text-stone-600 transition-colors">
+                    {company.name.toUpperCase()}
+                  </span>
+                </motion.div>
+              </StaggerItem>
+            ))}
           </StaggerContainer>
 
           <FadeInSection delay={0.3} className="text-center mt-8">

@@ -32,10 +32,10 @@ export function middleware(request: NextRequest) {
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Required for Next.js
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://cdn.sanity.io https://*.sanity.io",
-      "media-src 'self' https://cdn.sanity.io https://*.sanity.io https://player.vimeo.com https://www.youtube.com",
+      "img-src 'self' data: blob: https://*.blob.vercel-storage.com https://*.public.blob.vercel-storage.com",
+      "media-src 'self' https://player.vimeo.com https://www.youtube.com",
       "frame-src https://player.vimeo.com https://www.youtube.com",
-      "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://formspree.io",
+      "connect-src 'self' https://formspree.io",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -52,9 +52,9 @@ export function middleware(request: NextRequest) {
   return response
 }
 
-// Apply middleware to all routes except static files, API, and Sanity Studio
+// Apply middleware to all routes except static files and API
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|studio|.*\\.png$|.*\\.jpg$|.*\\.svg$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.svg$).*)',
   ],
 }

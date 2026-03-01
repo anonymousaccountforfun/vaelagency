@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
 import MediaRenderer from '@/components/MediaRenderer'
 import { useContactModal } from '@/components/ContactModalContext'
-import type { AboutPageData, SanityMedia } from '../../../sanity/lib/types'
+import type { AboutPageData } from '@/lib/types'
 
 // Helper function to highlight specific words in red
 function highlightWord(text: string, word: string) {
@@ -17,20 +17,11 @@ function highlightWord(text: string, word: string) {
   )
 }
 
-interface FounderWithMedia {
-  name: string
-  title: string
-  bio: string
-  companies: string[]
-  media?: SanityMedia
-}
-
 interface AboutPageClientProps {
   content: AboutPageData
-  foundersWithMedia: FounderWithMedia[]
 }
 
-export default function AboutPageClient({ content, foundersWithMedia }: AboutPageClientProps) {
+export default function AboutPageClient({ content }: AboutPageClientProps) {
   const { openModal } = useContactModal()
 
   return (
@@ -71,7 +62,7 @@ export default function AboutPageClient({ content, foundersWithMedia }: AboutPag
       <section className="py-20 md:py-28 bg-background-secondary">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {foundersWithMedia.map((founder, index) => (
+            {content.founders.map((founder, index) => (
               <motion.div
                 key={founder.name}
                 initial={{ opacity: 0, y: 30 }}
