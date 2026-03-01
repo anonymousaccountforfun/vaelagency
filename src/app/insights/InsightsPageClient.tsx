@@ -6,9 +6,10 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { FadeInSection } from '@/components/AnimatedSection'
 
-// Types for the insights data (from Dashboard API)
+// Types for the insights data (can come from API or Sanity)
 interface PostImage {
-  url?: string
+  url?: string // Direct URL from API
+  asset?: { _ref: string } // Sanity reference
   alt?: string
 }
 
@@ -62,9 +63,12 @@ function formatDate(dateString: string) {
   })
 }
 
+// Helper to get image URL from either direct URL or Sanity format
 function getImageUrl(image: PostImage | null | undefined): string | null {
   if (!image) return null
+  // Direct URL from API
   if (image.url) return image.url
+  // Sanity asset reference - would need urlFor, but we're not using Sanity for insights
   return null
 }
 

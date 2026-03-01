@@ -1,13 +1,17 @@
-export interface MediaObject {
+export interface SanityImage {
+  _type: 'image'
+  asset: {
+    _ref: string
+    _type: 'reference'
+  }
+  alt?: string
+}
+
+export interface SanityMedia {
   type: 'image' | 'video'
-  image?: {
-    url?: string
-    alt?: string
-  }
+  image?: SanityImage
   videoUrl?: string
-  videoPoster?: {
-    url?: string
-  }
+  videoPoster?: SanityImage
   autoplay?: boolean
   loop?: boolean
 }
@@ -21,7 +25,7 @@ export interface HomepageData {
     secondaryButtonText: string
     secondaryButtonLink: string
   }
-  heroMedia?: MediaObject
+  heroMedia?: SanityMedia
   services: {
     label: string
     headline: string
@@ -30,7 +34,7 @@ export interface HomepageData {
       title: string
       description: string
       deliverables: string[]
-      media?: MediaObject
+      media?: SanityMedia
     }[]
     buttonText: string
     buttonLink: string
@@ -40,6 +44,8 @@ export interface HomepageData {
     headline: string
     companies: {
       name: string
+      logo?: SanityImage
+      size?: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'xxxlarge'
     }[]
     additionalText: string
   }
@@ -56,7 +62,7 @@ export interface HomepageData {
       label: string
     }[]
   }
-  secondMedia?: MediaObject
+  secondMedia?: SanityMedia
   cta: {
     headline: string
     description: string
@@ -78,7 +84,7 @@ export interface AboutPageData {
     title: string
     bio: string
     companies: string[]
-    media?: MediaObject
+    media?: SanityMedia
   }[]
   story: {
     label: string
@@ -86,7 +92,7 @@ export interface AboutPageData {
     paragraphs: string[]
     pullQuote: string
   }
-  teamMedia?: MediaObject
+  teamMedia?: SanityMedia
   cta: {
     headline: string
     description: string
@@ -103,14 +109,14 @@ export interface ServicesPageData {
     headline: string
     description: string
   }
-  heroMedia?: MediaObject
+  heroMedia?: SanityMedia
   packages: {
     name: string
     description: string
     deliverables: string[]
     timeline: string
     ideal: string
-    media?: MediaObject
+    media?: SanityMedia
   }[]
   process: {
     label: string
@@ -130,4 +136,76 @@ export interface ServicesPageData {
     secondaryButtonText: string
     secondaryButtonLink: string
   }
+}
+
+export interface SiteSettingsData {
+  siteName: string
+  siteDescription: string
+  navigation: {
+    label: string
+    href: string
+  }[]
+  ctaButtonText: string
+  ctaButtonLink: string
+  footer: {
+    headline: string
+    description: string
+    formHeadline: string
+    socialLinks: {
+      platform: 'linkedin' | 'twitter' | 'instagram' | 'facebook'
+      url: string
+    }[]
+  }
+}
+
+// Blog Types
+export interface Author {
+  _id?: string
+  name: string
+  slug: { current: string }
+  role?: string
+  bio?: string
+  credentials?: string[]
+  linkedin?: string
+  twitter?: string
+  image?: SanityImage
+}
+
+export interface Category {
+  _id?: string
+  title: string
+  slug: { current: string }
+  description?: string
+  color?: string
+}
+
+export interface PostSummary {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  featuredImage?: SanityImage
+  author?: Author
+  categories?: Category[]
+  contentType?: string
+  publishedAt: string
+  updatedAt?: string
+  featured?: boolean
+  readingTime?: number
+}
+
+// Portable Text block type
+export interface PortableTextBlock {
+  _type: string
+  _key: string
+  [key: string]: unknown
+}
+
+export interface Post extends PostSummary {
+  body?: PortableTextBlock[]
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string[]
+  canonicalUrl?: string
+  relatedPosts?: PostSummary[]
 }

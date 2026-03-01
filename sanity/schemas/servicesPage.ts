@@ -1,0 +1,192 @@
+import { defineType, defineField } from 'sanity'
+
+export default defineType({
+  name: 'servicesPage',
+  title: 'Services Page',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'hero',
+      title: 'Hero Section',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'label',
+          title: 'Section Label',
+          type: 'string',
+        }),
+        defineField({
+          name: 'headline',
+          title: 'Headline',
+          type: 'string',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Description',
+          type: 'text',
+          rows: 3,
+        }),
+      ],
+    }),
+    defineField({
+      name: 'heroMedia',
+      title: 'Hero Media (Full-bleed)',
+      type: 'media',
+      description: '🎬 VIDEO SUPPORTED • Full-width hero section. Images: 2400×1600px minimum, landscape. Videos: 1080p+, or paste YouTube/Vimeo URL.',
+    }),
+    defineField({
+      name: 'packages',
+      title: 'Service Packages',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Package Name',
+              type: 'string',
+            }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'deliverables',
+              title: 'Deliverables',
+              type: 'array',
+              of: [{ type: 'string' }],
+            }),
+            defineField({
+              name: 'timeline',
+              title: 'Timeline',
+              type: 'string',
+            }),
+            defineField({
+              name: 'ideal',
+              title: 'Ideal For',
+              type: 'string',
+            }),
+            defineField({
+              name: 'media',
+              title: 'Package Media',
+              type: 'media',
+              description: '🎬 VIDEO SUPPORTED • Images: 800×600px minimum. Videos: upload file or paste YouTube/Vimeo URL.',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'name',
+              subtitle: 'timeline',
+              media: 'media.image',
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'process',
+      title: 'Process Section',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'label',
+          title: 'Section Label',
+          type: 'string',
+        }),
+        defineField({
+          name: 'headline',
+          title: 'Headline',
+          type: 'string',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Description',
+          type: 'text',
+          rows: 2,
+        }),
+        defineField({
+          name: 'steps',
+          title: 'Process Steps',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'step',
+                  title: 'Step Number',
+                  type: 'string',
+                }),
+                defineField({
+                  name: 'title',
+                  title: 'Title',
+                  type: 'string',
+                }),
+                defineField({
+                  name: 'description',
+                  title: 'Description',
+                  type: 'text',
+                  rows: 2,
+                }),
+              ],
+              preview: {
+                select: {
+                  title: 'title',
+                  subtitle: 'step',
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'cta',
+      title: 'CTA Section',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'headline',
+          title: 'Headline',
+          type: 'string',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Description',
+          type: 'text',
+          rows: 2,
+        }),
+        defineField({
+          name: 'primaryButtonText',
+          title: 'Primary Button Text',
+          type: 'string',
+        }),
+        defineField({
+          name: 'primaryButtonLink',
+          title: 'Primary Button Link',
+          type: 'string',
+        }),
+        defineField({
+          name: 'secondaryButtonText',
+          title: 'Secondary Button Text',
+          type: 'string',
+        }),
+        defineField({
+          name: 'secondaryButtonLink',
+          title: 'Secondary Button Link',
+          type: 'string',
+        }),
+      ],
+    }),
+  ],
+  preview: {
+    prepare() {
+      return {
+        title: 'Services Page',
+      }
+    },
+  },
+})

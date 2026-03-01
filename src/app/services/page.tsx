@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import type { ServicesPageData } from '@/lib/types'
+import { client } from '../../../sanity/lib/client'
+import { servicesPageQuery } from '../../../sanity/lib/queries'
+import type { ServicesPageData } from '../../../sanity/lib/types'
 import ServicesPageClient from './ServicesPageClient'
 
 const baseUrl = 'https://vaelcreative.com'
@@ -27,6 +29,10 @@ export const metadata: Metadata = {
   },
 }
 
+// Revalidate this page every 60 seconds
+export const revalidate = 60
+
+// Default content as fallback
 const defaultContent: ServicesPageData = {
   hero: {
     label: 'Our Services',
@@ -125,6 +131,30 @@ const defaultContent: ServicesPageData = {
   },
 }
 
+async function getServicesPageData(): Promise<ServicesPageData> {
+  try {
+    const data = await client.fetch(servicesPageQuery)
+    if (data) {
+      return {
+        ...defaultContent,
+        ...data,
+        hero: { ...defaultContent.hero, ...data?.hero },
+        process: {
+          ...defaultContent.process,
+          ...data?.process,
+          steps: defaultContent.process.steps,
+        },
+        cta: { ...defaultContent.cta, ...data?.cta },
+        packages: data?.packages?.length > 0 ? data.packages : defaultContent.packages,
+      }
+    }
+    return defaultContent
+  } catch (error) {
+    console.error('Error fetching services page data:', error)
+    return defaultContent
+  }
+}
+
 // JSON-LD schemas for services page
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -214,7 +244,9 @@ const serviceSchemas = [
   },
 ]
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const content = await getServicesPageData()
+
   return (
     <>
       <Script
@@ -230,7 +262,7 @@ export default function ServicesPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-      <ServicesPageClient content={defaultContent} />
+      <ServicesPageClient content={content} />
     </>
   )
 }

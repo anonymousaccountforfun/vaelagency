@@ -1,11 +1,34 @@
 import { MetadataRoute } from 'next'
-import { getInsights } from '@/lib/insights-api'
+import { client } from '../../sanity/lib/client'
+import { groq } from 'next-sanity'
+
+interface PostSlug {
+  slug: { current: string }
+  publishedAt: string
+  updatedAt?: string
+}
+
+async function getPostSlugs(): Promise<PostSlug[]> {
+  try {
+    const posts = await client.fetch<PostSlug[]>(
+      groq`*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+        slug,
+        publishedAt,
+        updatedAt
+      }`
+    )
+    return posts || []
+  } catch (error) {
+    console.error('Error fetching posts for sitemap:', error)
+    return []
+  }
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://vaelcreative.com'
 
-  // Fetch all blog posts from Dashboard API
-  const { articles } = await getInsights({ limit: 100 })
+  // Fetch all blog posts
+  const posts = await getPostSlugs()
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -89,10 +112,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Blog post pages from Dashboard API
-  const postPages: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${baseUrl}/insights/${article.slug}`,
-    lastModified: new Date(article.publishedAt),
+  // Blog post pages
+  const postPages: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${baseUrl}/insights/${post.slug.current}`,
+    lastModified: new Date(post.updatedAt || post.publishedAt),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }))

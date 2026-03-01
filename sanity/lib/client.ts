@@ -1,0 +1,29 @@
+import { createClient } from 'next-sanity'
+import imageUrlBuilder from '@sanity/image-url'
+
+export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'smsxhytc'
+export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+export const apiVersion = '2024-01-01'
+
+// Client for general use (with CDN caching)
+export const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: true,
+})
+
+// Client for fetching fresh data (bypasses CDN cache)
+export const clientNoCache = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false,
+})
+
+const builder = imageUrlBuilder(client)
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function urlFor(source: any) {
+  return builder.image(source)
+}
